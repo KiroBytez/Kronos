@@ -15156,11 +15156,13 @@ function KronosUI:CreateAIAssistant(opts)
 
 	local function callProvider(provider, messages)
 		local payload = {
-			model      = provider.Model,
 			messages   = messages,
 			tools      = toOpenAITools(),
 			max_tokens = maxTokens,
 		}
+		if provider.Model and provider.Model ~= "" then
+			payload.model = provider.Model
+		end
 		if contextEnabled then
 			local bodyCtx = buildBodyContext()
 			if next(bodyCtx) ~= nil then payload.context = bodyCtx end
@@ -15202,7 +15204,7 @@ function KronosUI:CreateAIAssistant(opts)
 				end
 			end
 			local rateLimited = res.StatusCode == 429
-			if rateLimited then message = message .. " (daily free-tier limit)" end
+			if rateLimited then message = message .. " (rate limited)" end
 			local retryable = res.StatusCode == 502 or res.StatusCode == 503 or res.StatusCode == 504
 			return nil, provider.Name .. " API error " .. tostring(res.StatusCode) .. ": " .. message, rateLimited, retryable
 		end
