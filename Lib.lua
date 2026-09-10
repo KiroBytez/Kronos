@@ -284,6 +284,40 @@ local function GetExecutorName()
 	return "Unknown"
 end
 
+local LiveFpsValue = 60
+local liveStatsStarted = false
+
+local function ensureLiveStats()
+	if liveStatsStarted then return end
+	liveStatsStarted = true
+	pcall(function()
+		local frames = 0
+		local lastUpdate = os.clock()
+		RunService.Heartbeat:Connect(function()
+			frames = frames + 1
+			local now = os.clock()
+			local elapsed = now - lastUpdate
+			if elapsed >= 1 then
+				LiveFpsValue = math.floor(frames / elapsed + 0.5)
+				frames = 0
+				lastUpdate = now
+			end
+		end)
+	end)
+end
+
+local function GetLivePingMs()
+	local ping = nil
+	pcall(function()
+		local Stats = cloneref_check(game:GetService("Stats"))
+		ping = math.clamp(Stats.Network.ServerStatsItem["Data Ping"]:GetValue(), 0, 9999)
+	end)
+	if type(ping) == "number" and ping >= 0 and ping == ping then
+		return math.floor(ping + 0.5)
+	end
+	return nil
+end
+
 local function FormatClock(minutesAfterMidnight)
 	minutesAfterMidnight = minutesAfterMidnight or 0
 	local h = math.floor(minutesAfterMidnight / 60) % 24
@@ -14727,40 +14761,6 @@ function KronosUI:CloudService(opts)
 	end
 
 	return api
-end
-
-local LiveFpsValue = 60
-local liveStatsStarted = false
-
-local function ensureLiveStats()
-	if liveStatsStarted then return end
-	liveStatsStarted = true
-	pcall(function()
-		local frames = 0
-		local lastUpdate = os.clock()
-		RunService.Heartbeat:Connect(function()
-			frames = frames + 1
-			local now = os.clock()
-			local elapsed = now - lastUpdate
-			if elapsed >= 1 then
-				LiveFpsValue = math.floor(frames / elapsed + 0.5)
-				frames = 0
-				lastUpdate = now
-			end
-		end)
-	end)
-end
-
-local function GetLivePingMs()
-	local ping = nil
-	pcall(function()
-		local Stats = cloneref_check(game:GetService("Stats"))
-		ping = math.clamp(Stats.Network.ServerStatsItem["Data Ping"]:GetValue(), 0, 9999)
-	end)
-	if type(ping) == "number" and ping >= 0 and ping == ping then
-		return math.floor(ping + 0.5)
-	end
-	return nil
 end
 
 function KronosUI:CreateAIAssistant(opts)
