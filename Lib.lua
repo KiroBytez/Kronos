@@ -6663,11 +6663,11 @@ function Window:AddTab(nameOrOpts)
 	textLabel.ZIndex = Z.Content + 1
 	textLabel.Parent = row
 
-	local pageGroup = Instance.new("CanvasGroup")
+	local pageGroup = Instance.new("Frame")
 	pageGroup.Name = name .. "Group"
 	pageGroup.BackgroundTransparency = 1
+	pageGroup.BorderSizePixel = 0
 	pageGroup.Size = UDim2.fromScale(1, 1)
-	pageGroup.GroupTransparency = 0
 	pageGroup.Visible = false
 	pageGroup.ZIndex = Z.Content
 	pageGroup.Parent = self._content
@@ -6766,10 +6766,8 @@ function Window:AddTab(nameOrOpts)
 			if self._tabSwitchToken ~= myToken then return end
 			pageGroup.Visible = true
 			page.Visible = true
-			pageGroup.GroupTransparency = 1
 			pageGroup.Position = UDim2.fromOffset(direction * 20, 0)
 			Tween(pageGroup, {
-				GroupTransparency = 0,
 				Position = UDim2.fromOffset(0, 0),
 			}, TRANSITION_ENTER, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
 		end
@@ -6777,7 +6775,6 @@ function Window:AddTab(nameOrOpts)
 		if previousTab and previousTab._group.Visible then
 			local g = previousTab._group
 			Tween(g, {
-				GroupTransparency = 1,
 				Position = UDim2.fromOffset(-direction * 20, 0),
 			}, TRANSITION_EXIT, Enum.EasingStyle.Quint, Enum.EasingDirection.In)
 			task.delay(TRANSITION_EXIT, function()
@@ -11613,7 +11610,7 @@ function Tab:AddDropdown(opts)
 
 		popupBackdrop = MakePopupBackdrop(closePopup)
 
-		popupFrame = Instance.new("CanvasGroup")
+		popupFrame = Instance.new("Frame")
 		popupFrame.Name = "DropdownPopup"
 		popupFrame.Active = true
 		popupFrame.BackgroundColor3 = KronosUI.Theme.Background
@@ -13796,7 +13793,7 @@ function Tab:AddCardGrid(opts)
 		px = SafeClamp(px, 8, view.X / scale - popupW - 8)
 		py = SafeClamp(py, 8, view.Y / scale - popupH - 8)
 
-		popup = Instance.new("CanvasGroup")
+		popup = Instance.new("Frame")
 		popup.Name = "CardActionsPopup"
 		popup.Active = true
 		popup.BackgroundColor3 = KronosUI.Theme.Background
