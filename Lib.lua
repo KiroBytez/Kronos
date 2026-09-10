@@ -14792,23 +14792,7 @@ function KronosUI:CreateAIAssistant(opts)
 		return out
 	end
 
-	local persistPath = nil
-	if opts.Persist then
-		persistPath = ASSETS_FOLDER .. "/" .. SafeConfigName(tostring(opts.Persist)) .. ".chat.json"
-	end
-
-	local function loadHistory()
-		if not (persistPath and fn_isfile and fn_readfile) then return nil end
-		local existsOk, exists = pcall(fn_isfile, persistPath)
-		if not existsOk or not exists then return nil end
-		local ok, raw = pcall(fn_readfile, persistPath)
-		if not ok then return nil end
-		local decodeOk, decoded = pcall(function() return HttpService:JSONDecode(raw) end)
-		if decodeOk and type(decoded) == "table" then return decoded end
-		return nil
-	end
-
-	local conversation = loadHistory() or { { role = "system", content = systemPrompt } }
+	local conversation = { { role = "system", content = systemPrompt } }
 	
 	local cloudService = opts.CloudService
 	local scriptId = opts.Script
@@ -15015,7 +14999,7 @@ function KronosUI:CreateAIAssistant(opts)
 		return messages
 	end
 
-	local MAX_HISTORY_MESSAGES = 40
+	local MAX_HISTORY_MESSAGES = 30
 
 	local function trimHistory()
 		local startAt = 1
@@ -15038,13 +15022,6 @@ function KronosUI:CreateAIAssistant(opts)
 				table.remove(conversation, startAt)
 			end
 		end
-	end
-
-	local function saveHistory()
-		if not (persistPath and fn_writefile) then return end
-		trimHistory()
-		EnsureAssetsFolder()
-		pcall(fn_writefile, persistPath, HttpService:JSONEncode(conversation))
 	end
 
 	local function callProvider(provider, messages)
@@ -15178,7 +15155,7 @@ function KronosUI:CreateAIAssistant(opts)
 	function assistant:Reset()
 		table.clear(conversation)
 		table.insert(conversation, { role = "system", content = systemPrompt })
-		saveHistory()
+		trimHistory()
 	end
 
 	function assistant:Ask(panel, userText)
@@ -15198,7 +15175,7 @@ function KronosUI:CreateAIAssistant(opts)
 					busy = false
 					panel:HideTyping()
 					panel:AddMessage("assistant", "(stopped)")
-					saveHistory()
+					trimHistory()
 				end
 				return
 			end
@@ -15210,7 +15187,7 @@ function KronosUI:CreateAIAssistant(opts)
 					busy = false
 					panel:HideTyping()
 					panel:AddMessage("assistant", "(stopped)")
-					saveHistory()
+					trimHistory()
 				end
 				return
 			end
@@ -15218,7 +15195,7 @@ function KronosUI:CreateAIAssistant(opts)
 				busy = false
 				panel:HideTyping()
 				panel:AddMessage("assistant", "Error: " .. tostring(err))
-				saveHistory()
+				trimHistory()
 				return
 			end
 
@@ -15228,7 +15205,7 @@ function KronosUI:CreateAIAssistant(opts)
 				busy = false
 				panel:HideTyping()
 				panel:AddMessage("assistant", "Error: empty response from API.")
-				saveHistory()
+				trimHistory()
 				return
 			end
 
@@ -15269,7 +15246,7 @@ function KronosUI:CreateAIAssistant(opts)
 			else
 				busy = false
 				panel:HideTyping()
-				saveHistory()
+				trimHistory()
 				return
 			end
 		end
@@ -15278,7 +15255,7 @@ function KronosUI:CreateAIAssistant(opts)
 		panel:HideTyping()
 		panel:AddMessage("assistant",
 			"(stopped after several rounds of tool calls/continuations -- ask me to continue if you need to)")
-		saveHistory()
+		trimHistory()
 	end
 
 	return assistant
