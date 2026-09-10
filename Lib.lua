@@ -8484,6 +8484,7 @@ function Tab:AddParagraph(opts)
 				btnCard.ZIndex = Z.Content + 4
 				btnCard.Parent = buttonsContainer
 				Corner(btnCard, 8)
+				self._window:_RegisterSearchable(self, btnOpts.Title or "Button", btnCard, "Button", btnOpts)
 
 				local btnPad = Instance.new("UIPadding")
 				btnPad.PaddingLeft = UDim.new(0, 10)
@@ -8647,6 +8648,7 @@ function Tab:AddParagraph(opts)
 				btnCard.ZIndex = Z.Content + 2
 				btnCard.Parent = buttonsContainer
 				Corner(btnCard, 8)
+				self._window:_RegisterSearchable(self, btnOpts.Title or "Button", btnCard, "Button", btnOpts)
 
 				local btnPad = Instance.new("UIPadding")
 				btnPad.PaddingLeft = UDim.new(0, 10)
