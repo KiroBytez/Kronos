@@ -15015,8 +15015,34 @@ function KronosUI:CreateAIAssistant(opts)
 		return messages
 	end
 
+	local MAX_HISTORY_MESSAGES = 40
+
+	local function trimHistory()
+		local startAt = 1
+		if type(conversation[1]) == "table" and conversation[1].role == "system" then
+			startAt = 2
+		end
+		while (#conversation - startAt + 1) > MAX_HISTORY_MESSAGES do
+			table.remove(conversation, startAt)
+		end
+		while type(conversation[startAt]) == "table" and conversation[startAt].role == "tool" do
+			table.remove(conversation, startAt)
+		end
+		while true do
+			local first = conversation[startAt]
+			if type(first) ~= "table" or first.role ~= "assistant" then break end
+			local tc = first.tool_calls
+			if type(tc) ~= "table" or #tc == 0 then break end
+			table.remove(conversation, startAt)
+			while type(conversation[startAt]) == "table" and conversation[startAt].role == "tool" do
+				table.remove(conversation, startAt)
+			end
+		end
+	end
+
 	local function saveHistory()
 		if not (persistPath and fn_writefile) then return end
+		trimHistory()
 		EnsureAssetsFolder()
 		pcall(fn_writefile, persistPath, HttpService:JSONEncode(conversation))
 	end
@@ -15055,7 +15081,7 @@ function KronosUI:CreateAIAssistant(opts)
 			Headers = headers,
 			Body = body,
 		})
-		if not ok then return nil, tostring(res), false end
+		if not ok then return nil, tostring(res), false, true end
 
 		if res.StatusCode and res.StatusCode ~= 200 then
 			local message = res.Body
@@ -15070,13 +15096,16 @@ function KronosUI:CreateAIAssistant(opts)
 			end
 			local rateLimited = res.StatusCode == 429
 			if rateLimited then message = message .. " (daily free-tier limit)" end
-			return nil, provider.Name .. " API error " .. tostring(res.StatusCode) .. ": " .. message, rateLimited
+			local retryable = res.StatusCode == 502 or res.StatusCode == 503 or res.StatusCode == 504
+			return nil, provider.Name .. " API error " .. tostring(res.StatusCode) .. ": " .. message, rateLimited, retryable
 		end
 
 		local decodeOk, decoded = pcall(function() return HttpService:JSONDecode(res.Body) end)
-		if not decodeOk then return nil, provider.Name .. ": failed to decode API response.", false end
-		return decoded, nil, false
+		if not decodeOk then return nil, provider.Name .. ": failed to decode API response.", false, false end
+		return decoded, nil, false, false
 	end
+
+	local RETRYABLE_ATTEMPTS = 3
 
 	local function callAI(messages)
 		if not httpRequest then
@@ -15085,10 +15114,17 @@ function KronosUI:CreateAIAssistant(opts)
 		local lastErr = "No AI provider configured -- add at least one entry with an Endpoint to Providers."
 		for _, provider in ipairs(providers) do
 			if provider.Endpoint and provider.Endpoint ~= "" then
-				local decoded, err, rateLimited = callProvider(provider, messages)
-				if decoded then return decoded end
-				lastErr = err
-				if not rateLimited then return nil, lastErr end
+				local exhausted = false
+				for attempt = 1, RETRYABLE_ATTEMPTS do
+					if attempt > 1 then task.wait(1.5 * (attempt - 1)) end
+					local decoded, err, rateLimited, retryable = callProvider(provider, messages)
+					if decoded then return decoded end
+					lastErr = err
+					if rateLimited then break end
+					if not retryable then return nil, lastErr end
+					exhausted = (attempt == RETRYABLE_ATTEMPTS)
+				end
+				if exhausted then return nil, lastErr end
 			end
 		end
 		return nil, lastErr
@@ -15108,10 +15144,19 @@ function KronosUI:CreateAIAssistant(opts)
 	local busy = false
 	local requestGen = 0
 	local activeGen = 0
+	local activePanel = nil
 
 	function assistant:Stop()
 		stopRequested = true
 		requestGen = requestGen + 1
+		if busy and activeGen ~= 0 and activePanel then
+			local p = activePanel
+			activeGen = 0
+			activePanel = nil
+			busy = false
+			pcall(function() p:HideTyping() end)
+			pcall(function() p:AddMessage("assistant", "(stopped)") end)
+		end
 	end
 
 	function assistant:IsBusy()
@@ -15144,6 +15189,7 @@ function KronosUI:CreateAIAssistant(opts)
 		requestGen = requestGen + 1
 		local myReq = requestGen
 		activeGen = myReq
+		activePanel = panel
 
 		for _ = 1, maxRounds do
 			if stopRequested then
