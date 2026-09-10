@@ -4283,7 +4283,7 @@ function Window:_BuildDefaultChatTools()
 			Handler = function(args)
 				local ok, err = KronosUI:SetUIElementValue(args.flag, args.value)
 				if not ok then error(err, 0) end
-				return true
+				return { success = true, flag = args.flag, value = args.value }
 			end,
 		},
 		{
@@ -4326,20 +4326,30 @@ function Window:_BuildDefaultChatTools()
 		},
 		{
 			Name = "find_and_highlight_element",
-			Description = "Finds a UI element (button, toggle, card, slider, etc.) by its visible label, "
-				.. "jumps to whichever tab or sub-tab it lives on, scrolls to it, and flashes a highlight "
-				.. "on it -- the same thing Ctrl+K search does when you click a result.",
+			Description = "Find and highlight the real Kronos UI element that best matches what the user is "
+				.. "asking for. Interpret the request semantically -- the user's wording may differ "
+				.. "substantially from the element's actual label. Use this when the user asks where a "
+				.. "feature, button, setting, or control is, or asks how to enable, disable, change, or "
+				.. "access something in the UI. Do not require exact label matching. The actual UI registry "
+				.. "is the source of truth -- never invent an element or location. Returns the closest "
+				.. "relevant real element, or reports not-found.",
 			Parameters = {
 				type = "object",
 				properties = {
-					query = { type = "string", description = "The element's visible text. Partial matches are fine." },
+					query = { type = "string", description = "A natural-language description of the element or setting the user means. Exact label not required." },
 				},
 				required = { "query" },
 			},
 			Handler = function(args)
-				local ok, titleOrErr = windowSelf:JumpToElement(args.query)
-				if not ok then error(titleOrErr, 0) end
-				return "Highlighted: " .. titleOrErr
+				local entry = windowSelf:FindElement(args.query)
+				if not entry then
+					return { success = false, found = false, error = "No matching UI element found for '" .. tostring(args.query) .. "'" }
+				end
+				windowSelf:_JumpToSearchable(entry)
+				local info = windowSelf:DescribeElement(entry) or { name = tostring(args.query) }
+				info.success = true
+				info.found = true
+				return info
 			end,
 		},
 	}
@@ -7214,9 +7224,18 @@ function Window:SelectTab(nameOrIndex)
 	return nil
 end
 
-function Window:_RegisterSearchable(tabObj, title, instance)
+function Window:_RegisterSearchable(tabObj, title, instance, kind, opts)
 	if not title or title == "" or not instance then return end
-	table.insert(self._searchIndex, { title = title, instance = instance, tabObj = tabObj })
+	opts = opts or {}
+	table.insert(self._searchIndex, {
+		title = title,
+		instance = instance,
+		tabObj = tabObj,
+		kind = kind,
+		description = opts.Description,
+		placeholder = opts.Placeholder,
+		flag = opts.Flag,
+	})
 end
 
 local function SearchEntryPath(tabObj)
@@ -7265,29 +7284,121 @@ function Window:_JumpToSearchable(entry)
 	end)
 end
 
+local SEARCH_STOPWORDS = {
+	where = true, is = true, the = true, how = true, ["do"] = true,
+	i = true, to = true, a = true, an = true, it = true,
+	that = true, this = true, my = true, of = true, me = true,
+	please = true, what = true, which = true, there = true,
+	here = true, get = true, got = true, can = true, you = true,
+	u = true, at = true, be = true, by = true, with = true,
+	["for"] = true, ["in"] = true, on = true, ["or"] = true,
+	["and"] = true, s = true,
+}
+
+local function searchTokens(s)
+	local out = {}
+	for word in tostring(s or ""):lower():gmatch("[%w]+") do
+		if not SEARCH_STOPWORDS[word] then
+			table.insert(out, word)
+		end
+	end
+	return out
+end
+
+local function SearchEntryTabParts(tabObj)
+	if not tabObj then return nil, nil end
+	if tabObj._parentTabName then
+		return tabObj._parentTabName, tabObj.Name
+	end
+	return tabObj.Name, nil
+end
+
+local function scoreSearchEntry(entry, tokens, joined)
+	local title = tostring(entry.title or ""):lower()
+	if title == joined then return math.huge end
+	local desc = tostring(entry.description or ""):lower()
+	local flagText = tostring(entry.flag or ""):lower():gsub("[_%-]", " ")
+	local kindText = tostring(entry.kind or ""):lower()
+	local score, hits = 0, 0
+	if joined ~= "" and title:find(joined, 1, true) then
+		score = score + 4
+		hits = hits + 1
+	end
+	for _, tok in ipairs(tokens) do
+		if title:find(tok, 1, true) then
+			score = score + 3
+			hits = hits + 1
+		elseif desc ~= "" and desc:find(tok, 1, true) then
+			score = score + 1.5
+			hits = hits + 1
+		elseif flagText ~= "" and flagText:find(tok, 1, true) then
+			score = score + 2
+			hits = hits + 1
+		elseif kindText ~= "" and kindText:find(tok, 1, true) then
+			score = score + 0.5
+			hits = hits + 1
+		end
+	end
+	if hits == 0 then return 0 end
+	score = score + math.max(0, 2 - math.abs(#title - #joined) / 10)
+	return score
+end
+
+function Window:FindElement(query)
+	query = tostring(query or "")
+	local tokens = searchTokens(query)
+	if #tokens == 0 then return nil end
+	local joined = table.concat(tokens, " ")
+	local best, bestScore = nil, 0
+	for _, entry in ipairs(self._searchIndex) do
+		if entry.title ~= nil and entry.title ~= "" then
+			if tostring(entry.title):lower() == joined then return entry end
+		end
+		local score = scoreSearchEntry(entry, tokens, joined)
+		if score > bestScore then best, bestScore = entry, score end
+	end
+	return best
+end
+
+function Window:DescribeElement(entry)
+	if not entry then return nil end
+	local tab, subtab = SearchEntryTabParts(entry.tabObj)
+	local info = {
+		name = tostring(entry.title or ""),
+		type = entry.kind,
+		tab = tab,
+		subtab = subtab,
+		description = entry.description,
+	}
+	if entry.flag ~= nil and entry.flag ~= "" then
+		info.flag = entry.flag
+		local api = KronosUI.Flags[entry.flag]
+		if api then
+			if info.type == nil then info.type = api.Kind end
+			if info.description == nil then info.description = api.Description end
+			local ok, value = pcall(api.Get)
+			if ok then
+				local t = type(value)
+				if t == "string" or t == "number" or t == "boolean" then
+					info.currentValue = value
+				elseif value ~= nil then
+					info.currentValue = tostring(value)
+				end
+			end
+		end
+	end
+	return info
+end
+
 function Window:JumpToElement(query)
 	query = tostring(query or "")
 	if query == "" then return false, "No element name given" end
-
-	local q = query:lower()
-	local best, bestScore = nil, 0
-	for _, entry in ipairs(self._searchIndex) do
-		local title = tostring(entry.title or ""):lower()
-		if title == q then
-			best, bestScore = entry, math.huge
-			break
-		elseif title:find(q, 1, true) then
-			local score = 1000 - math.abs(#title - #q)
-			if score > bestScore then best, bestScore = entry, score end
-		end
-	end
-
-	if not best then
+	local entry = self:FindElement(query)
+	if not entry then
 		return false, "No element found matching '" .. query .. "'"
 	end
-
-	self:_JumpToSearchable(best)
-	return true, best.title
+	self:_JumpToSearchable(entry)
+	return true, entry.title
 end
 
 function Window:_OpenSearch()
@@ -7980,6 +8091,7 @@ local function RegisterFlag(opts, api, kind)
 		api.Flag = opts.Flag
 		api.Kind = kind
 		api.Label = opts.Text or opts.Label or opts.Flag
+		api.Description = opts.Description
 	end
 	return api
 end
@@ -8840,7 +8952,7 @@ function Tab:AddProgressBar(opts)
 	label.Size = UDim2.new(1, -(textX + valueWidth + 22), 0, 18)
 	label.ZIndex = Z.Content + 1
 	label.Parent = card
-	self._window:_RegisterSearchable(self, opts.Text or "Progress", card)
+	self._window:_RegisterSearchable(self, opts.Text or "Progress", card, "ProgressBar", opts)
 
 	if hasDesc then
 		local descLabel = Instance.new("TextLabel")
@@ -9028,7 +9140,7 @@ function Tab:AddViewport(opts)
 	main.Parent = self._page
 	Corner(main, KronosUI.Theme.CornerRadiusSm)
 	Stroke(main, Color3.new(1, 1, 1), 1, 0.95)
-	self._window:_RegisterSearchable(self, opts.Text or "Viewport", main)
+	self._window:_RegisterSearchable(self, opts.Text or "Viewport", main, "Viewport", opts)
 
 	local canvas = Instance.new("CanvasGroup")
 	canvas.Size = UDim2.fromScale(1, 1)
@@ -9676,7 +9788,7 @@ function Tab:AddRating(opts)
 		titleLabel.ZIndex = Z.Content + 1
 		titleLabel.Parent = card
 
-		self._window:_RegisterSearchable(self, opts.Title, card)
+		self._window:_RegisterSearchable(self, opts.Title, card, "Rating", opts)
 	end
 
 	local starBar = BuildStarRow(card, 2, maxStars, starColor, 20, opts.Default)
@@ -9721,7 +9833,7 @@ function Tab:AddButton(opts)
 
 	local textX = AddLeadingIcon(card, opts.Icon, height)
 	AddTitleDesc(card, textX, 44, opts.Text or "Button", opts.Description, height)
-	self._window:_RegisterSearchable(self, opts.Text or "Button", card)
+	self._window:_RegisterSearchable(self, opts.Text or "Button", card, "Button", opts)
 
 	local chev = Instance.new("ImageLabel")
 	chev.BackgroundTransparency = 1
@@ -9857,7 +9969,7 @@ function Tab:AddCard(opts)
 
 	local rightReserve = opts.Callback and 44 or 14
 	AddTitleDesc(card, textX, rightReserve, opts.Title or "Card", opts.Description, topHeight, extraBottom)
-	self._window:_RegisterSearchable(self, opts.Title or "Card", card)
+	self._window:_RegisterSearchable(self, opts.Title or "Card", card, "Card", opts)
 
 	if opts.Callback then
 		local chev = Instance.new("ImageLabel")
@@ -10044,7 +10156,7 @@ function Tab:AddChangelogEntry(opts)
 
 	local card = BaseCard(self._page, height)
 	card.AutomaticSize = Enum.AutomaticSize.Y
-	self._window:_RegisterSearchable(self, version, card)
+	self._window:_RegisterSearchable(self, version, card, "Changelog", opts)
 
 	local pad = Instance.new("UIPadding")
 	pad.PaddingTop = UDim.new(0, PAD)
@@ -10210,7 +10322,7 @@ function Tab:AddLoadoutGroup(opts)
 	local height = PAD * 2 + HEADER_H + GAP1 + ICON_SIZE + GAP2 + BUTTON_H
 
 	local card = BaseCard(self._page, height)
-	self._window:_RegisterSearchable(self, title, card)
+	self._window:_RegisterSearchable(self, title, card, "LoadoutGroup", opts)
 
 	local pad = Instance.new("UIPadding")
 	pad.PaddingTop = UDim.new(0, PAD)
@@ -10344,7 +10456,7 @@ function Tab:AddInfoGrid(opts)
 	local height = PAD * 2 + HEADER_H + (rows > 0 and (10 + gridH) or 0)
 
 	local card = BaseCard(self._page, height)
-	self._window:_RegisterSearchable(self, title, card)
+	self._window:_RegisterSearchable(self, title, card, "InfoGrid", opts)
 
 	local leftInset = 0
 	if color then
@@ -10599,7 +10711,7 @@ function Tab:AddLeaderboard(opts)
 	container.Parent = self._page
 	Corner(container, KronosUI.Theme.CornerRadiusSm)
 	Stroke(container, Color3.new(1, 1, 1), 1, 0.92)
-	self._window:_RegisterSearchable(self, title, container)
+	self._window:_RegisterSearchable(self, title, container, "ActiveUsers", opts)
 
 	local titleLabel = Instance.new("TextLabel")
 	titleLabel.BackgroundTransparency = 1
@@ -10939,7 +11051,7 @@ function Tab:AddGradientCard(opts)
 	gradient.Rotation = 100
 	gradient.Parent = card
 
-	self._window:_RegisterSearchable(self, title, card)
+	self._window:_RegisterSearchable(self, title, card, "GradientCard", opts)
 
 	local PAD = 14
 	local rightReserve = opts.Callback and 32 or PAD
@@ -11032,7 +11144,7 @@ function Tab:AddToggle(opts)
 
 	local textX = AddLeadingIcon(card, opts.Icon, height)
 	AddTitleDesc(card, textX, 66, opts.Text or "Toggle", opts.Description, height)
-	self._window:_RegisterSearchable(self, opts.Text or "Toggle", card)
+	self._window:_RegisterSearchable(self, opts.Text or "Toggle", card, "Toggle", opts)
 
 	local switchBg = Instance.new("Frame")
 	switchBg.AnchorPoint = Vector2.new(1, 0.5)
@@ -11209,7 +11321,7 @@ function Tab:AddSlider(opts)
 	label.Size = UDim2.new(1, -(textX + 76), 0, 18)
 	label.ZIndex = Z.Content + 1
 	label.Parent = card
-	self._window:_RegisterSearchable(self, opts.Text or "Slider", card)
+	self._window:_RegisterSearchable(self, opts.Text or "Slider", card, "Slider", opts)
 
 	local descLabel
 	if hasDesc then
@@ -11514,7 +11626,7 @@ function Tab:AddDropdown(opts)
 	local textX = AddLeadingIcon(card, opts.Icon, height)
 
 	AddTitleDesc(card, textX, 150, opts.Text or "Dropdown", opts.Description, height)
-	self._window:_RegisterSearchable(self, opts.Text or "Dropdown", card)
+	self._window:_RegisterSearchable(self, opts.Text or "Dropdown", card, "Dropdown", opts)
 
 	local valueLabel = Instance.new("TextLabel")
 	valueLabel.BackgroundTransparency = 1
@@ -11847,7 +11959,7 @@ function Tab:AddTextbox(opts)
 	local titleReserve = pillMinW + 26
 
 	AddTitleDesc(card, textX, titleReserve, opts.Text or "Textbox", opts.Description, height)
-	self._window:_RegisterSearchable(self, opts.Text or "Textbox", card)
+	self._window:_RegisterSearchable(self, opts.Text or "Textbox", card, "Textbox", opts)
 
 	local pill = Instance.new("Frame")
 	pill.AnchorPoint = Vector2.new(1, 0.5)
@@ -12034,7 +12146,7 @@ function Tab:AddColorPicker(opts)
 	local card = BaseCard(self._page, height)
 	local textX = AddLeadingIcon(card, opts.Icon, height)
 	AddTitleDesc(card, textX, 52, opts.Text or "Color", opts.Description, height)
-	self._window:_RegisterSearchable(self, opts.Text or "Color", card)
+	self._window:_RegisterSearchable(self, opts.Text or "Color", card, "ColorPicker", opts)
 
 	local color = opts.Default or Color3.fromRGB(255, 255, 255)
 	local hue, sat, val = Color3.toHSV(color)
@@ -12722,7 +12834,7 @@ function Tab:AddKeybind(opts)
 	local card = BaseCard(self._page, height)
 	local textX = AddLeadingIcon(card, opts.Icon, height)
 	AddTitleDesc(card, textX, 128, opts.Text or "Keybind", opts.Description, height)
-	self._window:_RegisterSearchable(self, opts.Text or "Keybind", card)
+	self._window:_RegisterSearchable(self, opts.Text or "Keybind", card, "Keybind", opts)
 
 	local currentKey = opts.Default
 
@@ -13230,7 +13342,7 @@ function Tab:AddTable(opts)
 	container.Parent = self._page
 	Corner(container, KronosUI.Theme.CornerRadiusSm)
 	Stroke(container, Color3.new(1, 1, 1), 1, 0.92)
-	self._window:_RegisterSearchable(self, title, container)
+	self._window:_RegisterSearchable(self, title, container, "Table", opts)
 
 	local titleLabel = Instance.new("TextLabel")
 	titleLabel.BackgroundTransparency = 1
@@ -13509,7 +13621,7 @@ function Tab:AddCardGrid(opts)
 	outer.Parent = self._page
 	Corner(outer, KronosUI.Theme.CornerRadiusSm)
 	Stroke(outer, Color3.new(1, 1, 1), 1, 0.95)
-	self._window:_RegisterSearchable(self, opts.Title or "Cards", outer)
+	self._window:_RegisterSearchable(self, opts.Title or "Cards", outer, "CardGrid", opts)
 
 	local content = Instance.new("Frame")
 	content.Name = "Content"
@@ -14365,14 +14477,32 @@ end
 
 function KronosUI:ListUIElements()
 	local out = {}
+	local byFlag = {}
+	for _, win in ipairs(KronosUI._Windows) do
+		if win._searchIndex then
+			for _, entry in ipairs(win._searchIndex) do
+				if entry.flag ~= nil and entry.flag ~= "" and byFlag[entry.flag] == nil then
+					byFlag[entry.flag] = entry
+				end
+			end
+		end
+	end
 	for flag, api in pairs(KronosUI.Flags) do
 		local ok, value = pcall(api.Get)
-		table.insert(out, {
+		local item = {
 			Flag  = flag,
 			Kind  = api.Kind,
 			Label = api.Label,
 			Value = ok and value or nil,
-		})
+			Description = api.Description,
+		}
+		local entry = byFlag[flag]
+		if entry then
+			local tab, subtab = SearchEntryTabParts(entry.tabObj)
+			item.Tab = tab
+			item.SubTab = subtab
+		end
+		table.insert(out, item)
 	end
 	table.sort(out, function(a, b) return a.Flag < b.Flag end)
 	return out
