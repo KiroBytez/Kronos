@@ -4264,7 +4264,7 @@ function Window:_BuildDefaultChatTools()
 		{
 			Name = "list_ui_elements",
 			Description = "Lists every UI element that has a Flag, with its kind and current value.",
-			Parameters = { type = "object", properties = {}, required = {} },
+			Parameters = { type = "object" },
 			Handler = function()
 				return KronosUI:ListUIElements()
 			end,
@@ -14907,6 +14907,18 @@ function KronosUI:CreateAIAssistant(opts)
 	
 	local scriptId = opts.Script or "default"
 
+	local function pruneEmptyProperties(schema)
+		if type(schema) ~= "table" then return schema end
+		for k, v in pairs(schema) do
+			if k == "properties" and type(v) == "table" and next(v) == nil then
+				schema[k] = nil
+			elseif type(v) == "table" then
+				pruneEmptyProperties(v)
+			end
+		end
+		return schema
+	end
+
 	local function toOpenAITools()
 		local out = {}
 		for _, tool in ipairs(tools) do
@@ -14915,7 +14927,7 @@ function KronosUI:CreateAIAssistant(opts)
 				["function"] = {
 					name        = tool.Name,
 					description = tool.Description,
-					parameters  = tool.Parameters,
+					parameters  = pruneEmptyProperties(tool.Parameters),
 				},
 			})
 		end
