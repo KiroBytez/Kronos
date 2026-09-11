@@ -12510,7 +12510,7 @@ function Tab:AddColorPicker(opts)
 			alphaSlider.BackgroundColor3 = currentColor()
 			alphaSlider.BackgroundTransparency = 0
 			alphaSlider.BorderSizePixel = 0
-			alphaSlider.ClipsDescidents = true
+			alphaSlider.ClipsDescendants = true
 			alphaSlider.ZIndex = Z.Popup + 1
 			alphaSlider.Parent = popupFrame
 			Corner(alphaSlider, 3)
