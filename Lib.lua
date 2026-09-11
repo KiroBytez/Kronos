@@ -4332,7 +4332,9 @@ function Window:_BuildDefaultChatTools()
 				.. "feature, button, setting, or control is, or asks how to enable, disable, change, or "
 				.. "access something in the UI. Do not require exact label matching. The actual UI registry "
 				.. "is the source of truth -- never invent an element or location. Returns the closest "
-				.. "relevant real element, or reports not-found.",
+				.. "relevant real element, or reports not-found. Do not use this tool for questions already "
+				.. "answered by the conversation history or runtime context (for example, asking for stats "
+				.. "or values already shown) -- answer those directly.",
 			Parameters = {
 				type = "object",
 				properties = {
@@ -4341,7 +4343,7 @@ function Window:_BuildDefaultChatTools()
 				required = { "query" },
 			},
 			Handler = function(args)
-				local entry = windowSelf:FindElement(args.query)
+				local entry, score = windowSelf:FindElement(args.query)
 				if not entry then
 					return { success = false, found = false, error = "No matching UI element found for '" .. tostring(args.query) .. "'" }
 				end
@@ -4349,6 +4351,11 @@ function Window:_BuildDefaultChatTools()
 				local info = windowSelf:DescribeElement(entry) or { name = tostring(args.query) }
 				info.success = true
 				info.found = true
+				info.query = tostring(args.query)
+				if score == math.huge then score = 999 end
+				if type(score) == "number" then
+					info.score = math.floor(score * 10 + 0.5) / 10
+				end
 				return info
 			end,
 		},
@@ -7344,6 +7351,8 @@ local function scoreSearchEntry(entry, tokens, joined)
 	return score
 end
 
+local FIND_MIN_SCORE = 2
+
 function Window:FindElement(query)
 	query = tostring(query or "")
 	local tokens = searchTokens(query)
@@ -7352,12 +7361,13 @@ function Window:FindElement(query)
 	local best, bestScore = nil, 0
 	for _, entry in ipairs(self._searchIndex) do
 		if entry.title ~= nil and entry.title ~= "" then
-			if tostring(entry.title):lower() == joined then return entry end
+			if tostring(entry.title):lower() == joined then return entry, math.huge end
 		end
 		local score = scoreSearchEntry(entry, tokens, joined)
 		if score > bestScore then best, bestScore = entry, score end
 	end
-	return best
+	if bestScore < FIND_MIN_SCORE then return nil end
+	return best, bestScore
 end
 
 function Window:DescribeElement(entry)
@@ -9616,16 +9626,56 @@ function KronosUI:SendFeedbackWebhook(webhookUrl, stars, message, opts,cloudServ
 	headers["X-KronosUI-Script"] = KronosUI._CloudServiceScript or "default"
 
 	task.spawn(function()
-		local ok, err = pcall(httpRequest, {
+		local ok, res = pcall(httpRequest, {
 			Url = webhookUrl,
 			Method = "POST",
 			Headers = headers,
 			Body = body,
 		})
+		if not ok then
+			self:Notify({
+				Title = "Failed to Send",
+				Text  = tostring(res),
+				Type  = "error",
+				Duration = 3,
+			})
+			return
+		end
+		local status = res and tonumber(res.StatusCode)
+		if status == nil or (status >= 200 and status < 300) then
+			self:Notify({
+				Title = "Feedback Sent",
+				Text  = "Thanks for rating the UI!",
+				Type  = "success",
+				Duration = 3,
+			})
+			return
+		end
+		local serverMessage = nil
+		pcall(function()
+			local parsed = HttpService:JSONDecode(res.Body)
+			if type(parsed) == "table" then
+				local errField = parsed.error
+				if type(errField) == "table" and errField.message then
+					serverMessage = tostring(errField.message)
+				elseif type(errField) == "string" and errField ~= "" then
+					serverMessage = errField
+				end
+			end
+		end)
+		if status == 429 then
+			self:Notify({
+				Title = "Slow Down",
+				Text  = serverMessage or "You are rating too often. Please try again later.",
+				Type  = "warning",
+				Duration = 4,
+			})
+			return
+		end
 		self:Notify({
-			Title = ok and "Feedback Sent" or "Failed to Send",
-			Text  = ok and "Thanks for rating the UI!" or tostring(err),
-			Type  = ok and "success" or "error",
+			Title = "Failed to Send",
+			Text  = serverMessage or ("Request failed (HTTP " .. tostring(status) .. ")."),
+			Type  = "error",
 			Duration = 3,
 		})
 	end)
