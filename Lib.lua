@@ -9615,23 +9615,9 @@ function KronosUI:SendFeedbackWebhook(webhookUrl, stars, message, opts,cloudServ
 
 	LastFeedbackWebhookAt = now
 
-	local starDisplay = string.rep("\226\152\133", stars) .. string.rep("\226\152\134", 5 - stars)
-	local embedColor = opts.Color or 0xFFC440
-	local hasInvite = cleanMessage:find("%[invite removed%]") or cleanMessage:find("%[link removed%]")
-
 	local body = HttpService:JSONEncode({
-		allowed_mentions = { parse = {} },
-		HWID = GetExecutorHwid(),
-		embeds = {{
-			title = opts.Title or "New UI Feedback",
-			description = starDisplay .. "  (" .. stars .. "/5)",
-			color = embedColor,
-			fields = {
-				{ name = "Message", value = cleanMessage, inline = false },
-			},
-			footer = { text = hasInvite and "Invites removed" or "Submitted anonymously" },
-			timestamp = DateTime.now():ToIsoDate(),
-		}},
+		Rating = stars,
+		Message = cleanMessage,
 	})
 
 	local headers = {
@@ -9642,7 +9628,12 @@ function KronosUI:SendFeedbackWebhook(webhookUrl, stars, message, opts,cloudServ
 		headers["X-KronosUI-Identity"] = cloudService.Identity
 	end
 
-	headers["X-KronosUI-Script"] = KronosUI._CloudServiceScript or "default"
+	headers["X-KronosUI-Script"] = KronosUI._CloudServiceScript or "Kronos"
+
+	local hwid = GetExecutorHwid()
+	if hwid ~= nil and hwid ~= "" and hwid ~= "Unavailable" then
+		headers["X-KronosUI-HWID"] = tostring(hwid)
+	end
 
 	task.spawn(function()
 		local ok, res = pcall(httpRequest, {
