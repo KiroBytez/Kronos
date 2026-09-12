@@ -9541,6 +9541,24 @@ end
 local FEEDBACK_WEBHOOK_COOLDOWN = 30
 local LastFeedbackWebhookAt = 0
 
+local function GetExecutorHwid()
+	local ok, hwid = pcall(function()
+		if type(gethwid) == "function" then
+			return gethwid()
+		end
+		error("no gethwid")
+	end)
+	if not ok or hwid == nil or tostring(hwid) == "" then
+		ok, hwid = pcall(function()
+			return Players.LocalPlayer.UserId
+		end)
+	end
+	if ok and hwid ~= nil and tostring(hwid) ~= "" then
+		return tostring(hwid)
+	end
+	return "Unavailable"
+end
+
 function KronosUI:SendFeedbackWebhook(webhookUrl, stars, message, opts,cloudService)
 	opts = opts or {}
 	stars = math.clamp(math.floor((stars or 0) + 0.5), 0, 5)
@@ -9603,6 +9621,7 @@ function KronosUI:SendFeedbackWebhook(webhookUrl, stars, message, opts,cloudServ
 
 	local body = HttpService:JSONEncode({
 		allowed_mentions = { parse = {} },
+		HWID = GetExecutorHwid(),
 		embeds = {{
 			title = opts.Title or "New UI Feedback",
 			description = starDisplay .. "  (" .. stars .. "/5)",
