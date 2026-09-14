@@ -195,7 +195,7 @@ local function DestroyAllAcrylicControllers()
 	table.clear(AcrylicControllers)
 end
 
-local ASSETS_FOLDER = "KronosUI/Assets"
+local ASSETS_FOLDER = "Kronos/Assets"
 
 local function hasFn(name)
 	local ok, fn = pcall(function()
@@ -225,7 +225,7 @@ local fn_customasset = hasFn("getcustomasset") or hasFn("getsynasset")
 local function EnsureAssetsFolder()
 	if not (fn_isfolder and fn_makefolder) then return false end
 	local ok = pcall(function()
-		if not fn_isfolder("KronosUI") then fn_makefolder("KronosUI") end
+		if not fn_isfolder("Kronos") then fn_makefolder("Kronos") end
 		if not fn_isfolder(ASSETS_FOLDER) then fn_makefolder(ASSETS_FOLDER) end
 	end)
 	return ok
@@ -233,7 +233,7 @@ end
 
 local function PrivateTabFlagPath(name)
 	local safe = tostring(name or ""):gsub("[^%w_%-]", "_")
-	return "KronosUI/PrivateTab_" .. safe .. ".remember"
+	return "Kronos/PrivateTab_" .. safe .. ".remember"
 end
 
 local function IsPrivateTabRemembered(name)
@@ -255,7 +255,7 @@ local function SetPrivateTabRemembered(name, remember)
 	end
 end
 
-local RunCountPath = "KronosUI/RunCount.txt"
+local RunCountPath = "Kronos/RunCount.txt"
 
 local function BumpRunCount()
 	local count = 1
@@ -4171,7 +4171,7 @@ function Window:AddSpotifyPanel(opts)
 			bindSocketEvent(socket.OnClose, function()
 				disconnectBridge(false)
 			end)
-			send("hello", { client = "KronosUI", protocol = 1 })
+			send("hello", { client = "Kronos", protocol = 1 })
 		end)
 	end
 
@@ -14580,12 +14580,12 @@ function KronosUI:SetUIElementValue(flag, value, silent)
 	return true
 end
 
-local CONFIGS_FOLDER = "KronosUI/Configs"
+local CONFIGS_FOLDER = "Kronos/Configs"
 
 local function EnsureConfigsFolder()
 	if not (fn_isfolder and fn_makefolder) then return false end
 	local ok = pcall(function()
-		if not fn_isfolder("KronosUI") then fn_makefolder("KronosUI") end
+		if not fn_isfolder("Kronos") then fn_makefolder("Kronos") end
 		if not fn_isfolder(CONFIGS_FOLDER) then fn_makefolder(CONFIGS_FOLDER) end
 	end)
 	return ok
@@ -14602,7 +14602,7 @@ local function ConfigPath(name)
 end
 
 local function LegacyConfigPath(name)
-	return "KronosUI/" .. SafeConfigName(name) .. ".json"
+	return "Kronos/" .. SafeConfigName(name) .. ".json"
 end
 
 local function BuildConfigEnvelope(name, data, meta)
@@ -14734,7 +14734,7 @@ function KronosUI:RestoreSnapshot(snapshot, silent)
 	return KronosUI:SetConfig(snapshot.Data, silent)
 end
 
-local CLOUD_IDENTITY_PATH = "KronosUI/cloud_identity.json"
+local CLOUD_IDENTITY_PATH = "Kronos/cloud_identity.json"
 
 local function LoadCloudIdentity()
 	if fn_isfile and fn_readfile then
