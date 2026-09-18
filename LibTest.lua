@@ -25,8 +25,8 @@
 
   All rights reserved.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-]]local a={cache={}::any}do do local function __modImpl()
+]]
+local a={cache={}::any}do do local function __modImpl()
 local b={
 Version="2.0",
 Flags={},
@@ -569,7 +569,7 @@ local p=Instance.new"UIListLayout"
 p.FillDirection=Enum.FillDirection.Horizontal
 p.Padding=UDim.new(0,6)p.Parent=o
 local q,r={},n or 0
-local s={}
+local s={frame=o}
 local function paint()
 for t,u in ipairs(q)do
 local v=t<=r
@@ -883,11 +883,11 @@ local b=a.a()
 
 b.Themes={
 Dark={
-Bg=Color3.fromRGB(5,7,12),Surface=Color3.fromRGB(12,16,26),
-Surface2=Color3.fromRGB(23,29,44),Text=Color3.fromRGB(255,255,255),
-Dim=Color3.fromRGB(142,150,171),Accent=Color3.fromRGB(91,140,255),
-Accent2=Color3.fromRGB(155,109,255),Success=Color3.fromRGB(52,211,153),
-Warn=Color3.fromRGB(251,191,36),Danger=Color3.fromRGB(248,113,113),
+Bg=Color3.fromRGB(8,5,6),Surface=Color3.fromRGB(16,10,11),
+Surface2=Color3.fromRGB(30,17,19),Text=Color3.fromRGB(255,242,242),
+Dim=Color3.fromRGB(150,130,130),Accent=Color3.fromRGB(178,34,34),
+Accent2=Color3.fromRGB(122,20,20),Success=Color3.fromRGB(52,211,153),
+Warn=Color3.fromRGB(251,191,36),Danger=Color3.fromRGB(255,90,90),
 },
 Midnight={
 Bg=Color3.fromRGB(3,4,8),Surface=Color3.fromRGB(8,11,18),
