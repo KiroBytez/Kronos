@@ -7443,10 +7443,9 @@ gq.BackgroundTransparency=1 gq.Parent=fx
 fa(gq,e9.Med,{BackgroundTransparency=0.55})
 local gr=Instance.new"CanvasGroup"gr.AnchorPoint=Vector2.new(0.5,0.5)
 
-local gs=fx.AbsoluteSize
-if gs.X<1 then gs=Vector2.new(1200,800)end
-local gt,gu=fB.AbsolutePosition,fB.AbsoluteSize
-gr.Position=UDim2.new(0,gt.X+gu.X/2-gs.X/2,0,gt.Y+gu.Y/2-gs.Y/2)
+
+
+gr.Position=UDim2.new(0.5,fB.Position.X.Offset,0.5,fB.Position.Y.Offset)
 gr.Size=UDim2.fromOffset(320,170)
 gr.BackgroundColor3=fv.Surface gr.BorderSizePixel=0 gr.GroupTransparency=1
 fc(gr,12)gr.Parent=gq
@@ -7454,12 +7453,12 @@ fd(gr,true)
 ff(gr,12)
 fk(gr,0.5,40)
 e8:_tag(gr,"BackgroundColor3","Surface")
-local gv=Instance.new"UIScale"gv.Scale=0.94 gv.Parent=gr
+local gs=Instance.new"UIScale"gs.Scale=0.94 gs.Parent=gr
 fa(gr,e9.Med,{GroupTransparency=0})
-fa(gv,e9.Spring,{Scale=1})
-local gw=false
+fa(gs,e9.Spring,{Scale=1})
+local gt=false
 local function close()
-if gw then return end gw=true
+if gt then return end gt=true
 e7.close(close)
 fa(gr,e9.Fast,{GroupTransparency=1})
 fa(gq,e9.Fast,{BackgroundTransparency=1})
@@ -7467,35 +7466,35 @@ task.delay(0.18,function()pcall(function()gq:Destroy()end)end)
 end
 e7.open(close)
 gq.MouseButton1Click:Connect(function()close()end)
-local gx=Instance.new"TextLabel"gx.BackgroundTransparency=1
-gx.Position=UDim2.new(0,16,0,14)gx.Size=UDim2.new(1,-32,0,20)
-gx.Font=Enum.Font.GothamBold gx.TextSize=15 gx.TextXAlignment=0
-e8:_tag(gx,"TextColor3","Text")gx.Text=gp.Title or"Confirm"gx.Parent=gr
-local gy=Instance.new"TextLabel"gy.BackgroundTransparency=1
-gy.Position=UDim2.new(0,16,0,38)gy.Size=UDim2.new(1,-32,0,60)
-gy.Font=Enum.Font.Gotham gy.TextSize=12 gx.TextXAlignment=0
-gy.TextXAlignment=0 gy.TextYAlignment=0 gy.TextWrapped=true
-e8:_tag(gy,"TextColor3","Dim")gy.Text=gp.Content or""gy.Parent=gr
-local gz=Instance.new"Frame"gz.BackgroundTransparency=1
-gz.AnchorPoint=Vector2.new(0,1)gz.Position=UDim2.new(0,0,1,-12)
-gz.Size=UDim2.new(1,0,0,34)gz.Parent=gr
-local gA=Instance.new"UIListLayout"gA.FillDirection=Enum.FillDirection.Horizontal
-gA.HorizontalAlignment=Enum.HorizontalAlignment.Right gA.Padding=UDim.new(0,8)gA.Parent=gz
-fe(gz,0,0,12,12)
-for gB,gC in ipairs(gp.Buttons or{{Title="OK"}})do
-local gD=Instance.new"TextButton"gD.Text=""
-gD.Size=UDim2.new(0,96,0,30)gD.BackgroundColor3=fv.Surface2
-gD.BorderSizePixel=0 fc(gD,7)gD.AutoButtonColor=false gD.Parent=gz
-fd(gD,true)
-e8:_tag(gD,"BackgroundColor3","Surface2")
-local gE=Instance.new"TextLabel"gE.BackgroundTransparency=1 gE.Size=UDim2.fromScale(1,1)
-gE.Font=Enum.Font.GothamBold gE.TextSize=12
-e8:_tag(gE,"TextColor3","Text")gE.Text=gC.Title gE.Parent=gD
-local gF=Instance.new"UIScale"gF.Parent=gD
-gD.MouseButton1Down:Connect(function()fa(gF,e9.Hover,{Scale=0.95})end)
-gD.MouseButton1Up:Connect(function()fa(gF,e9.Spring,{Scale=1})end)
-gD.MouseButton1Click:Connect(function()
-close()fb(gC.Callback)
+local gu=Instance.new"TextLabel"gu.BackgroundTransparency=1
+gu.Position=UDim2.new(0,16,0,14)gu.Size=UDim2.new(1,-32,0,20)
+gu.Font=Enum.Font.GothamBold gu.TextSize=15 gu.TextXAlignment=0
+e8:_tag(gu,"TextColor3","Text")gu.Text=gp.Title or"Confirm"gu.Parent=gr
+local gv=Instance.new"TextLabel"gv.BackgroundTransparency=1
+gv.Position=UDim2.new(0,16,0,38)gv.Size=UDim2.new(1,-32,0,60)
+gv.Font=Enum.Font.Gotham gv.TextSize=12 gu.TextXAlignment=0
+gv.TextXAlignment=0 gv.TextYAlignment=0 gv.TextWrapped=true
+e8:_tag(gv,"TextColor3","Dim")gv.Text=gp.Content or""gv.Parent=gr
+local gw=Instance.new"Frame"gw.BackgroundTransparency=1
+gw.AnchorPoint=Vector2.new(0,1)gw.Position=UDim2.new(0,0,1,-12)
+gw.Size=UDim2.new(1,0,0,34)gw.Parent=gr
+local gx=Instance.new"UIListLayout"gx.FillDirection=Enum.FillDirection.Horizontal
+gx.HorizontalAlignment=Enum.HorizontalAlignment.Right gx.Padding=UDim.new(0,8)gx.Parent=gw
+fe(gw,0,0,12,12)
+for gy,gz in ipairs(gp.Buttons or{{Title="OK"}})do
+local gA=Instance.new"TextButton"gA.Text=""
+gA.Size=UDim2.new(0,96,0,30)gA.BackgroundColor3=fv.Surface2
+gA.BorderSizePixel=0 fc(gA,7)gA.AutoButtonColor=false gA.Parent=gw
+fd(gA,true)
+e8:_tag(gA,"BackgroundColor3","Surface2")
+local gB=Instance.new"TextLabel"gB.BackgroundTransparency=1 gB.Size=UDim2.fromScale(1,1)
+gB.Font=Enum.Font.GothamBold gB.TextSize=12
+e8:_tag(gB,"TextColor3","Text")gB.Text=gz.Title gB.Parent=gA
+local gC=Instance.new"UIScale"gC.Parent=gA
+gA.MouseButton1Down:Connect(function()fa(gC,e9.Hover,{Scale=0.95})end)
+gA.MouseButton1Up:Connect(function()fa(gC,e9.Spring,{Scale=1})end)
+gA.MouseButton1Click:Connect(function()
+close()fb(gz.Callback)
 end)
 end
 return{Close=close}
@@ -8474,132 +8473,8 @@ end)
 af.paintFonts(fx)
 aa._lastWindow=f9
 return f9
-end end function a._():typeof(__modImpl())local aa=a.cache._ if not aa then aa={c=__modImpl()}a.cache._=aa end return aa.c end end do local function __modImpl()
+end end function a._():typeof(__modImpl())local aa=a.cache._ if not aa then aa={c=__modImpl()}a.cache._=aa end return aa.c end end end
 
-
-
-
-return function(aa)
-task.defer(function()
-local ab=aa:CreateWindow{
-Title="Kronos",SubTitle="premiere",Theme="Kronos",
-ToggleKey=Enum.KeyCode.RightControl,Acrylic=true,Blur=16,
-}
-local ac=ab:Tab{Title="Home",Icon="dashboard"}
-ac:Banner{Title="Welcome to Kronos",Icon="ghost",
-Content="v2.0 modular build: same clean hub, new engine underneath.",
-Button="Notes",Callback=function()
-ab:Dialog{Title="v2.0 notes",
-Content="WindUI-style modules, stealth names, exclusive layers. Nothing else moved.",
-Buttons={{Title="Nice"}}}
-end}
-ac:StatsRow{Stats={
-{Label="Version",Value="v2.0",Accent=true},
-{Label="Status",Value="Updated"},
-{Label="Key",Value="None"},
-}}
-ac:Section"Featured"
-ac:Cards{Cards={
-{Title="Aim Suite",Desc="Silent aim, FOV circle, smoothing presets.",Icon="crosshair",
-Callback=function()print"launch aim"end},
-{Title="ESP+",Desc="Boxes, chams, tracers with team check.",Icon="eye",
-Callback=function()print"launch esp"end},
-}}
-ac:Section"Recently used"
-ac:Recent{Limit=4}
-ac:Section"Quick actions"
-ac:Button{Title="Open command palette",Description="Same as Ctrl+K",
-Callback=function()ab:TogglePalette(true)end}
-ac:Button{Title="Copy loader",Description="Share Kronos with a friend",Callback=function()
-pcall(function()if setclipboard then setclipboard"loadstring(game:HttpGet('YOUR_URL'))()"end end)
-ab:Notify{Title="Copied",Content="Loader copied to clipboard.",Duration=2}
-end}
-ac:Section"Session"
-ac:Status{Title="Executor",State="online",Description="Heartbeat stable"}
-local ad=ac:Skeleton{Lines=3}
-task.delay(3,function()
-pcall(function()ad:Destroy()end)
-ab:Notify{Title="Feed loaded",Content="Latest scripts are in.",Duration=2}
-end)
-ac:Label"Made with Kronos UI | operate responsibly."
-local ae=ab:Tab{Title="Main",Icon="swords"}
-ae:Section"Combat"
-ae:Toggle{Title="Enable Aimbot",Description="Drag the knob or click",Value=false,Flag="Aimbot",
-Callback=function(af)print("aimbot",af)end}
-ae:Slider{Title="FOV",Min=30,Max=300,Step=1,Value=120,Flag="FOV"}
-ae:Slider{Title="Smoothness",Min=0,Max=1,Step=0.01,Rounding=2,Value=0.35,Flag="Smooth"}
-ae:Dropdown{Title="Target Part",Values={"Head","Torso","Arms","Legs","Random"},Value="Head",Flag="Part"}
-ae:Button{Title="Snap to target",Callback=function()
-ab:Notify{Title="Kronos",Content="Snapped",Duration=2}
-end}
-ae:Divider"feedback"
-local af=ae:Progress{Title="Match progress",Value=35}
-task.delay(2,function()pcall(function()af:Set(75)end)end)
-local eY=ae:Log{Title="Console",Lines={"hub loaded"}}
-eY:Add"aimbot armed"
-local e_=ab:Tab{Title="Visuals",Icon="eye"}
-e_:Section"ESP"
-local e6
-local e7
-local e8
-e6=ab:EspPreview{Title="Chams preview",
-Accent=Color3.fromRGB(110,140,255),Mode="Chams",
-OnClose=function()if e7 then e7:Set(false,true)end end}
-e8=e_:RigPreview{Title="Rig Preview",Mode="Chams"}
-e7=e_:Toggle{Title="Show preview",Description="Pops out right, live rig",Value=false,
-Callback=function(e9)e6:SetVisible(e9)end}
-e_:Toggle{Title="Box ESP",Value=true,Flag="BoxESP",
-Callback=function(e9)e6:SetBox(e9)e8:SetBox(e9)end}
-e_:Colorpicker{Title="ESP Color",Value=Color3.fromRGB(110,140,255),Flag="ESPColor",
-Callback=function(e9)e6:SetAccent(e9)e8:SetAccent(e9)end}
-e_:Dropdown{Title="Preview style",
-Values={"Chams","Box","Outline","HP bar","Name","Ghost","Noob","Solid"},Value="Chams",
-Callback=function(e9)e6:SetMode(e9)e8:SetMode(e9)end}
-e_:Slider{Title="Preview health",Min=0,Max=100,Step=1,Value=100,
-Callback=function(e9)e6:SetHealth(e9)e8:SetHealth(e9)end}
-e_:Dropdown{Title="Chams",Values={"Enemies","Team","NPCs","Chests","Ores"},
-Multi=true,Value={"Enemies"},Flag="Chams"}
-local e9=ab:Tab{Title="Settings",Icon="settings"}
-e9:Profile{Name="kronos_user",Tag="Premium | keyless"}
-e9:Section"Interface"
-e9:Dropdown{Title="Theme",
-Values={"Kronos","Dark","Midnight","Light","Rose","Indigo","Forest","Amber","Ocean","Crimson","Ghost","Cyberpunk","Terminal","Discord","Mono"},
-Value="Kronos",Callback=function(fa)ab:SetTheme(fa)end}
-e9:Colorpicker{Title="Accent color",Description="Repaints every accent live",
-Value=Color3.fromRGB(232,236,245),
-Callback=function(fa)ab:SetAccent(fa)end}
-e9:Dropdown{Title="Font",Description="Bigger, bolder, yours",
-Values={"Gotham+","Gotham","Builder","Arimo","Source","Cartoon","Arcade","SciFi","Fantasy","Highway"},
-Value="Gotham+",Callback=function(fa)aa:SetFontPack(fa)end}
-e9:Slider{Title="UI scale",Min=70,Max=125,Step=5,Value=100,
-Callback=function(fa)ab:SetScale(fa/100)end}
-e9:Toggle{Title="Compact mode",Description="Smaller card, tighter lists",Value=false,
-Callback=function(fa)ab:SetCompact(fa)end}
-e9:Toggle{Title="Focus mode",Description="Hide sidebar, just content",Value=false,
-Callback=function(fa)ab:SetFocus(fa)end}
-e9:Toggle{Title="Acrylic",Description="Card glass",Value=true,
-Callback=function(fa)ab:ToggleAcrylic(fa)end}
-e9:Toggle{Title="Transparency",Description="Ghost mode",Value=false,
-Callback=function(fa)ab:ToggleTransparency(fa)end}
-e9:Toggle{Title="Background",Description="Dim + tint behind the hub",Value=true,
-Callback=function(fa)ab:SetBackdrop(fa)end}
-e9:Toggle{Title="UI Sounds",Description="Clicks, toggles, notifications",Value=true,
-Callback=function(fa)aa.Sound.Enabled=fa end}
-e9:Keybind{Title="Panic key",Value=Enum.KeyCode.F,
-Callback=function()ab:SetVisible(false)end}
-e9:Keybind{Title="Hide UI key",Description="Rebinds the hide hotkey",
-Value=Enum.KeyCode.RightControl,
-Callback=function(fa)ab:SetToggleKey(fa)end}
-e9:Button{Title="Keybinds panel",Description="Slide-over, click a row to rebind",
-Callback=function()ab:ToggleKeybindList()end}
-e9:Button{Title="Command palette",Description="Same as Ctrl+K",
-Callback=function()ab:TogglePalette(true)end}
-e9:Section"Profiles"
-e9:Profiles{Title="My profiles"}
-ab:Notify{Title="Kronos loaded",Content="Ctrl+K palette | RightControl hide",Duration=5}
-aa:RefreshFonts()
-end)
-end end function a.aa():typeof(__modImpl())local aa=a.cache.aa if not aa then aa={c=__modImpl()}a.cache.aa=aa end return aa.c end end end
 
 
 
@@ -8673,7 +8548,6 @@ end
 e6.CreateWindow=e_
 
 
-local e7=a.aa()
-e7(e6)
+
 
 return e6
