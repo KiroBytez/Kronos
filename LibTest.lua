@@ -793,62 +793,66 @@ end
 
 local e={}
 local f={}
+local g={}
 
-local function LoadIconSource(g)
-if e[g]~=nil then
-return e[g]or nil
+local h
+
+local function LoadIconSource(i)
+if e[i]~=nil then
+return e[i]or nil
 end
 
-if f[g]then
-local h=os.clock()
-while f[g]and os.clock()-h<10 do
+if f[i]then
+local j=os.clock()
+while f[i]and os.clock()-j<10 do
 task.wait()
 end
-return e[g]or nil
+return e[i]or nil
 end
 
-local h=d[g]
-if not h then
-e[g]=false
+local j=d[i]
+if not j then
+e[i]=false
 return nil
 end
 
-f[g]=true
-local i,j=pcall(function()
-return loadstring(fetchText(h))()
+f[i]=true
+local k,l=pcall(function()
+return loadstring(fetchText(j))()
 end)
-f[g]=nil
+f[i]=nil
 
-if i and type(j)=="table"then
-e[g]=j
-return j
+if k and type(l)=="table"then
+e[i]=l
+if h then task.spawn(h)end
+return l
 end
 
-e[g]=false
+e[i]=false
 return nil
 end
 
-local function GetIcon(g,h)
-h=h or"Lucide"
-if type(h)=="string"then
-for i,j in pairs(d)do
-if string.lower(i)==string.lower(h)then h=i break end
+local function GetIcon(i,j)
+j=j or"Lucide"
+if type(j)=="string"then
+for k,l in pairs(d)do
+if string.lower(k)==string.lower(j)then j=k break end
 end
 end
-local i=LoadIconSource(h)
-local j=i and i[g]
-if not j then return""end
-return"rbxassetid://"..tostring(j)
+local k=LoadIconSource(j)
+local l=k and k[i]
+if not l then return""end
+return"rbxassetid://"..tostring(l)
 end
 
-local function PreloadIcons(g)
-for h,i in ipairs(g or{"Lucide"})do
-task.spawn(LoadIconSource,i)
+local function PreloadIcons(i)
+for j,k in ipairs(i or{"Lucide"})do
+task.spawn(LoadIconSource,k)
 end
 return true
 end
 
-local g={
+local i={
 main="dashboard",combat="swords",visuals="eye",esp="eye",
 aim="crosshair",aimbot="crosshair",movement="move",player="user",
 world="globe",misc="box",config="save",profiles="save",
@@ -867,59 +871,82 @@ if b.Theme and b.Theme.Dim then return b.Theme.Dim end
 return Color3.fromRGB(142,150,171)
 end
 
-local function resolveAlias(h)
-for i=1,4 do
-local j=g[h]
-if not j or j==h then break end
-h=j
+local function resolveAlias(j)
+for k=1,4 do
+local l=i[j]
+if not l or l==j then break end
+j=l
 end
-return h
-end
-
-local function ResolveIcon(h)
-if h==nil or h==""then return""end
-if type(h)~="string"then return h end
-if h:match"^%a[%w%+%-%.]*://"then return h end
-if h:match"^%d+$"then return"rbxassetid://"..h end
-local i,j=h:match"^(%a[%w%-]*):(.+)$"
-if i and j then
-return GetIcon(resolveAlias(string.lower(j)),i)
-end
-return GetIcon(resolveAlias(string.lower(h)),"Lucide")
+return j
 end
 
-local function makeIcon(h,i,j)
-local k=ResolveIcon(h)
-j=j or defaultColor()
-if k and k~=""then
-local l=Instance.new"ImageLabel"
-l.BackgroundTransparency=1
-l.Size=UDim2.fromOffset(i,i)
-l.Image=k
-l.ImageColor3=j
-l.ScaleType=Enum.ScaleType.Fit
-return l
+local function ResolveIcon(j)
+if j==nil or j==""then return""end
+if type(j)~="string"then return j end
+if j:match"^%a[%w%+%-%.]*://"then return j end
+if j:match"^%d+$"then return"rbxassetid://"..j end
+local k,l=j:match"^(%a[%w%-]*):(.+)$"
+if k and l then
+return GetIcon(resolveAlias(string.lower(l)),k)
 end
-local l=Instance.new"TextLabel"
-l.BackgroundTransparency=1
-l.Size=UDim2.fromOffset(i,i)
-l.Font=Enum.Font.GothamBold
-l.TextSize=math.clamp(i-2,10,16)
-l.TextColor3=j
-l.Text=string.upper(string.sub(h or"?",1,1))
-return l
+return GetIcon(resolveAlias(string.lower(j)),"Lucide")
+end
+
+local function makeIcon(j,k,l)
+local m=ResolveIcon(j)
+l=l or defaultColor()
+local n=Instance.new"ImageLabel"
+n.BackgroundTransparency=1
+n.Size=UDim2.fromOffset(k,k)
+n.Image=(m and m~="")and m or""
+n.ImageColor3=l
+n.ScaleType=Enum.ScaleType.Fit
+if not m or m==""then
+
+local o=Instance.new"TextLabel"
+o.Name="_letter"
+o.BackgroundTransparency=1
+o.Size=UDim2.fromScale(1,1)
+o.Font=Enum.Font.GothamBold
+o.TextSize=math.clamp(k-2,10,16)
+o.TextColor3=l
+o.Text=string.upper(string.sub(j or"?",1,1))
+o.Parent=n
+table.insert(g,{img=n,name=j})
+end
+return n
+end
+
+h=function()
+for j=#g,1,-1 do
+local k=g[j]
+if not k.img or not k.img.Parent then
+table.remove(g,j)
+else
+local l=ResolveIcon(k.name)
+if l and l~=""then
+pcall(function()
+k.img.Image=l
+local m=k.img:FindFirstChild"_letter"
+if m then m:Destroy()end
+end)
+table.remove(g,j)
+end
+end
+end
 end
 
 return{
 GetIcon=GetIcon,
+LoadIconSource=LoadIconSource,
 PreloadIcons=PreloadIcons,
-IconAlias=g,
+IconAlias=i,
 makeIcon=makeIcon,
 resolveIcon=ResolveIcon,
 
-Icons=setmetatable({},{__index=function(h,i)
-local j=LoadIconSource"Lucide"
-return j and j[i]or nil
+Icons=setmetatable({},{__index=function(j,k)
+local l=LoadIconSource"Lucide"
+return l and l[k]or nil
 end}),
 }end function a.f():typeof(__modImpl())local b=a.cache.f if not b then b={c=__modImpl()}a.cache.f=b end return b.c end end do local function __modImpl()
 
@@ -8568,14 +8595,35 @@ end
 
 
 
+
 local function syncPill()
-local fg=e2.Parent
-if e6 and e6.Parent and fg and fg.Parent then
-local fh,fi,fj=pcall(function()
-return e6.AbsolutePosition.Y,fg.AbsolutePosition.Y
+if not e6.Visible then
+e2.Visible=false
+return
+end
+e2.Visible=true
+local fg={}
+for fh,fi in ipairs(e1:GetChildren())do
+if fi:IsA"GuiObject"and fi.Visible and fi.AbsoluteSize.Y>0 then
+table.insert(fg,fi)
+end
+end
+table.sort(fg,function(fh,fi)return fh.LayoutOrder<fi.LayoutOrder end)
+local fh=-2
+for fi,fj in ipairs(fg)do
+if fj==e6 then
+eH(e2,ez.Med,{Position=UDim2.new(0,0,0,fh)})
+return
+end
+fh=fh+fj.AbsoluteSize.Y+4
+end
+local fi=e2.Parent
+if e6.Parent and fi and fi.Parent and e6.AbsoluteSize.Y>0 then
+local fj,fk,fl=pcall(function()
+return e6.AbsolutePosition.Y,fi.AbsolutePosition.Y
 end)
-if fh and fi and fj and e6.AbsoluteSize.Y>0 then
-eH(e2,ez.Med,{Position=UDim2.new(0,0,0,fi-fj-2)})
+if fj and fk and fl then
+eH(e2,ez.Med,{Position=UDim2.new(0,0,0,fk-fl-2)})
 return
 end
 end
@@ -10406,34 +10454,39 @@ end
 local fJ=false
 local fK
 
-local function setSending(fL)
-fJ=fL
-fv.Image=eJ(fL and"square"or"send")
+
+
+
+local fL={}
+
+local function setSending(fM)
+fJ=fM
+fv.Image=eJ(fM and"square"or"send")
 end
 
-local function trySend(fL)
-local fM=fL or ft.Text
-if fJ or fM==""then return end
+local function trySend(fM)
+local fN=fM or ft.Text
+if fJ or fN==""then return end
 setSending(true)
-if not fL then ft.Text=""end
-fK=fM
-local fN=addMessage("user",fM)
+if not fM then ft.Text=""end
+fK=fN
+local fO=addMessage("user",fN)
 if e_.OnSend then
-local fO=false
+local fP=false
 
 task.spawn(function()
 
-if fN and fN>0 then task.wait(fN)end
-local fP,fQ=pcall(e_.OnSend,api,fM)
-if not fP then
-addMessage("assistant","Error: "..tostring(fQ))
+if fO and fO>0 then task.wait(fO)end
+local fQ,fR=pcall(e_.OnSend,fL,fN)
+if not fQ then
+addMessage("assistant","Error: "..tostring(fR))
 end
-fO=true
+fP=true
 setSending(false)
 end)
 
 task.delay(e_.SendTimeout or 30,function()
-if not fO and fJ then
+if not fP and fJ then
 hideTyping()
 addMessage("assistant","Still working... (press stop to cancel)")
 end
@@ -10446,40 +10499,40 @@ end
 local function tryRegenerate()
 if fJ or not fK then return end
 if e_.OnRegenerate then
-task.spawn(e_.OnRegenerate,api,fK)
+task.spawn(e_.OnRegenerate,fL,fK)
 else
 trySend(fK)
 end
 end
 
-local fL
+local fM
 
 local function openChat()
 if eZ._active==e2 then return end
 if eZ._active and not eZ._active.Hidden then
-fL=eZ._active
+fM=eZ._active
 end
 eZ._activateTab(e2,true)
 end
 
 local function closeChat()
 if eZ._active~=e2 then return end
-if fL and not fL.Hidden then
-eZ._activateTab(fL,true)
+if fM and not fM.Hidden then
+eZ._activateTab(fM,true)
 elseif eZ._tabs[1]and eZ._tabs[1]~=e2 then
 eZ._activateTab(eZ._tabs[1],true)
 end
 end
 
-table.insert(eZ._tabChangeListeners,function(fM)
-if e_.OnToggle then task.spawn(e_.OnToggle,fM==e2)end
+table.insert(eZ._tabChangeListeners,function(fN)
+if e_.OnToggle then task.spawn(e_.OnToggle,fN==e2)end
 end)
 
 local function clearChat()
 hideTyping()
-for fM,fN in ipairs(fw:GetChildren())do
-if fN.Name=="MessageRow"or fN.Name=="ToolCall"then
-fN:Destroy()
+for fN,fO in ipairs(fw:GetChildren())do
+if fO.Name=="MessageRow"or fO.Name=="ToolCall"then
+fO:Destroy()
 end
 end
 table.clear(fC)
@@ -10488,20 +10541,20 @@ end
 
 e1(fu.MouseButton1Click:Connect(function()
 if fJ then
-if e_.OnStop then task.spawn(e_.OnStop,api)end
+if e_.OnStop then task.spawn(e_.OnStop,fL)end
 else
 trySend()
 end
 end))
-e1(ft.FocusLost:Connect(function(fM)
-if fM then trySend()end
+e1(ft.FocusLost:Connect(function(fN)
+if fN then trySend()end
 end))
 e1(fm.MouseButton1Click:Connect(closeChat))
 
 e1(fh.MouseButton1Click:Connect(function()
-local fM=ex.hasFn"setclipboard"
-if not fM or#fC==0 then return end
-pcall(fM,table.concat(fC,"\n\n"))
+local fN=ex.hasFn"setclipboard"
+if not fN or#fC==0 then return end
+pcall(fN,table.concat(fC,"\n\n"))
 ez(fi,{ImageColor3=Color3.fromRGB(120,220,140)},0.1)
 task.delay(0.4,function()
 if fi.Parent then
@@ -10519,9 +10572,7 @@ clearChat()
 fK=nil
 end))
 
-local fM={}
-
-fM={
+fL={
 Instance=e6,
 Tab=e2,
 Open=openChat,
@@ -10545,7 +10596,7 @@ eZ._dockAdd("AI",e_.Icon or"bot",
 function()eZ._activateTab(e2,true)end,e2)
 end
 
-return fM
+return fL
 end end function a.au():typeof(__modImpl())local aa=a.cache.au if not aa then aa={c=__modImpl()}a.cache.au=aa end return aa.c end end do local function __modImpl()
 
 
@@ -14081,10 +14132,15 @@ local eH=a.ax()
 ab.claimUnload()
 
 local eI=aa
-eI.Build="r13"
+eI.Build="r14"
 
 eI.PreloadIcons=function(eJ,eK)
 return ac.PreloadIcons(eK)
+end
+
+
+eI.LoadIconSource=function(eJ,eK)
+return ac.LoadIconSource(eK)
 end
 eI.Themes=af.Themes
 eI.Icons=ac.Icons
