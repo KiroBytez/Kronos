@@ -4090,6 +4090,8 @@ bZ=math.clamp(bV.X+bW.X/2-bQ/2,10,math.max(10,bS.X-bQ-10))
 end
 end
 
+
+
 local b_=bg._popouts
 if b_ then
 for b0,b1 in ipairs(b_)do
@@ -4099,6 +4101,7 @@ local b3,b4=b2.AbsolutePosition,b2.AbsoluteSize
 if b4.X>0 and bZ<b3.X+b4.X+bT and bZ+bQ>b3.X
 and bY<b3.Y+b4.Y and bY+bX>b3.Y then
 bZ=b3.X+b4.X+bT
+bY=math.clamp(b3.Y,10,math.max(10,bS.Y-bX-10))
 end
 end
 end
@@ -8237,6 +8240,15 @@ SystemInfoGrid=a._(),
 Leaderboard=a.aa(),
 Changelog=a.ab(),
 CardGrid=a.ac(),
+
+AddChangelogEntry=a.ab(),
+AddTextbox=a.w(),
+Textbox=a.w(),
+AddConsole=a.s(),
+Console=a.s(),
+AddViewport=a.J(),
+Viewport=a.J(),
+AddLine=a.q(),
 }
 
 local ab=a.e()
@@ -8399,7 +8411,26 @@ eH(fh._icon,ez.Hover,{ImageColor3=aa.Theme.Dim})
 end
 end
 end
+
+
+
+local function syncPill()
+local fg=e2.Parent
+if e6 and e6.Parent and fg and fg.Parent then
+local fh,fi,fj=pcall(function()
+return e6.AbsolutePosition.Y,fg.AbsolutePosition.Y
+end)
+if fh and fi and fj and e6.AbsoluteSize.Y>0 then
+eH(e2,ez.Med,{Position=UDim2.new(0,0,0,fi-fj-2)})
+return
+end
+end
 eH(e2,ez.Med,{Position=UDim2.new(0,0,0,(e7-1)*38-2)})
+end
+syncPill()
+task.delay(0.2,function()
+if e6.Parent then syncPill()end
+end)
 if ff then
 fa.Position=UDim2.new(0,14,0,0)
 eH(fa,ez.Med,{Position=UDim2.new(0,0,0,0)})
@@ -8544,75 +8575,63 @@ eQ.attach(ff,fg)
 
 fd._subtabs={}
 fd.SelectedSubTab=nil
-local fh,fi
-local function selBtn(fj,fk)
-if fj.btn then
-eH(fj.btn,ez.Hover,{BackgroundTransparency=fk and 0.35 or 1})
-local fl=fj.btn:FindFirstChildOfClass"TextLabel"
-if fl then ae.tag(fl,"TextColor3",fk and"Text"or"Dim")end
+local fh
+
+
+
+local function selBtn(fi,fj)
+if fi.btn then
+local fk=fi.btn:FindFirstChildOfClass"TextLabel"
+if fk then ae.tag(fk,"TextColor3",fj and"Text"or"Dim")end
 end
-if fi and fj.btn and fj.btn.Parent and fa.Parent then
-pcall(function()
-
-
-local fl=fa.AbsolutePosition
-local fm,fn=fj.btn.AbsolutePosition,fj.btn.AbsoluteSize
-
-
-if fn.X<=0 or fn.Y<=0 then return end
-eH(fi,ez.Med,{
-Position=UDim2.new(0,fm.X-fl.X,0,fm.Y-fl.Y),
-Size=UDim2.new(0,math.max(24,fn.X),0,fn.Y),
-})
-end)
+if fi.ind then fi.ind.Visible=fj end
 end
-end
-local function selectSub(fj,fk)
-local fl=fd._subtabs
-if#fl==0 then return end
-local fm
-if type(fj)=="number"then
-fm=math.clamp(fj,1,#fl)
+local function selectSub(fi,fj)
+local fk=fd._subtabs
+if#fk==0 then return end
+local fl
+if type(fi)=="number"then
+fl=math.clamp(fi,1,#fk)
 else
-for fn,fo in ipairs(fl)do
-if fo.name==fj then fm=fn break end
+for fm,fn in ipairs(fk)do
+if fn.name==fi then fl=fm break end
 end
-fm=fm or 1
+fl=fl or 1
 end
-fd.SelectedSubTab=fl[fm].name
-for fn,fo in ipairs(fl)do
-local fp=fn==fm
-fo.holder.Visible=fp
-if fp then fc=fo.holder end
-selBtn(fo,fp)
+fd.SelectedSubTab=fk[fl].name
+for fm,fn in ipairs(fk)do
+local fo=fm==fl
+fn.holder.Visible=fo
+if fo then fc=fn.holder end
+selBtn(fn,fo)
 end
-if not fk then
+if not fj then
 ey:_sfx"Swap"
 ex.closeAny()
 end
 end
-fd.SelectSubTab=function(fj,fk)selectSub(fk)end
-fd.SelectSubTabByName=function(fj,fk)
-for fl,fm in ipairs(fd._subtabs)do
-if fm.name==fk then
-selectSub(fm.name)
-return{Name=fm.name}
+fd.SelectSubTab=function(fi,fj)selectSub(fj)end
+fd.SelectSubTabByName=function(fi,fj)
+for fk,fl in ipairs(fd._subtabs)do
+if fl.name==fj then
+selectSub(fl.name)
+return{Name=fl.name}
 end
 end
 return nil
 end
-fd.SubTab=function(fj,fk)
-fk=fk or{}
-if type(fk)=="string"then fk={Name=fk}end
-local fl=fk.Name or("Sub "..(#fd._subtabs+1))
+fd.SubTab=function(fi,fj)
+fj=fj or{}
+if type(fj)=="string"then fj={Name=fj}end
+local fk=fj.Name or("Sub "..(#fd._subtabs+1))
 if#fd._subtabs==0 then
 
 
 fa.ScrollingEnabled=false
 if fb and fb.Parent then pcall(function()fb:Destroy()end)end
 fd._pl=nil
-for fm,fn in ipairs(fa:GetChildren())do
-if fn:IsA"UIPadding"then pcall(function()fn:Destroy()end)end
+for fl,fm in ipairs(fa:GetChildren())do
+if fm:IsA"UIPadding"then pcall(function()fm:Destroy()end)end
 end
 if fb and fb.Parent then pcall(function()fb:Destroy()end)end
 fd._pl=nil
@@ -8625,63 +8644,51 @@ fh.ScrollBarThickness=0
 fh.AutomaticCanvasSize=Enum.AutomaticSize.X
 fh.CanvasSize=UDim2.new(0,0,0,0)
 fh.Parent=fa
-local fm=Instance.new"UIListLayout"
-fm.FillDirection=Enum.FillDirection.Horizontal
-fm.VerticalAlignment=Enum.VerticalAlignment.Center
-fm.Padding=UDim.new(0,6)fm.Parent=fh
-fi=Instance.new"Frame"
-fi.Name="_subind"
-fi.Size=UDim2.new(0,24,0,28)fi.Position=UDim2.new(0,2,0,5)
-fi.BackgroundColor3=eZ.Surface2 fi.BorderSizePixel=0
-fi.ZIndex=0
-eJ(fi,8)fi.Parent=fa
-eK(fi,true)
-ae.tag(fi,"BackgroundColor3","Surface2")
-
-fh:GetPropertyChangedSignal"CanvasPosition":Connect(function()
-if fd.SelectedSubTab then selectSub(fd.SelectedSubTab,true)end
-end)
-
-
-local function resync()
-if fd.SelectedSubTab then selectSub(fd.SelectedSubTab,true)end
+local fl=Instance.new"UIListLayout"
+fl.FillDirection=Enum.FillDirection.Horizontal
+fl.VerticalAlignment=Enum.VerticalAlignment.Center
+fl.Padding=UDim.new(0,6)fl.Parent=fh
 end
-fa:GetPropertyChangedSignal"AbsolutePosition":Connect(resync)
-fa:GetPropertyChangedSignal"AbsoluteSize":Connect(resync)
-task.delay(0.1,resync)
-task.delay(0.3,resync)
-end
-local fm=Instance.new"ScrollingFrame"
-fm.Name="_subbody"
-fm.Position=UDim2.new(0,0,0,44)fm.Size=UDim2.new(1,0,1,-44)
-fm.BackgroundTransparency=1 fm.BorderSizePixel=0
-fm.ScrollBarThickness=3 fm.CanvasSize=UDim2.new(0,0,0,0)
-fm.AutomaticCanvasSize=Enum.AutomaticSize.Y
-fm.Visible=false fm.Parent=fa
-ae.tag(fm,"ScrollBarImageColor3","Surface2")
-local fn=Instance.new"UIListLayout"fn.Padding=UDim.new(0,8)
-fn.SortOrder=Enum.SortOrder.LayoutOrder fn.Parent=fm
-eL(fm,2,8,2,6)
-local fo=Instance.new"TextButton"fo.Text=""
-fo.Size=UDim2.new(0,0,0,30)fo.AutomaticSize=Enum.AutomaticSize.X
-fo.BackgroundColor3=eZ.Surface2 fo.BackgroundTransparency=1
-fo.BorderSizePixel=0 eJ(fo,8)fo.AutoButtonColor=false fo.Parent=fh
-local fp=Instance.new"UIPadding"
-fp.PaddingLeft=UDim.new(0,12)fp.PaddingRight=UDim.new(0,12)
-fp.Parent=fo
-local fq=eN(fk.Icon or fl,14,eZ.Dim)
-fq.AnchorPoint=Vector2.new(0,0.5)fq.Position=UDim2.new(0,0,0.5,0)
-fq.Parent=fo
-if fq:IsA"TextLabel"then fq.Size=UDim2.new(0,14,0,14)end
-local fr=Instance.new"TextLabel"fr.BackgroundTransparency=1
-fr.Position=UDim2.new(0,20,0,0)fr.Size=UDim2.new(0,0,1,0)
-fr.AutomaticSize=Enum.AutomaticSize.X
-fr.Font=Enum.Font.GothamMedium fr.TextSize=12 fr.TextXAlignment=0
-fr.TextTruncate=Enum.TextTruncate.AtEnd fr.Text=fl fr.Parent=fo
-ae.tag(fr,"TextColor3","Dim")
-local fs={name=fl,btn=fo,label=fr,holder=fm}
+local fl=Instance.new"ScrollingFrame"
+fl.Name="_subbody"
+fl.Position=UDim2.new(0,0,0,44)fl.Size=UDim2.new(1,0,1,-44)
+fl.BackgroundTransparency=1 fl.BorderSizePixel=0
+fl.ScrollBarThickness=3 fl.CanvasSize=UDim2.new(0,0,0,0)
+fl.AutomaticCanvasSize=Enum.AutomaticSize.Y
+fl.Visible=false fl.Parent=fa
+ae.tag(fl,"ScrollBarImageColor3","Surface2")
+local fm=Instance.new"UIListLayout"fm.Padding=UDim.new(0,8)
+fm.SortOrder=Enum.SortOrder.LayoutOrder fm.Parent=fl
+eL(fl,2,8,2,6)
+local fn=Instance.new"TextButton"fn.Text=""
+fn.Size=UDim2.new(0,0,0,30)fn.AutomaticSize=Enum.AutomaticSize.X
+fn.BackgroundColor3=eZ.Surface2 fn.BackgroundTransparency=1
+fn.BorderSizePixel=0 eJ(fn,8)fn.AutoButtonColor=false fn.Parent=fh
+local fo=Instance.new"UIPadding"
+fo.PaddingLeft=UDim.new(0,12)fo.PaddingRight=UDim.new(0,12)
+fo.Parent=fn
+local fp=eN(fj.Icon or fk,14,eZ.Dim)
+fp.AnchorPoint=Vector2.new(0,0.5)fp.Position=UDim2.new(0,0,0.5,0)
+fp.Parent=fn
+if fp:IsA"TextLabel"then fp.Size=UDim2.new(0,14,0,14)end
+local fq=Instance.new"TextLabel"fq.BackgroundTransparency=1
+fq.Position=UDim2.new(0,20,0,0)fq.Size=UDim2.new(0,0,1,0)
+fq.AutomaticSize=Enum.AutomaticSize.X
+fq.Font=Enum.Font.GothamMedium fq.TextSize=12 fq.TextXAlignment=0
+fq.TextTruncate=Enum.TextTruncate.AtEnd fq.Text=fk fq.Parent=fn
+ae.tag(fq,"TextColor3","Dim")
+
+
+local fr=Instance.new"Frame"fr.Name="_sel"
+fr.Size=UDim2.fromScale(1,1)fr.BackgroundColor3=eZ.Surface2
+fr.BorderSizePixel=0 fr.ZIndex=0
+eJ(fr,8)fr.Parent=fn
+eK(fr,true)
+ae.tag(fr,"BackgroundColor3","Surface2")
+fr.Visible=false
+local fs={name=fk,btn=fn,label=fq,holder=fl,ind=fr}
 table.insert(fd._subtabs,fs)
-fo.MouseButton1Click:Connect(function()
+fn.MouseButton1Click:Connect(function()
 for ft,fu in ipairs(fd._subtabs)do
 if fu==fs then selectSub(ft)break end
 end
@@ -8689,8 +8696,8 @@ end)
 if#fd._subtabs==1 then
 
 for ft,fu in ipairs(fa:GetChildren())do
-if fu:IsA"GuiObject"and fu~=fh and fu~=fm then
-pcall(function()fu.Parent=fm end)
+if fu:IsA"GuiObject"and fu~=fh and fu~=fl then
+pcall(function()fu.Parent=fl end)
 end
 end
 selectSub(1,true)
@@ -8701,10 +8708,10 @@ end)
 end
 
 
-fc=fm
+fc=fl
 return setmetatable({_sub=fs,_tab=fd},{
 __index=function(ft,fu)
-if fu=="Select"then return function()selectSub(fl)end end
+if fu=="Select"then return function()selectSub(fk)end end
 local fv=fd[fu]
 if type(fv)=="function"then
 return function(fw,...)return fv(fd,...)end
@@ -8716,8 +8723,8 @@ end
 
 fd.Api=ff
 fd._window=eX
-fd._activate=function(fj)setActive(fj~=false)end
-for fj,fk in pairs(ff)do fd[fj]=function(fl,...)return fk(fd,...)end end
+fd._activate=function(fi)setActive(fi~=false)end
+for fi,fj in pairs(ff)do fd[fi]=function(fk,...)return fj(fd,...)end end
 return fd
 end end function a.ae():typeof(__modImpl())local aa=a.cache.ae if not aa then aa={c=__modImpl()}a.cache.ae=aa end return aa.c end end do local function __modImpl()
 
@@ -11533,7 +11540,7 @@ ff.BackgroundColor3=Color3.fromRGB(3,4,7)ff.BackgroundTransparency=1
 ff.BorderSizePixel=0 ff.Parent=fd
 
 
-local fg=e6.Background~=false
+local fg=e6.Background==true
 ff.Visible=fg
 local function dimTo(fh,fi)
 if not fg then
@@ -13844,7 +13851,7 @@ local eH=a.ak()
 ab.claimUnload()
 
 local eI=aa
-eI.Build="r9"
+eI.Build="r10"
 eI.Themes=af.Themes
 eI.Icons=ac.Icons
 eI.IconAlias=ac.IconAlias
