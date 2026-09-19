@@ -3843,231 +3843,236 @@ af.cloneref_check(game:GetService"UserInputService")
 
 local aS=170
 local aT=28
-local aU=46
-local aV=190
 
-return function(aW,aX)
-local aY=aW.row
-local aZ=aW.titleBlock
-local a_=aW.reg
-local a0=aW.tab
-local a1=aW.Window
-local a2=aW.Th local a3=
-aW.opts or{}local a4=
-aW.page
-local b=aW.pgui
-aX=aX or{}
-local e=aX.Values or aX.Options or{}
-local f=aX.Multi or aX.MultipleOptions or false
-local g=aX.Value or aX.Default or aX.CurrentOption
-if not f and type(g)=="table"then g=g[1]end
-if f and type(g)~="table"then g=g and{g}or{}end
-local Q=aY(aX.Description and 50 or 40)Q.ClipsDescendants=false
-aZ(Q,aX.Title or"Dropdown",nil,200)
-local _=Instance.new"TextButton"_.Text=""
-_.AnchorPoint=Vector2.new(1,0.5)_.Position=UDim2.new(1,-12,0.5,0)
-_.Size=UDim2.new(0,170,0,28)_.BackgroundColor3=a2.Surface2
-_.BorderSizePixel=0 aJ(_,7)_.AutoButtonColor=false _.Parent=Q
-aK(_,true)
-at:_tag(_,"BackgroundColor3","Surface2")
-local a5=Instance.new"TextLabel"a5.BackgroundTransparency=1
-a5.Position=UDim2.new(0,8,0,0)a5.Size=UDim2.new(1,-28,1,0)
-a5.Font=Enum.Font.Gotham a5.TextSize=12 a5.TextXAlignment=0
-a5.TextTruncate=Enum.TextTruncate.AtEnd a5.Parent=_
-a5.ZIndex=2
-at:_tag(a5,"TextColor3","Text")
-local a6=aR("chevron",13,a2.Dim)
-a6.AnchorPoint=Vector2.new(1,0.5)a6.Position=UDim2.new(1,-8,0.5,0)
-a6.Parent=_
+local aU=190
+
+return function(aV,aW)
+local aX=aV.row
+local aY=aV.titleBlock
+local aZ=aV.reg
+local a_=aV.tab
+local a0=aV.Window
+local a1=aV.Th local a2=
+aV.opts or{}local a3=
+aV.page
+local a4=aV.pgui
+aW=aW or{}
+local b=aW.Values or aW.Options or{}
+local e=aW.Multi or aW.MultipleOptions or false
+local f=aW.Value or aW.Default or aW.CurrentOption
+if not e and type(f)=="table"then f=f[1]end
+if e and type(f)~="table"then f=f and{f}or{}end
+local g=aX(aW.Description and 50 or 40)g.ClipsDescendants=false
+aY(g,aW.Title or"Dropdown",nil,200)
+local Q=Instance.new"TextButton"Q.Text=""
+Q.AnchorPoint=Vector2.new(1,0.5)Q.Position=UDim2.new(1,-12,0.5,0)
+Q.Size=UDim2.new(0,170,0,28)Q.BackgroundColor3=a1.Surface2
+Q.BorderSizePixel=0 aJ(Q,7)Q.AutoButtonColor=false Q.Parent=g
+aK(Q,true)
+at:_tag(Q,"BackgroundColor3","Surface2")
+local _=Instance.new"TextLabel"_.BackgroundTransparency=1
+_.Position=UDim2.new(0,8,0,0)_.Size=UDim2.new(1,-28,1,0)
+_.Font=Enum.Font.Gotham _.TextSize=12 _.TextXAlignment=0
+_.TextTruncate=Enum.TextTruncate.AtEnd _.Parent=Q
+_.ZIndex=2
+at:_tag(_,"TextColor3","Text")
+local a5=aR("chevron",13,a1.Dim)
+a5.AnchorPoint=Vector2.new(1,0.5)a5.Position=UDim2.new(1,-8,0.5,0)
+a5.Parent=Q
 local function curText()
-if f then return(#g==0 and"None"or table.concat(g,", "))end
-return tostring(g or"Select...")
+if e then return(#f==0 and"None"or table.concat(f,", "))end
+return tostring(f or"Select...")
 end
-a5.Text=curText()
-local a7,a8,a9,ba,bb,bc,bd=false
-local be,bf,bg=false
-local bh=1
-local function chevTo(bi)
-if bf then pcall(function()bf:Cancel()end)end
-bf=aD(a6,aw.Fast,{Rotation=bi})
+_.Text=curText()
+local a6,a7,a8,a9,ba,bb,bc=false
+local bd,be,bf=false
+local bg=1
+local function chevTo(bh)
+if be then pcall(function()be:Cancel()end)end
+be=aD(a5,aw.Fast,{Rotation=bh})
 end
-local bi={}
-function bi.Set(bj,bk,bl)
-g=bk
-if not f and type(g)=="table"then g=g[1]end
-a5.Text=curText()
-if aX.Flag then at.Flags[aX.Flag]=g end
-if not bl then aI(aX.Callback,g)aI(aX.OnChanged,g)end
+local bh={}
+function bh.Set(bi,bj,bk)
+f=bj
+if not e and type(f)=="table"then f=f[1]end
+_.Text=curText()
+if aW.Flag then at.Flags[aW.Flag]=f end
+if not bk then aI(aW.Callback,f)aI(aW.OnChanged,f)end
 end
-function bi.Get(bj)return g end
+function bh.Get(bi)return f end
 local function closeList()
-if not a7 then return end
-a7=false
+if not a6 then return end
+a6=false
 as.close(closeList)
 chevTo(0)
-if bc then pcall(function()bc:Disconnect()end)bc=nil end
-if bd then
-for bj,bk in ipairs(bd)do pcall(function()bk:Disconnect()end)end
-bd=nil
+if bb then pcall(function()bb:Disconnect()end)bb=nil end
+if bc then
+for bi,bj in ipairs(bc)do pcall(function()bj:Disconnect()end)end
+bc=nil
 end
+if a7 then pcall(function()a7:Destroy()end)a7=nil end
 if a8 then pcall(function()a8:Destroy()end)a8=nil end
-if a9 then pcall(function()a9:Destroy()end)a9=nil end
-ba,bb=nil,nil
+a9,ba=nil,nil
 end
-function bi.Refresh(bj,bk)
-e=bk or{}
+function bh.Refresh(bi,bj)
+b=bj or{}
 closeList()
 end
-local function renderItems(bj)
-if not ba then return end
-for bk,bl in ipairs(ba:GetChildren())do
-if bl:IsA"TextButton"then pcall(function()bl:Destroy()end)end
+local function renderItems(bi)
+if not a9 then return end
+for bj,bk in ipairs(a9:GetChildren())do
+if bk:IsA"TextButton"then pcall(function()bk:Destroy()end)end
 end
-local bk={}
-for bl,bm in ipairs(e)do
-local bn=tostring(bm)
-if(bj or"")==""or string.find(string.lower(bn),string.lower(bj),1,true)then
-table.insert(bk,bn)
+local bj={}
+for bk,bl in ipairs(b)do
+local bm=tostring(bl)
+if(bi or"")==""or string.find(string.lower(bm),string.lower(bi),1,true)then
+table.insert(bj,bm)
 end
 end
-local bl=4
-for bm,bn in ipairs(bk)do
-local bo=Instance.new"TextButton"bo.Text=""
-bo.Size=UDim2.new(1,-8,0,26)bo.Position=UDim2.new(0,4,0,bl)
-bo.BackgroundColor3=a2.Surface2 bo.BackgroundTransparency=1
-bo.BorderSizePixel=0 aJ(bo,6)bo.Parent=ba
-bo.ZIndex=as.Z.Popup+1
-local bp=Instance.new"TextLabel"bp.BackgroundTransparency=1
-bp.Position=UDim2.new(0,8,0,0)bp.Size=UDim2.new(1,-36,1,0)
-bp.Font=Enum.Font.Gotham bp.TextSize=12 bp.TextXAlignment=0
-bp.TextTruncate=Enum.TextTruncate.AtEnd bp.Text=bn bp.Parent=bo
-bp.ZIndex=as.Z.Popup+2
-local bq=f and table.find(g,bn)or g==bn
-if bq then
 
-at:_tag(bp,"TextColor3","Accent")
-at:_tag(bo,"BackgroundColor3","Surface2")
-bo.BackgroundTransparency=0.4
-local br=aR("check",12,a2.Accent)
-br.AnchorPoint=Vector2.new(1,0.5)br.Position=UDim2.new(1,-8,0.5,0)
-br.Parent=bo
-if br:IsA"GuiObject"then br.ZIndex=as.Z.Popup+2 end
+
+local bk=bg
+local bl=aT*bk
+local bm=4*bk
+for bn,bo in ipairs(bj)do
+local bp=Instance.new"TextButton"bp.Text=""
+bp.Size=UDim2.new(1,-8,0,26*bk)bp.Position=UDim2.new(0,4,0,bm)
+bp.BackgroundColor3=a1.Surface2 bp.BackgroundTransparency=1
+bp.BorderSizePixel=0 aJ(bp,6)bp.Parent=a9
+bp.ZIndex=as.Z.Popup+1
+local bq=Instance.new"TextLabel"bq.BackgroundTransparency=1
+bq.Position=UDim2.new(0,8,0,0)bq.Size=UDim2.new(1,-36,1,0)
+bq.Font=Enum.Font.Gotham bq.TextSize=12*bk bq.TextXAlignment=0
+bq.TextTruncate=Enum.TextTruncate.AtEnd bq.Text=bo bq.Parent=bp
+bq.ZIndex=as.Z.Popup+2
+local br=e and table.find(f,bo)or f==bo
+if br then
+
+at:_tag(bq,"TextColor3","Accent")
+at:_tag(bp,"BackgroundColor3","Surface2")
+bp.BackgroundTransparency=0.4
+local bs=aR("check",12*bk,a1.Accent)
+bs.AnchorPoint=Vector2.new(1,0.5)bs.Position=UDim2.new(1,-8,0.5,0)
+bs.Parent=bp
+if bs:IsA"GuiObject"then bs.ZIndex=as.Z.Popup+2 end
 else
-at:_tag(bp,"TextColor3","Text")
+at:_tag(bq,"TextColor3","Text")
 end
-bo.MouseEnter:Connect(function()bo.BackgroundTransparency=0.4 at:_tag(bo,"BackgroundColor3","Surface2")end)
-bo.MouseLeave:Connect(function()if not(f and table.find(g,bn)or g==bn)then bo.BackgroundTransparency=1 end end)
-bo.MouseButton1Click:Connect(function()
+bp.MouseEnter:Connect(function()bp.BackgroundTransparency=0.4 at:_tag(bp,"BackgroundColor3","Surface2")end)
+bp.MouseLeave:Connect(function()if not(e and table.find(f,bo)or f==bo)then bp.BackgroundTransparency=1 end end)
+bp.MouseButton1Click:Connect(function()
 at:_sfx"Click"
-if f then
-local br=table.find(g,bn)
-if br then table.remove(g,br)else table.insert(g,bn)end
-bi:Set(g)
-if bb then renderItems(bb.Text)else renderItems""end
+if e then
+local bs=table.find(f,bo)
+if bs then table.remove(f,bs)else table.insert(f,bo)end
+bh:Set(f)
+if ba then renderItems(ba.Text)else renderItems""end
 else
-bi:Set(bn)
+bh:Set(bo)
 closeList()
 end
 end)
-bl+=aT
+bm+=bl
 end
 
 
-ba.CanvasSize=UDim2.new(0,0,0,math.max(bl+4,1))
-local bm=math.clamp(bl+4+36,72,aV+36)*bh
-local bn=aS*bh
-if be then
-if bg then pcall(function()bg:Cancel()end)end
-bg=aD(a9,aw.Med,{Size=UDim2.new(0,bn,0,bm)})
+a9.CanvasSize=UDim2.new(0,0,0,math.max(bm+4,1))
+local bn=math.clamp(bm+4+36,72,aU+36)
+local bo=aS*bg
+if bd then
+if bf then pcall(function()bf:Cancel()end)end
+bf=aD(a8,aw.Med,{Size=UDim2.new(0,bo,0,bn)})
 else
-if bg then pcall(function()bg:Cancel()end)bg=nil end
-a9.Size=UDim2.new(0,bn,0,bm)
+if bf then pcall(function()bf:Cancel()end)bf=nil end
+a8.Size=UDim2.new(0,bo,0,bn)
 end
-return bm
+return bn
 end
-local function placeList(bj)
-if not a9 or not Q.Parent then return end
-local bk,bl=Q.AbsolutePosition,Q.AbsoluteSize
-local bm=Vector2.new(1200,800)
-pcall(function()bm=workspace.CurrentCamera.ViewportSize end)
-local bn=bj or a9.Size.Y.Offset
-if bn<1 then bn=120 end
-local bo=bk.X+bl.X-aS*bh-12
-local bp=bk.Y+aU
-if bp+bn>bm.Y-10 then
-bp=math.max(10,bk.Y-bn-6)
+local function placeList(bi)
+if not a8 or not g.Parent then return end
+local bj,bk=g.AbsolutePosition,g.AbsoluteSize
+local bl=Vector2.new(1200,800)
+pcall(function()bl=workspace.CurrentCamera.ViewportSize end)
+local bm=bi or a8.Size.Y.Offset
+if bm<1 then bm=120 end
+local bn=bj.X+bk.X-aS*bg-12
+
+local bo=bj.Y+bk.Y+6*bg
+if bo+bm>bl.Y-10 then
+bo=math.max(10,bj.Y-bm-6)
 end
-a9.Position=UDim2.fromOffset(bo,bp)
+a8.Position=UDim2.fromOffset(bn,bo)
 end
 local function openList()
-if a7 then return end
-a7=true
+if a6 then return end
+a6=true
 as.open(closeList)
 chevTo(180)
-a8=as.backdrop(b,closeList)
-bh=ac.popupZoom()
-a9=Instance.new"Frame"
-a9.Size=UDim2.new(0,aS*bh,0,0)a9.BackgroundColor3=a2.Bg
-a9.BorderSizePixel=0 aJ(a9,8)a9.Parent=b
-if bh~=1 then
-local bj=Instance.new"UIScale"bj.Scale=bh bj.Parent=a9
+a7=as.backdrop(a4,closeList)
+bg=ac.popupZoom()
+a8=Instance.new"Frame"
+a8.Size=UDim2.new(0,aS*bg,0,0)a8.BackgroundColor3=a1.Bg
+a8.BorderSizePixel=0 aJ(a8,8)a8.Parent=a4
+if bg~=1 then
+local bi=Instance.new"UIScale"bi.Scale=bg bi.Parent=a8
 end
-a9.ZIndex=as.Z.Popup a9.ClipsDescendants=true
-aK(a9,true)
-at:_tag(a9,"BackgroundColor3","Bg")
-bb=Instance.new"TextBox"bb.PlaceholderText="Filter..."
-bb.PlaceholderColor3=a2.Dim bb.Text=""
-bb.Font=Enum.Font.Gotham bb.TextSize=11
-bb.Size=UDim2.new(1,-8,0,24)bb.Position=UDim2.new(0,4,0,4)
-bb.BackgroundColor3=a2.Surface2 bb.BorderSizePixel=0
-aJ(bb,6)bb.Parent=a9
-bb.ZIndex=as.Z.Popup+1
-at:_tag(bb,"BackgroundColor3","Surface2")
-at:_tag(bb,"TextColor3","Text")
-ba=Instance.new"ScrollingFrame"
-ba.BackgroundTransparency=1 ba.BorderSizePixel=0
-ba.Position=UDim2.new(0,0,0,32)ba.Size=UDim2.new(1,0,1,-32)
-ba.ScrollingDirection=Enum.ScrollingDirection.Y
-ba.ScrollBarThickness=3 ba.CanvasSize=UDim2.new(0,0,0,0)
-ba.ZIndex=as.Z.Popup ba.Parent=a9
-ae.tag(ba,"ScrollBarImageColor3","Surface2")
-be=true
+a8.ZIndex=as.Z.Popup a8.ClipsDescendants=true
+aK(a8,true)
+at:_tag(a8,"BackgroundColor3","Bg")
+ba=Instance.new"TextBox"ba.PlaceholderText="Filter..."
+ba.PlaceholderColor3=a1.Dim ba.Text=""
+ba.Font=Enum.Font.Gotham ba.TextSize=11*bg
+ba.Size=UDim2.new(1,-8,0,24*bg)ba.Position=UDim2.new(0,4*bg,0,4*bg)
+ba.BackgroundColor3=a1.Surface2 ba.BorderSizePixel=0
+aJ(ba,6)ba.Parent=a8
+ba.ZIndex=as.Z.Popup+1
+at:_tag(ba,"BackgroundColor3","Surface2")
+at:_tag(ba,"TextColor3","Text")
+a9=Instance.new"ScrollingFrame"
+a9.BackgroundTransparency=1 a9.BorderSizePixel=0
+a9.Position=UDim2.new(0,0,0,32*bg)a9.Size=UDim2.new(1,0,1,-32*bg)
+a9.ScrollingDirection=Enum.ScrollingDirection.Y
+a9.ScrollBarThickness=3 a9.CanvasSize=UDim2.new(0,0,0,0)
+a9.ZIndex=as.Z.Popup a9.Parent=a8
+ae.tag(a9,"ScrollBarImageColor3","Surface2")
+bd=true
 renderItems""
-be=false
-local bj=a9.Size.Y.Offset
-a9.Size=UDim2.new(0,aS*bh,0,0)
-placeList(bj)
-if bg then pcall(function()bg:Cancel()end)end
-bg=aD(a9,aw.Med,{Size=UDim2.new(0,aS*bh,0,bj)})
-bc=bb:GetPropertyChangedSignal"Text":Connect(function()
-if a7 then renderItems(bb.Text)end
+bd=false
+local bi=a8.Size.Y.Offset
+a8.Size=UDim2.new(0,aS*bg,0,0)
+placeList(bi)
+if bf then pcall(function()bf:Cancel()end)end
+bf=aD(a8,aw.Med,{Size=UDim2.new(0,aS*bg,0,bi)})
+bb=ba:GetPropertyChangedSignal"Text":Connect(function()
+if a6 then renderItems(ba.Text)end
 end)
 
-bd={}
+bc={}
 local function follow()
-if not a7 then return end
-if not Q:IsDescendantOf(game)then closeList()return end
-if a1._visible==false then closeList()return end
-if a0.Page and a0.Page.Visible==false then closeList()return end
+if not a6 then return end
+if not g:IsDescendantOf(game)then closeList()return end
+if a0._visible==false then closeList()return end
+if a_.Page and a_.Page.Visible==false then closeList()return end
 placeList()
 end
-table.insert(bd,Q:GetPropertyChangedSignal"AbsolutePosition":Connect(follow))
-table.insert(bd,Q:GetPropertyChangedSignal"AbsoluteSize":Connect(follow))
-if a1._main then
-table.insert(bd,a1._main:GetPropertyChangedSignal"AbsolutePosition":Connect(follow))
-table.insert(bd,a1._main:GetPropertyChangedSignal"AbsoluteSize":Connect(follow))
+table.insert(bc,g:GetPropertyChangedSignal"AbsolutePosition":Connect(follow))
+table.insert(bc,g:GetPropertyChangedSignal"AbsoluteSize":Connect(follow))
+if a0._main then
+table.insert(bc,a0._main:GetPropertyChangedSignal"AbsolutePosition":Connect(follow))
+table.insert(bc,a0._main:GetPropertyChangedSignal"AbsoluteSize":Connect(follow))
 end
 pcall(function()
-table.insert(bd,workspace.CurrentCamera:GetPropertyChangedSignal"ViewportSize":Connect(follow))
+table.insert(bc,workspace.CurrentCamera:GetPropertyChangedSignal"ViewportSize":Connect(follow))
 end)
 end
-_.MouseButton1Click:Connect(function()
+Q.MouseButton1Click:Connect(function()
 at:_sfx"Click"
-if a7 then closeList()else openList()end
+if a6 then closeList()else openList()end
 end)
-local bj={Title=aX.Title,Frame=Q,Value=g,Flag=aX.Flag,_handle=bi,
-_set=function(bj,bk)bi:Set(bj,bk)end}
-return a_(bj)
+local bi={Title=aW.Title,Frame=g,Value=f,Flag=aW.Flag,_handle=bh,
+_set=function(bi,bj)bh:Set(bi,bj)end}
+return aZ(bi)
 end end function a.K():typeof(__modImpl())local aa=a.cache.K if not aa then aa={c=__modImpl()}a.cache.K=aa end return aa.c end end do local function __modImpl()
 
 
@@ -4103,7 +4108,7 @@ aU.Window
 local a0=aU.Th local a1=
 aU.opts or{}
 aV=aV or{}
-local a2=aV.Mode or"Toggle"
+local a3=aV.Mode or"Toggle"
 local a4=aV.Value or aV.Default or Enum.KeyCode.F
 if type(a4)=="string"then a4=Enum.KeyCode[a4]or Enum.KeyCode.F end
 local a5=aW(aV.Description and 54 or 40)
@@ -4129,7 +4134,7 @@ a7=false a4=b.KeyCode a6.Text=a4.Name
 if aV.Flag then af.Flags[aV.Flag]=a4.Name end
 aD(aV.ChangedCallback,a4)aD(aV.OnChanged,a4)
 elseif not a7 and not ba and b.KeyCode==a4 then
-if a2=="Hold"then a8=true end
+if a3=="Hold"then a8=true end
 aD(aV.Callback,a4)
 end
 end))
@@ -4142,7 +4147,7 @@ if type(ba)=="string"then ba=Enum.KeyCode[ba]or a4 end
 a4,a6.Text=ba,ba.Name
 end,
 Get=function()return a4 end,
-GetState=function()return a2=="Hold"and a8 or nil end,
+GetState=function()return a3=="Hold"and a8 or nil end,
 Rebind=startRebind,
 SetLocked=function(b,ba)
 a9=ba and true or false
@@ -4195,7 +4200,7 @@ ae.cloneref_check(game:GetService"RunService")
 local a0=ae.cloneref_check(game:GetService"UserInputService")
 
 local a1="rbxassetid://4155801252"
-local a2="http://www.roblox.com/asset/?id=14204231522"
+local a3="http://www.roblox.com/asset/?id=14204231522"
 
 local a4,a5=160,158 local
 a6, a7=6, 10
@@ -4224,13 +4229,13 @@ local bp=bb.Transparency or 0
 local bq=bl
 local br=bc(bb.Description and 54 or 40)br.ClipsDescendants=false
 bd(br,bb.Title or"Color",bb.Description,90)
-local e=Instance.new"TextButton"e.Text=""
-e.AnchorPoint=Vector2.new(1,0.5)e.Position=UDim2.new(1,-12,0.5,0)
-e.Size=UDim2.fromOffset(56,26)e.BackgroundColor3=bq
-e.BorderSizePixel=0 aU(e,8)e.AutoButtonColor=false e.Parent=br
-aV(e,true)
-local f={}
-local g,Q,_,bs=false
+local bs=Instance.new"TextButton"bs.Text=""
+bs.AnchorPoint=Vector2.new(1,0.5)bs.Position=UDim2.new(1,-12,0.5,0)
+bs.Size=UDim2.fromOffset(56,26)bs.BackgroundColor3=bq
+bs.BorderSizePixel=0 aU(bs,8)bs.AutoButtonColor=false bs.Parent=br
+aV(bs,true)
+local e={}
+local f,g,Q,_=false
 local bt
 local bu,bv,bw
 local bx,by,bz
@@ -4285,14 +4290,14 @@ end
 end
 local function push(bR)
 bq=currentColor()
-aJ(e,aI.Hover,{BackgroundColor3=bq})
+aJ(bs,aI.Hover,{BackgroundColor3=bq})
 if bb.Flag then aD.Flags[bb.Flag]={bq.R,bq.G,bq.B}end
 if not bR then aT(bb.Callback,bq,bp)aT(bb.OnChanged,bq,bp)end
 end
 local function applyColor(bR)
 bq=currentColor()
 
-e.BackgroundColor3=bq
+bs.BackgroundColor3=bq
 if bb.Flag then aD.Flags[bb.Flag]={bq.R,bq.G,bq.B}end
 syncFields()
 if bR then
@@ -4303,7 +4308,7 @@ aT(bb.Callback,bS,bp)aT(bb.OnChanged,bS,bp)
 end
 end
 end
-function f.Set(bR,bS,bT,bU)
+function e.Set(bR,bS,bT,bU)
 if type(bS)=="table"and typeof(bS)~="Color3"then
 bS=Color3.new(bS[1]or 0,bS[2]or 0,bS[3]or 0)
 end
@@ -4318,23 +4323,23 @@ push(bU)
 syncFields()
 end
 end
-function f.Get(bR)return bq,bp end
+function e.Get(bR)return bq,bp end
 local function closePopup()
-if not g then return end
-g=false
+if not f then return end
+f=false
 af.close(closePopup)
 bK,bL,bM=false,false,false
 bO=nil
 for bR,bS in ipairs(bQ)do pcall(function()bS:Disconnect()end)end
 bQ={}
-if bs then
-for bR,bS in ipairs(bs)do pcall(function()bS:Disconnect()end)end
-bs=nil
+if _ then
+for bR,bS in ipairs(_)do pcall(function()bS:Disconnect()end)end
+_=nil
 end
-if _ then pcall(function()_:Destroy()end)_=nil end
-if Q then
-local bR=Q
-Q=nil
+if Q then pcall(function()Q:Destroy()end)Q=nil end
+if g then
+local bR=g
+g=nil
 if bt then pcall(function()bt:Cancel()end)end
 bt=aJ(bR,aI.Fast,{Size=UDim2.new(0,bR.Size.X.Offset,0,0)})
 task.delay(0.2,function()pcall(function()bR:Destroy()end)end)
@@ -4372,7 +4377,7 @@ end
 
 
 local function placePopup(bR,bS)
-if not Q then return end
+if not g then return end
 
 bR=bR*ac.popupZoom()
 local bT=Vector2.new(1200,800)
@@ -4384,7 +4389,7 @@ local bW,bX=bV.AbsolutePosition,bV.AbsoluteSize
 
 
 
-local bY=Q.AbsoluteSize.Y
+local bY=g.AbsoluteSize.Y
 if bY<1 then bY=bS end
 local bZ=math.clamp(bW.Y+(bX.Y-bY)/2,10,math.max(10,bT.Y-bY-10))
 local b_=bW.X+bX.X+bU
@@ -4414,7 +4419,7 @@ if b_+bR>bT.X-10 then
 b_=math.max(10,bT.X-bR-10)
 end
 end
-Q.Position=UDim2.fromOffset(b_,bZ)
+g.Position=UDim2.fromOffset(b_,bZ)
 return
 end
 
@@ -4424,11 +4429,11 @@ local bY=bW.X+bX.X-bR-12
 if bY<10 then bY=math.max(10,bW.X-bR-8)end
 local bZ=bW.Y+46
 if bZ+bS>bT.Y-10 then bZ=math.max(10,bW.Y-bS-6)end
-Q.Position=UDim2.fromOffset(bY,bZ)
+g.Position=UDim2.fromOffset(bY,bZ)
 end
 local function openPopup()
-if g then return end
-g=true
+if f then return end
+f=true
 bG,bH,bI=bm,bn,bo
 bJ=bp
 bP=currentColor()
@@ -4443,29 +4448,29 @@ local bV=bU+a8+bR
 local bW=a9+a5+a7
 local bX=bW+b+a7+22
 local bY=bX+32+bR
-_=af.backdrop(bk,requestClose)
+Q=af.backdrop(bk,requestClose)
 local bZ=ac.popupZoom()
-Q=Instance.new"Frame"
-Q.Name=ae.GetStealthName()
-Q.BackgroundColor3=bh.Bg
-Q.BackgroundTransparency=1
-Q.BorderSizePixel=0
-Q.ClipsDescendants=true
-Q.ZIndex=af.Z.Popup
-Q.Size=UDim2.new(0,bV*bZ,0,0)
-Q.Parent=bk
+g=Instance.new"Frame"
+g.Name=ae.GetStealthName()
+g.BackgroundColor3=bh.Bg
+g.BackgroundTransparency=1
+g.BorderSizePixel=0
+g.ClipsDescendants=true
+g.ZIndex=af.Z.Popup
+g.Size=UDim2.new(0,bV*bZ,0,0)
+g.Parent=bk
 if bZ~=1 then
-local b_=Instance.new"UIScale"b_.Scale=bZ b_.Parent=Q
+local b_=Instance.new"UIScale"b_.Scale=bZ b_.Parent=g
 end
-aU(Q,10)
-aV(Q,true)
-aD:_tag(Q,"BackgroundColor3","Bg")
+aU(g,10)
+aV(g,true)
+aD:_tag(g,"BackgroundColor3","Bg")
 placePopup(bV,bY)
 local b_=Instance.new"TextLabel"b_.BackgroundTransparency=1
 b_.Position=UDim2.new(0,bR,0,6)b_.Size=UDim2.new(1,-bR*2,0,22)
 b_.Font=Enum.Font.GothamBold b_.TextSize=14 b_.TextXAlignment=0
 b_.TextTruncate=Enum.TextTruncate.AtEnd b_.Text=bb.Title or"Color"
-b_.Parent=Q
+b_.Parent=g
 b_.ZIndex=af.Z.Popup+1
 aD:_tag(b_,"TextColor3","Text")
 
@@ -4479,7 +4484,7 @@ bu.ScaleType=Enum.ScaleType.Stretch
 bu.BorderSizePixel=0
 bu.ClipsDescendants=true
 bu.ZIndex=af.Z.Popup+1
-bu.Parent=Q
+bu.Parent=g
 aU(bu,8)
 aV(bu,true)
 bx=Instance.new"Frame"
@@ -4502,7 +4507,7 @@ bv.BackgroundColor3=Color3.fromRGB(255,255,255)
 bv.BorderSizePixel=0
 bv.ClipsDescendants=true
 bv.ZIndex=af.Z.Popup+1
-bv.Parent=Q
+bv.Parent=g
 aU(bv,3)
 local b1=Instance.new"UIGradient"b1.Rotation=90
 b1.Color=ColorSequence.new{
@@ -4534,11 +4539,11 @@ bw.BackgroundColor3=currentColor()
 bw.BorderSizePixel=0
 bw.ClipsDescendants=true
 bw.ZIndex=af.Z.Popup+1
-bw.Parent=Q
+bw.Parent=g
 aU(bw,3)
 aV(bw,true)
 local b3=Instance.new"ImageLabel"
-b3.Image=a2
+b3.Image=a3
 b3.ImageTransparency=0.45
 b3.ScaleType=Enum.ScaleType.Tile
 b3.TileSize=UDim2.fromOffset(40,40)
@@ -4574,7 +4579,7 @@ aU(bz,99)
 local b6=(a4-a7)/2
 local function checkerSw(b7)
 local b8=Instance.new"ImageLabel"
-b8.Image=a2
+b8.Image=a3
 b8.ImageTransparency=0.45
 b8.ScaleType=Enum.ScaleType.Tile
 b8.TileSize=UDim2.fromOffset(40,40)
@@ -4582,7 +4587,7 @@ b8.BackgroundTransparency=1
 b8.Position=UDim2.new(0,b7,0,bW)
 b8.Size=UDim2.fromOffset(b6,b)
 b8.ZIndex=af.Z.Popup+1
-b8.Parent=Q
+b8.Parent=g
 aU(b8,8)
 aV(b8,true)
 return b8
@@ -4611,7 +4616,7 @@ ce.BackgroundTransparency=1
 ce.Position=UDim2.new(0,ca,0,cd)
 ce.Size=UDim2.new(0,a8,0,36)
 ce.ZIndex=af.Z.Popup+1
-ce.Parent=Q
+ce.Parent=g
 local cf=Instance.new"TextLabel"
 cf.BackgroundTransparency=1
 cf.Font=Enum.Font.Gotham cf.TextSize=11
@@ -4680,7 +4685,7 @@ cy.ZIndex=af.Z.Popup+2
 cy.BackgroundColor3=bh.Surface2
 aV(cy,true)
 aD:_tag(cy,"BackgroundColor3","Surface2")
-cy.Parent=Q
+cy.Parent=g
 aU(cy,9)
 local cz=Instance.new"TextLabel"
 cz.BackgroundTransparency=1 cz.Size=UDim2.fromScale(1,1)
@@ -4732,7 +4737,7 @@ updateAlpha(cw.Position)
 end
 end)
 table.insert(bQ,a0.InputChanged:Connect(function(cw)
-if not Q then return end
+if not g then return end
 if cw~=bO
 and not(bO and bO.UserInputType==Enum.UserInputType.MouseButton1
 and cw.UserInputType==Enum.UserInputType.MouseMovement)then
@@ -4754,13 +4759,13 @@ bO=nil
 end
 end))
 bB:GetPropertyChangedSignal"Text":Connect(function()
-if not Q then return end
+if not g then return end
 local cw=bB.Text:gsub("[^%x]","")
 cw=cw:sub(1,6)
 if cw~=bB.Text then bB.Text=cw end
 end)
 bB.FocusLost:Connect(function()
-if not Q then return end
+if not g then return end
 local cw=bB.Text:gsub("#","")
 if#cw==3 then
 cw=cw:sub(1,1):rep(2)..cw:sub(2,2):rep(2)..cw:sub(3,3):rep(2)
@@ -4777,14 +4782,14 @@ syncFields()
 end)
 local function filterDigits(cw)
 cw:GetPropertyChangedSignal"Text":Connect(function()
-if not Q then return end
+if not g then return end
 local cx=cw.Text:gsub("%D",""):sub(1,3)
 if cx~=cw.Text then cw.Text=cx end
 end)
 end
 filterDigits(bC)filterDigits(bD)filterDigits(bE)
 local function onRGBCommit()
-if not Q then return end
+if not g then return end
 local cw=math.clamp(tonumber(bC.Text)or 0,0,255)
 local cx=math.clamp(tonumber(bD.Text)or 0,0,255)
 local cy=math.clamp(tonumber(bE.Text)or 0,0,255)
@@ -4795,7 +4800,7 @@ bC.FocusLost:Connect(onRGBCommit)
 bD.FocusLost:Connect(onRGBCommit)
 bE.FocusLost:Connect(onRGBCommit)
 bF.FocusLost:Connect(function()
-if not Q then return end
+if not g then return end
 local cw=bF.Text:gsub("%%","")
 local cx=math.clamp(tonumber(cw)or 0,0,100)
 bp=1-cx/100
@@ -4803,32 +4808,32 @@ applyColor(true)
 end)
 syncFields()
 if bt then pcall(function()bt:Cancel()end)end
-bt=aJ(Q,TweenInfo.new(0.44,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),
+bt=aJ(g,TweenInfo.new(0.44,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),
 {Size=UDim2.new(0,bV*ac.popupZoom(),0,bY*ac.popupZoom()),BackgroundTransparency=0})
 
-bs={}
+_={}
 local function follow()
-if not g then return end
+if not f then return end
 if not br:IsDescendantOf(game)then closePopup()return end
 if bg._visible==false then closePopup()return end
 if bf.Page and bf.Page.Visible==false then closePopup()return end
 placePopup(bV,bY)
 end
-table.insert(bs,br:GetPropertyChangedSignal"AbsolutePosition":Connect(follow))
-table.insert(bs,br:GetPropertyChangedSignal"AbsoluteSize":Connect(follow))
+table.insert(_,br:GetPropertyChangedSignal"AbsolutePosition":Connect(follow))
+table.insert(_,br:GetPropertyChangedSignal"AbsoluteSize":Connect(follow))
 if bg._main then
-table.insert(bs,bg._main:GetPropertyChangedSignal"AbsolutePosition":Connect(follow))
-table.insert(bs,bg._main:GetPropertyChangedSignal"AbsoluteSize":Connect(follow))
+table.insert(_,bg._main:GetPropertyChangedSignal"AbsolutePosition":Connect(follow))
+table.insert(_,bg._main:GetPropertyChangedSignal"AbsoluteSize":Connect(follow))
 end
 pcall(function()
-table.insert(bs,workspace.CurrentCamera:GetPropertyChangedSignal"ViewportSize":Connect(follow))
+table.insert(_,workspace.CurrentCamera:GetPropertyChangedSignal"ViewportSize":Connect(follow))
 end)
 end
-e.MouseButton1Click:Connect(function()
-if g then closePopup()else openPopup()end
+bs.MouseButton1Click:Connect(function()
+if f then closePopup()else openPopup()end
 end)
-local bR={Title=bb.Title,Frame=br,Value=bq,Flag=bb.Flag,_handle=f,
-_set=function(bR,bS)f:Set(bR,bS)end}
+local bR={Title=bb.Title,Frame=br,Value=bq,Flag=bb.Flag,_handle=e,
+_set=function(bR,bS)e:Set(bR,bS)end}
 return be(bR)
 end end function a.M():typeof(__modImpl())local aa=a.cache.M if not aa then aa={c=__modImpl()}a.cache.M=aa end return aa.c end end do local function __modImpl()
 
@@ -4856,14 +4861,14 @@ local a1=ad.makeIcon
 ae.cloneref_check(game:GetService"RunService")
 ae.cloneref_check(game:GetService"UserInputService")
 
-return function(a2,a4)
-local a5=a2.row local a6=
-a2.titleBlock
-local a7=a2.reg
-local a8=a2.tab local a9=
-a2.Window
-local b=a2.Th local ba=
-a2.opts or{}
+return function(a3,a4)
+local a5=a3.row local a6=
+a3.titleBlock
+local a7=a3.reg
+local a8=a3.tab local a9=
+a3.Window
+local b=a3.Th local ba=
+a3.opts or{}
 a4=a4 or{}
 local bb=a8._window
 local bc=a5(196)
@@ -4980,7 +4985,7 @@ local aV=ab.tween local aW=
 ac.guid
 local a0=ac.spawnCb
 local a1=ac.corner
-local a2=ac.hairline local a4=
+local a3=ac.hairline local a4=
 ac.pad
 local a5=ac.lighting
 local a7=ac.ripple
@@ -5000,7 +5005,7 @@ ba=ba or{}
 local bj=Instance.new"Frame"bj.Size=UDim2.new(1,-4,0,96)
 bj.BackgroundColor3=bg.Surface2 bj.BorderSizePixel=0
 a1(bj,10)bj.Parent=b.getParent()
-a2(bj,true)
+a3(bj,true)
 af:_tag(bj,"BackgroundColor3","Surface2")
 a5(bj,10)
 
@@ -5064,7 +5069,7 @@ ab.T local aV=
 ab.tween local a0=
 ac.guid local a1=
 ac.spawnCb
-local a2=ac.corner
+local a3=ac.corner
 local a4=ac.hairline local a5=
 ac.pad
 local a7=ac.lighting local a8=
@@ -5093,7 +5098,7 @@ for bs,bt in ipairs(bn)do
 local bu=Instance.new"Frame"
 bu.Size=UDim2.new(1/bo,-8,1,0)
 bu.BackgroundColor3=bl.Surface bu.BorderSizePixel=0
-a2(bu,10)bu.LayoutOrder=bs bu.Parent=bp
+a3(bu,10)bu.LayoutOrder=bs bu.Parent=bp
 a4(bu,true)
 af:_tag(bu,"BackgroundColor3","Surface")
 a7(bu,10)
@@ -5123,7 +5128,7 @@ local ad=a.f()a.v()a.g()
 
 local ae=a.b()
 
-local af=aa local a2=
+local af=aa local a3=
 ab.T local a4=
 ab.tween local a7=
 ac.guid local b=
@@ -7509,8 +7514,6 @@ local eo=aa.baseCard
 ad.cloneref_check(game:GetService"RunService")
 ad.cloneref_check(game:GetService"UserInputService")
 
-local function GetUIScale()return 1 end
-
 return function(es,ev)
 local ey=es.reg
 local ez=es.Th
@@ -7598,14 +7601,9 @@ eY.FillDirectionMaxCells=eH
 eY.SortOrder=Enum.SortOrder.LayoutOrder
 eY.Parent=eX
 
-local function relayout()
-local eZ=eX.AbsoluteSize.X/GetUIScale()
-if eZ<=0 then return end
-local e_=(eZ-eL*(eH-1))/eH
-eY.CellSize=UDim2.fromOffset(e_,eK)
-end
-eX:GetPropertyChangedSignal"AbsoluteSize":Connect(relayout)
-task.defer(relayout)
+
+
+eY.CellSize=UDim2.new(1/eH,-eL,0,eK)
 
 for eZ,e_ in ipairs(eE)do
 local e0=Instance.new"Frame"
@@ -9116,8 +9114,10 @@ fr.TextTruncate=Enum.TextTruncate.AtEnd fr.Text=fl fr.Parent=fo
 ae.tag(fr,"TextColor3","Dim")
 
 
+
 local fs=Instance.new"Frame"fs.Name="_sel"
-fs.Size=UDim2.fromScale(1,1)fs.BackgroundColor3=eZ.Surface2
+fs.Position=UDim2.new(0,-8,0,0)fs.Size=UDim2.new(1,16,1,0)
+fs.BackgroundColor3=eZ.Surface2
 fs.BorderSizePixel=0 fs.ZIndex=0
 eJ(fs,8)fs.Parent=fo
 eK(fs,true)
@@ -9260,6 +9260,7 @@ table.insert(fe,ff)
 end
 ff.open=true
 end
+if eO._popoutKick then eO:_popoutKick()end
 local ff=e7.Position.X.Offset
 e7.Position=UDim2.new(e7.Position.X.Scale,ff-24,
 e7.Position.Y.Scale,e7.Position.Y.Offset)
@@ -9273,6 +9274,7 @@ for ff,fg in ipairs(fe)do
 if fg.frame==e7 then table.remove(fe,ff)break end
 end
 end
+if eO._popoutKick then eO:_popoutKick()end
 fly1(e7,{Position=UDim2.new(e7.Position.X.Scale,
 e7.Position.X.Offset-16,e7.Position.Y.Scale,e7.Position.Y.Offset)},af.Fast)
 task.delay(0.18,function()
@@ -12352,6 +12354,16 @@ _conns={},_acrylicPref=e9,_popouts={},
 _tabChangeListeners={},
 }
 
+
+
+do
+local fS=Instance.new"BindableEvent"
+fR._popoutEvent=fS
+end
+function fR._popoutKick(fS)
+pcall(function()fS._popoutEvent:Fire()end)
+end
+
 function fR.Track(fS,fT)table.insert(fS._conns,fT)return fT end
 local fS
 local fT
@@ -14527,7 +14539,7 @@ local eG=a.ax()
 ab.claimUnload()
 
 local eH=aa
-eH.Build="r19"
+eH.Build="r20"
 
 eH.PreloadIcons=function(eI,eJ)
 return ac.PreloadIcons(eJ)
