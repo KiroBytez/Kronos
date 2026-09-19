@@ -7789,323 +7789,324 @@ af.cloneref_check(game:GetService"RunService")
 af.cloneref_check(game:GetService"UserInputService")
 
 return function(eE,eG)
-local eH=eE.tab
-local eI=eE.Window
-local eJ=eE.Th
+local eH=eE.reg
+local eI=eE.tab
+local eJ=eE.Window
+local eK=eE.Th
 eG=eG or{}
-local eK=eG.Service
-local eL=eG.Interval or 30
-local eM=math.clamp(eG.Limit or 5,1,50)
-local eN=eG.Title or"Leaderboard"
-local eO=eG.Description and eG.Description~=""
+local eL=eG.Service
+local eM=eG.Interval or 30
+local eN=math.clamp(eG.Limit or 5,1,50)
+local eO=eG.Title or"Leaderboard"
+local eR=eG.Description and eG.Description~=""
 
-local eR=12
-local eT=eO and 32 or 16
-local eU,eV=44,6
-local eW=eR+eT+12
-local eX=eM*eU+(eM-1)*eV
-local eY=eW+eX+eR
+local eT=12
+local eU=eR and 32 or 16
+local eV,eW=44,6
+local eX=eT+eU+12
+local eY=eN*eV+(eN-1)*eW
+local eZ=eX+eY+eT
 
-local eZ=Instance.new"Frame"
-eZ.Name="Leaderboard"
-eZ.BackgroundColor3=eJ.Surface
-eZ.BackgroundTransparency=0.35
-eZ.BorderSizePixel=0
-eZ.ClipsDescendants=true
-eZ.Size=UDim2.new(1,0,0,eY)
-eZ.ZIndex=eo.Content
-eZ.Parent=eE.getParent()
-ev(eZ,8)
-ey(eZ,Color3.new(1,1,1),1,0.92)
+local e_=Instance.new"Frame"
+e_.Name="Leaderboard"
+e_.BackgroundColor3=eK.Surface
+e_.BackgroundTransparency=0.35
+e_.BorderSizePixel=0
+e_.ClipsDescendants=true
+e_.Size=UDim2.new(1,0,0,eZ)
+e_.ZIndex=eo.Content
+e_.Parent=eE.getParent()
+ev(e_,8)
+ey(e_,Color3.new(1,1,1),1,0.92)
 
-local e_=Instance.new"TextLabel"
-e_.BackgroundTransparency=1
-e_.FontFace=ad.FontSemi
-e_.Text=eN
-e_.TextColor3=eJ.Text
-e_.TextSize=14
-e_.TextXAlignment=Enum.TextXAlignment.Left
-e_.TextTruncate=Enum.TextTruncate.AtEnd
-e_.Position=UDim2.fromOffset(eR,eR)
-e_.Size=UDim2.new(1,-eR*2-32,0,16)
-e_.ZIndex=eo.Content+1
-e_.Parent=eZ
-
-if eO then
 local e0=Instance.new"TextLabel"
 e0.BackgroundTransparency=1
-e0.FontFace=ad.FontReg
-e0.Text=eG.Description
-e0.TextColor3=eJ.Dim
-e0.TextSize=12
-e0.TextWrapped=true
+e0.FontFace=ad.FontSemi
+e0.Text=eO
+e0.TextColor3=eK.Text
+e0.TextSize=14
 e0.TextXAlignment=Enum.TextXAlignment.Left
-e0.TextYAlignment=Enum.TextYAlignment.Top
-e0.Position=UDim2.fromOffset(eR,eR+18)
-e0.Size=UDim2.new(1,-eR*2-32,0,14)
+e0.TextTruncate=Enum.TextTruncate.AtEnd
+e0.Position=UDim2.fromOffset(eT,eT)
+e0.Size=UDim2.new(1,-eT*2-32,0,16)
 e0.ZIndex=eo.Content+1
-e0.Parent=eZ
+e0.Parent=e_
+
+if eR then
+local e1=Instance.new"TextLabel"
+e1.BackgroundTransparency=1
+e1.FontFace=ad.FontReg
+e1.Text=eG.Description
+e1.TextColor3=eK.Dim
+e1.TextSize=12
+e1.TextWrapped=true
+e1.TextXAlignment=Enum.TextXAlignment.Left
+e1.TextYAlignment=Enum.TextYAlignment.Top
+e1.Position=UDim2.fromOffset(eT,eT+18)
+e1.Size=UDim2.new(1,-eT*2-32,0,14)
+e1.ZIndex=eo.Content+1
+e1.Parent=e_
 end
 
-local e0=eG.RevealByDefault==true
+local e1=eG.RevealByDefault==true
 
-local e1=Instance.new"TextButton"
-e1.Name="RevealToggle"
-e1.Text=""
-e1.AutoButtonColor=false
-e1.BackgroundColor3=Color3.new(1,1,1)
-e1.BackgroundTransparency=1
-e1.BorderSizePixel=0
-e1.AnchorPoint=Vector2.new(1,0)
-e1.Position=UDim2.new(1,-eR,0,eR-4)
-e1.Size=UDim2.fromOffset(24,24)
-e1.ZIndex=eo.Content+2
-e1.Parent=eZ
-ev(e1,7)
-
-local e2=Instance.new"ImageLabel"
+local e2=Instance.new"TextButton"
+e2.Name="RevealToggle"
+e2.Text=""
+e2.AutoButtonColor=false
+e2.BackgroundColor3=Color3.new(1,1,1)
 e2.BackgroundTransparency=1
-e2.Image=ez(e0 and"eye"or"eye-off")
-e2.ImageColor3=eJ.Dim
-e2.Size=UDim2.fromOffset(14,14)
-e2.AnchorPoint=Vector2.new(0.5,0.5)
-e2.Position=UDim2.fromScale(0.5,0.5)
-e2.ZIndex=eo.Content+3
-e2.Parent=e1
+e2.BorderSizePixel=0
+e2.AnchorPoint=Vector2.new(1,0)
+e2.Position=UDim2.new(1,-eT,0,eT-4)
+e2.Size=UDim2.fromOffset(24,24)
+e2.ZIndex=eo.Content+2
+e2.Parent=e_
+ev(e2,7)
 
-eH._window:Track(e1.MouseEnter:Connect(function()
-es(e1,{BackgroundTransparency=0.9},0.12)
-es(e2,{ImageColor3=eJ.Text},0.12)
-end))
-eH._window:Track(e1.MouseLeave:Connect(function()
-es(e1,{BackgroundTransparency=1},0.12)
-es(e2,{ImageColor3=eJ.Dim},0.12)
-end))
+local e3=Instance.new"ImageLabel"
+e3.BackgroundTransparency=1
+e3.Image=ez(e1 and"eye"or"eye-off")
+e3.ImageColor3=eK.Dim
+e3.Size=UDim2.fromOffset(14,14)
+e3.AnchorPoint=Vector2.new(0.5,0.5)
+e3.Position=UDim2.fromScale(0.5,0.5)
+e3.ZIndex=eo.Content+3
+e3.Parent=e2
 
-local e3=Instance.new"Frame"
-e3.BackgroundColor3=Color3.new(1,1,1)
-e3.BackgroundTransparency=0.92
-e3.BorderSizePixel=0
-e3.Position=UDim2.fromOffset(0,eR+eT+8)
-e3.Size=UDim2.new(1,0,0,1)
-e3.ZIndex=eo.Content+1
-e3.Parent=eZ
+eI._window:Track(e2.MouseEnter:Connect(function()
+es(e2,{BackgroundTransparency=0.9},0.12)
+es(e3,{ImageColor3=eK.Text},0.12)
+end))
+eI._window:Track(e2.MouseLeave:Connect(function()
+es(e2,{BackgroundTransparency=1},0.12)
+es(e3,{ImageColor3=eK.Dim},0.12)
+end))
 
 local e4=Instance.new"Frame"
-e4.Name="Rows"
-e4.BackgroundTransparency=1
-e4.Position=UDim2.fromOffset(eR,eW)
-e4.Size=UDim2.new(1,-eR*2,0,eX)
+e4.BackgroundColor3=Color3.new(1,1,1)
+e4.BackgroundTransparency=0.92
+e4.BorderSizePixel=0
+e4.Position=UDim2.fromOffset(0,eT+eU+8)
+e4.Size=UDim2.new(1,0,0,1)
 e4.ZIndex=eo.Content+1
-e4.Parent=eZ
+e4.Parent=e_
 
-local e5=Instance.new"UIListLayout"
-e5.Padding=UDim.new(0,eV)
-e5.SortOrder=Enum.SortOrder.LayoutOrder
-e5.Parent=e4
+local e5=Instance.new"Frame"
+e5.Name="Rows"
+e5.BackgroundTransparency=1
+e5.Position=UDim2.fromOffset(eT,eX)
+e5.Size=UDim2.new(1,-eT*2,0,eY)
+e5.ZIndex=eo.Content+1
+e5.Parent=e_
 
-local e6=Instance.new"TextLabel"
-e6.BackgroundTransparency=1
-e6.FontFace=ad.FontReg
-e6.Text="No one's run this yet"
-e6.TextColor3=eJ.Dim
-e6.TextSize=12
-e6.Position=UDim2.fromOffset(eR,eW+10)
-e6.Size=UDim2.new(1,-eR*2,0,16)
-e6.Visible=false
-e6.ZIndex=eo.Content+1
-e6.Parent=eZ
+local e6=Instance.new"UIListLayout"
+e6.Padding=UDim.new(0,eW)
+e6.SortOrder=Enum.SortOrder.LayoutOrder
+e6.Parent=e5
 
-local e7={
+local e7=Instance.new"TextLabel"
+e7.BackgroundTransparency=1
+e7.FontFace=ad.FontReg
+e7.Text="No one's run this yet"
+e7.TextColor3=eK.Dim
+e7.TextSize=12
+e7.Position=UDim2.fromOffset(eT,eX+10)
+e7.Size=UDim2.new(1,-eT*2,0,16)
+e7.Visible=false
+e7.ZIndex=eo.Content+1
+e7.Parent=e_
+
+local e8={
 [1]=Color3.fromRGB(255,196,64),
 [2]=Color3.fromRGB(203,209,217),
 [3]=Color3.fromRGB(205,141,92),
 }
-local e8={[1]="crown",[2]="medal",[3]="medal"}
+local e9={[1]="crown",[2]="medal",[3]="medal"}
 
-local function formatSeconds(e9)
-e9=math.floor(e9 or 0)
-local fa=math.floor(e9/3600)
-local fb=math.floor((e9%3600)/60)
-if fa>0 then return string.format("%dh %dm",fa,fb)end
-if fb>0 then return string.format("%dm",fb)end
-return string.format("%ds",e9)
+local function formatSeconds(fa)
+fa=math.floor(fa or 0)
+local fb=math.floor(fa/3600)
+local fc=math.floor((fa%3600)/60)
+if fb>0 then return string.format("%dh %dm",fb,fc)end
+if fc>0 then return string.format("%dm",fc)end
+return string.format("%ds",fa)
 end
 
-local function fallbackLabel(e9)
-local fa=(e9 or""):gsub("-",""):sub(1,4):upper()
-return"Player-"..(fa~=""and fa or"????")
+local function fallbackLabel(fa)
+local fb=(fa or""):gsub("-",""):sub(1,4):upper()
+return"Player-"..(fb~=""and fb or"????")
 end
 
-local e9={}
+local fa={}
 local function clearRows()
-for fa,fb in ipairs(e9)do fb:Destroy()end
-table.clear(e9)
+for fb,fc in ipairs(fa)do fc:Destroy()end
+table.clear(fa)
 end
 
-local function buildRow(fa,fb)
-local fc=e7[fa]
+local function buildRow(fb,fc)
+local fd=e8[fb]
 
-local fd=Instance.new"Frame"
-fd.Name="Row"..fa
-fd.Active=true
-fd.BackgroundColor3=Color3.new(1,1,1)
-fd.BackgroundTransparency=fb.IsYou and 0.9 or 0.96
-fd.BorderSizePixel=0
-fd.LayoutOrder=fa
-fd.Size=UDim2.new(1,0,0,eU)
-fd.ZIndex=eo.Content+2
-fd.Parent=e4
-ev(fd,8)
-ey(fd,Color3.new(1,1,1),1,fb.IsYou and 0.88 or 0.94)
+local fe=Instance.new"Frame"
+fe.Name="Row"..fb
+fe.Active=true
+fe.BackgroundColor3=Color3.new(1,1,1)
+fe.BackgroundTransparency=fc.IsYou and 0.9 or 0.96
+fe.BorderSizePixel=0
+fe.LayoutOrder=fb
+fe.Size=UDim2.new(1,0,0,eV)
+fe.ZIndex=eo.Content+2
+fe.Parent=e5
+ev(fe,8)
+ey(fe,Color3.new(1,1,1),1,fc.IsYou and 0.88 or 0.94)
 
-local fe=fd.BackgroundTransparency
-fd.MouseEnter:Connect(function()es(fd,{BackgroundTransparency=fe-0.05},0.12)end)
-fd.MouseLeave:Connect(function()es(fd,{BackgroundTransparency=fe},0.12)end)
+local ff=fe.BackgroundTransparency
+fe.MouseEnter:Connect(function()es(fe,{BackgroundTransparency=ff-0.05},0.12)end)
+fe.MouseLeave:Connect(function()es(fe,{BackgroundTransparency=ff},0.12)end)
 
-local ff=Instance.new"UIPadding"
-ff.PaddingLeft=UDim.new(0,10)
-ff.PaddingRight=UDim.new(0,10)
-ff.Parent=fd
-
-local fg=Instance.new"Frame"
-fg.AnchorPoint=Vector2.new(0,0.5)
-fg.Position=UDim2.new(0,0,0.5,0)
-fg.Size=UDim2.fromOffset(28,28)
-fg.BackgroundColor3=Color3.new(1,1,1)
-fg.BackgroundTransparency=0.94
-fg.BorderSizePixel=0
-fg.ZIndex=eo.Content+3
-fg.Parent=fd
-ev(fg,14)
-ey(fg,Color3.new(1,1,1),1,0.9)
-
-if fc then
-local fh=Instance.new"ImageLabel"
-fh.BackgroundTransparency=1
-fh.Image=ez(e8[fa])
-fh.ImageColor3=fc
-fh.Size=UDim2.fromOffset(15,15)
-fh.AnchorPoint=Vector2.new(0.5,0.5)
-fh.Position=UDim2.fromScale(0.5,0.5)
-fh.ZIndex=eo.Content+4
-fh.Parent=fg
-else
-local fh=Instance.new"TextLabel"
-fh.BackgroundTransparency=1
-fh.FontFace=ad.FontSemi
-fh.Text="#"..tostring(fa)
-fh.TextColor3=eJ.Dim
-fh.TextSize=11
-fh.Size=UDim2.fromScale(1,1)
-fh.ZIndex=eo.Content+4
-fh.Parent=fg
-end
+local fg=Instance.new"UIPadding"
+fg.PaddingLeft=UDim.new(0,10)
+fg.PaddingRight=UDim.new(0,10)
+fg.Parent=fe
 
 local fh=Instance.new"Frame"
 fh.AnchorPoint=Vector2.new(0,0.5)
-fh.Position=UDim2.new(0,34,0.5,0)
+fh.Position=UDim2.new(0,0,0.5,0)
 fh.Size=UDim2.fromOffset(28,28)
 fh.BackgroundColor3=Color3.new(1,1,1)
 fh.BackgroundTransparency=0.94
 fh.BorderSizePixel=0
-fh.ClipsDescendants=true
 fh.ZIndex=eo.Content+3
-fh.Parent=fd
+fh.Parent=fe
 ev(fh,14)
-ey(fh,Color3.new(1,1,1),1,0.85)
+ey(fh,Color3.new(1,1,1),1,0.9)
 
-if fb.UserId and fb.UserId~=0 then
+if fd then
 local fi=Instance.new"ImageLabel"
 fi.BackgroundTransparency=1
-fi.ScaleType=Enum.ScaleType.Crop
-fi.Size=UDim2.fromScale(1,1)
-fi.ZIndex=eo.Content+4
-fi.Parent=fh
-task.spawn(function()
-local fj,fk=pcall(
-eA.GetUserThumbnailAsync,
-eA,
-fb.UserId,
-Enum.ThumbnailType.HeadShot,
-Enum.ThumbnailSize.Size48x48
-)
-if fj and fk and fi.Parent then
-fi.Image=fk
-end
-end)
-else
-local fi=Instance.new"ImageLabel"
-fi.BackgroundTransparency=1
-fi.Image=ez"user"
-fi.ImageColor3=eJ.Dim
-fi.Size=UDim2.fromOffset(14,14)
+fi.Image=ez(e9[fb])
+fi.ImageColor3=fd
+fi.Size=UDim2.fromOffset(15,15)
 fi.AnchorPoint=Vector2.new(0.5,0.5)
 fi.Position=UDim2.fromScale(0.5,0.5)
 fi.ZIndex=eo.Content+4
 fi.Parent=fh
-end
-
+else
 local fi=Instance.new"TextLabel"
 fi.BackgroundTransparency=1
 fi.FontFace=ad.FontSemi
-fi.Text=(fb.NamePreview and fb.NamePreview~=""and fb.NamePreview or fallbackLabel(fb.Identity))
-..(fb.IsYou and"  (You)"or"")
-fi.TextColor3=eJ.Text
-fi.TextSize=13
-fi.TextXAlignment=Enum.TextXAlignment.Left
-fi.TextTruncate=Enum.TextTruncate.AtEnd
-fi.Position=UDim2.fromOffset(70,0)
-fi.Size=UDim2.new(1,-138,1,0)
+fi.Text="#"..tostring(fb)
+fi.TextColor3=eK.Dim
+fi.TextSize=11
+fi.Size=UDim2.fromScale(1,1)
+fi.ZIndex=eo.Content+4
+fi.Parent=fh
+end
+
+local fi=Instance.new"Frame"
+fi.AnchorPoint=Vector2.new(0,0.5)
+fi.Position=UDim2.new(0,34,0.5,0)
+fi.Size=UDim2.fromOffset(28,28)
+fi.BackgroundColor3=Color3.new(1,1,1)
+fi.BackgroundTransparency=0.94
+fi.BorderSizePixel=0
+fi.ClipsDescendants=true
 fi.ZIndex=eo.Content+3
-fi.Parent=fd
+fi.Parent=fe
+ev(fi,14)
+ey(fi,Color3.new(1,1,1),1,0.85)
+
+if fc.UserId and fc.UserId~=0 then
+local fj=Instance.new"ImageLabel"
+fj.BackgroundTransparency=1
+fj.ScaleType=Enum.ScaleType.Crop
+fj.Size=UDim2.fromScale(1,1)
+fj.ZIndex=eo.Content+4
+fj.Parent=fi
+task.spawn(function()
+local fk,fl=pcall(
+eA.GetUserThumbnailAsync,
+eA,
+fc.UserId,
+Enum.ThumbnailType.HeadShot,
+Enum.ThumbnailSize.Size48x48
+)
+if fk and fl and fj.Parent then
+fj.Image=fl
+end
+end)
+else
+local fj=Instance.new"ImageLabel"
+fj.BackgroundTransparency=1
+fj.Image=ez"user"
+fj.ImageColor3=eK.Dim
+fj.Size=UDim2.fromOffset(14,14)
+fj.AnchorPoint=Vector2.new(0.5,0.5)
+fj.Position=UDim2.fromScale(0.5,0.5)
+fj.ZIndex=eo.Content+4
+fj.Parent=fi
+end
 
 local fj=Instance.new"TextLabel"
 fj.BackgroundTransparency=1
-fj.FontFace=ad.FontReg
-fj.Text=formatSeconds(fb.Seconds)
-fj.TextColor3=eJ.Dim
-fj.TextSize=12
-fj.TextXAlignment=Enum.TextXAlignment.Right
-fj.AnchorPoint=Vector2.new(1,0)
-fj.Position=UDim2.new(1,0,0,0)
-fj.Size=UDim2.fromOffset(60,eU)
+fj.FontFace=ad.FontSemi
+fj.Text=(fc.NamePreview and fc.NamePreview~=""and fc.NamePreview or fallbackLabel(fc.Identity))
+..(fc.IsYou and"  (You)"or"")
+fj.TextColor3=eK.Text
+fj.TextSize=13
+fj.TextXAlignment=Enum.TextXAlignment.Left
+fj.TextTruncate=Enum.TextTruncate.AtEnd
+fj.Position=UDim2.fromOffset(70,0)
+fj.Size=UDim2.new(1,-138,1,0)
 fj.ZIndex=eo.Content+3
-fj.Parent=fd
+fj.Parent=fe
 
-return fd
+local fk=Instance.new"TextLabel"
+fk.BackgroundTransparency=1
+fk.FontFace=ad.FontReg
+fk.Text=formatSeconds(fc.Seconds)
+fk.TextColor3=eK.Dim
+fk.TextSize=12
+fk.TextXAlignment=Enum.TextXAlignment.Right
+fk.AnchorPoint=Vector2.new(1,0)
+fk.Position=UDim2.new(1,0,0,0)
+fk.Size=UDim2.fromOffset(60,eV)
+fk.ZIndex=eo.Content+3
+fk.Parent=fe
+
+return fe
 end
 
-local function renderRows(fa)
+local function renderRows(fb)
 clearRows()
-e6.Visible=#fa==0
+e7.Visible=#fb==0
 
-for fb,fc in ipairs(fa)do
-if fb>eM then break end
-table.insert(e9,buildRow(fb,fc))
+for fc,fd in ipairs(fb)do
+if fc>eN then break end
+table.insert(fa,buildRow(fc,fd))
 end
 end
 
 renderRows{}
 
-local fa={Instance=eZ}
+local fb={Instance=e_}
 
-if not eK then
-reg{Title=eN,Frame=eZ,_handle=fa}
-return fa
+if not eL then
+eH{Title=eO,Frame=e_,_handle=fb}
+return fb
 end
 
-local function maskName(fb,fc)
-local fd=eB.Name or""
-return fd:sub(1,fb)..fc
+local function maskName(fc,fd)
+local fe=eB.Name or""
+return fe:sub(1,fc)..fd
 end
 
-eH._window:Track(e1.MouseButton1Click:Connect(function()
-e0=not e0
-e2.Image=ez(e0 and"eye"or"eye-off")
-eI:Notify{
+eI._window:Track(e2.MouseButton1Click:Connect(function()
+e1=not e1
+e3.Image=ez(e1 and"eye"or"eye-off")
+eJ:Notify{
 Title="Leaderboard",
-Text=e0
+Text=e1
 and"Your avatar and more of your name will show on the leaderboard."
 or"Back to anonymous -- only 2 letters of your name will show.",
 Type="info",
@@ -8113,29 +8114,29 @@ Duration=3,
 }
 end))
 
-local fb=true
-eH._window:Track(function()fb=false end)
+local fc=true
+eI._window:Track(function()fc=false end)
 
 task.spawn(function()
-while fb and eZ.Parent do
-local fc=e0
+while fc and e_.Parent do
+local fd=e1
 and{UserId=eB.UserId,NamePreview=maskName(4,"*******")}
 or{UserId=0,NamePreview=maskName(2,"********")}
-eK:Heartbeat(fc)local
+eL:Heartbeat(fd)local
 
-fd=eK:GetLeaderboard(eM)
-if fb and eZ.Parent and fd then
-for fe,ff in ipairs(fd)do
-ff.IsYou=ff.Identity==eK.Identity
+fe=eL:GetLeaderboard(eN)
+if fc and e_.Parent and fe then
+for ff,fg in ipairs(fe)do
+fg.IsYou=fg.Identity==eL.Identity
 end
-renderRows(fd)
+renderRows(fe)
 end
-task.wait(eL)
+task.wait(eM)
 end
 end)
 
-reg{Title=eN,Frame=eZ,_handle=fa}
-return fa
+eH{Title=eO,Frame=e_,_handle=fb}
+return fb
 end end function a.an():typeof(__modImpl())local aa=a.cache.an if not aa then aa={c=__modImpl()}a.cache.an=aa end return aa.c end end do local function __modImpl()a.a()a.c()
 
 
@@ -14481,7 +14482,7 @@ local eG=a.ax()
 ab.claimUnload()
 
 local eH=aa
-eH.Build="r16"
+eH.Build="r17"
 
 eH.PreloadIcons=function(eI,eJ)
 return ac.PreloadIcons(eJ)
