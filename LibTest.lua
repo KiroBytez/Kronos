@@ -755,83 +755,111 @@ feedbackRow=feedbackRow,
 }end function a.e():typeof(__modImpl())local b=a.cache.e if not b then b={c=__modImpl()}a.cache.e=b end return b.c end end do local function __modImpl()
 
 
-local b=a.a()
 
-local c={
-home="rbxassetid://10723407389",
-settings="rbxassetid://10734950309",
-settings2="rbxassetid://10734950020",
-search="rbxassetid://10734943674",
-eye="rbxassetid://139722329189430",
-eyeoff="rbxassetid://10723346871",
-["eye-off"]="rbxassetid://112375739491233",
-shield="rbxassetid://10734951847",
-shieldcheck="rbxassetid://10734951367",
-key="rbxassetid://10723416652",
-keyboard="rbxassetid://10723416765",
-lock="rbxassetid://10723434711",
-unlock="rbxassetid://10747366027",
-menu="rbxassetid://10734887784",
-command="rbxassetid://10709811365",
-chevron="rbxassetid://10709790948",
-x="rbxassetid://10747384394",
-check="rbxassetid://10709790644",
-swords="rbxassetid://10734975692",
-sword="rbxassetid://10734975486",
-crosshair="rbxassetid://10709818534",
-target="rbxassetid://10734977012",
-gamepad="rbxassetid://10723395215",
-globe="rbxassetid://10723404337",
-user="rbxassetid://81899856845503",
-users="rbxassetid://10747373426",
-box="rbxassetid://10709782497",
-layers="rbxassetid://10723424505",
-dashboard="rbxassetid://10723424646",
-sliders="rbxassetid://10734963400",
-activity="rbxassetid://10709752035",
-bell="rbxassetid://10709775704",
-bellring="rbxassetid://10709775560",
-clock="rbxassetid://10709805144",
-ghost="rbxassetid://10723396107",
-palette="rbxassetid://10734910430",
-paintbrush="rbxassetid://10734910187",
-terminal="rbxassetid://10734982144",
-save="rbxassetid://10734941499",
-trash="rbxassetid://10747362241",
-gauge="rbxassetid://10723395708",
-star="rbxassetid://10734966248",
-crown="rbxassetid://90472614287057",
-medal="rbxassetid://112779948066117",
-plus="rbxassetid://118563428285930",
-minus="rbxassetid://120931250449806",
-send="rbxassetid://120131238507529",
-["refresh-cw"]="rbxassetid://76845925482586",
-["messages-square"]="rbxassetid://109110355978624",
-copy="rbxassetid://87942399647942",
-["trash-2"]="rbxassetid://79564839810840",
-["user-round"]="rbxassetid://122472562648438",
-flag="rbxassetid://80165228709790",
-bot="rbxassetid://112973706230253",
-square="rbxassetid://96489726265199",
-play="rbxassetid://80104466227462",
-["phosphor:star"]="rbxassetid://74964803556346",
-["material:star"]="rbxassetid://6031068423",
-wrench="rbxassetid://108764185264619",
-info="rbxassetid://10723415903",
-volume="rbxassetid://10747375679",
-volumex="rbxassetid://10747375880",
-move="rbxassetid://10734900011",
-history="rbxassetid://10723407335",
-mouse="rbxassetid://10734898355",
-}
+
+
+
+local b=a.a()
+local c=a.b()
 
 local d={
+Material="https://raw.githubusercontent.com/KiroBytez/Kronos/main/Assets/icons/MaterialIcons.luau",
+Lucide="https://raw.githubusercontent.com/KiroBytez/Kronos/main/Assets/icons/LucideIcons.luau",
+Phosphor="https://raw.githubusercontent.com/KiroBytez/Kronos/main/Assets/icons/Phosphor.luau",
+["Phosphor-Filled"]="https://raw.githubusercontent.com/KiroBytez/Kronos/main/Assets/icons/Phosphor%20Filled.luau",
+SF="https://raw.githubusercontent.com/KiroBytez/Kronos/main/Assets/icons/SFSymbols.luau",
+}
+
+local function reqFn()
+return c.hasFn"syn"and c.hasFn"syn".request
+or c.hasFn"http_request"
+or c.hasFn"request"
+end
+
+local function fetchText(e)
+local f=reqFn()
+if f then
+local g,h=pcall(f,{Url=e,Method="GET"})
+if g and h and type(h)=="table"and type(h.Body)=="string"and#h.Body>0 then
+return h.Body
+end
+end
+local g,h=pcall(function()return game:HttpGet(e)end)
+if g and type(h)=="string"and#h>0 then
+return h
+end
+return nil
+end
+
+local e={}
+local f={}
+
+local function LoadIconSource(g)
+if e[g]~=nil then
+return e[g]or nil
+end
+
+if f[g]then
+local h=os.clock()
+while f[g]and os.clock()-h<10 do
+task.wait()
+end
+return e[g]or nil
+end
+
+local h=d[g]
+if not h then
+e[g]=false
+return nil
+end
+
+f[g]=true
+local i,j=pcall(function()
+return loadstring(fetchText(h))()
+end)
+f[g]=nil
+
+if i and type(j)=="table"then
+e[g]=j
+return j
+end
+
+e[g]=false
+return nil
+end
+
+local function GetIcon(g,h)
+h=h or"Lucide"
+if type(h)=="string"then
+for i,j in pairs(d)do
+if string.lower(i)==string.lower(h)then h=i break end
+end
+end
+local i=LoadIconSource(h)
+local j=i and i[g]
+if not j then return""end
+return"rbxassetid://"..tostring(j)
+end
+
+local function PreloadIcons(g)
+for h,i in ipairs(g or{"Lucide"})do
+task.spawn(LoadIconSource,i)
+end
+return true
+end
+
+local g={
 main="dashboard",combat="swords",visuals="eye",esp="eye",
 aim="crosshair",aimbot="crosshair",movement="move",player="user",
 world="globe",misc="box",config="save",profiles="save",
 themes="paintbrush",theme="paintbrush",console="terminal",log="terminal",
-keybinds="keyboard",premium="crown",home="home",settings="settings",
+keybinds="keyboard",premium="crown",home="house",settings="settings",
 performance="gauge",notifications="bell",
+
+chevron="chevron-down",sliders="sliders-horizontal",
+dashboard="layout-dashboard",bellring="bell-ring",
+eyeoff="eye-off",settings2="settings-2",unlock="lock-open",
+volumex="volume-x",shieldcheck="shield-check",
 }
 
 local function defaultColor()
@@ -839,43 +867,61 @@ if b.Theme and b.Theme.Dim then return b.Theme.Dim end
 return Color3.fromRGB(142,150,171)
 end
 
-local function makeIcon(e,f,g)
-local h=string.lower(e or"")
-h=d[h]or h
-local i=c[h]
-g=g or defaultColor()
-if i then
-local j=Instance.new"ImageLabel"
-j.BackgroundTransparency=1
-j.Size=UDim2.fromOffset(f,f)
-j.Image=i
-j.ImageColor3=g
-j.ScaleType=Enum.ScaleType.Fit
-return j
+local function resolveAlias(h)
+for i=1,4 do
+local j=g[h]
+if not j or j==h then break end
+h=j
 end
-local j=Instance.new"TextLabel"
-j.BackgroundTransparency=1
-j.Size=UDim2.fromOffset(f,f)
-j.Font=Enum.Font.GothamBold
-j.TextSize=math.clamp(f-2,10,16)
-j.TextColor3=g
-j.Text=string.upper(string.sub(e or"?",1,1))
-return j
+return h
 end
 
-local function resolveIcon(e)
-if e==nil or e==""then return""end
-if type(e)~="string"then return e end
-if e:match"^%a[%w%+%-%.]*://"then return e end
-if e:match"^%d+$"then return"rbxassetid://"..e end
-local f=string.lower(e)
-if c[f]then return c[f]end local
-g, h=f:match"^(%a[%w%-]*):(.+)$"
-if h and c[h]then return c[h]end
-return""
+local function ResolveIcon(h)
+if h==nil or h==""then return""end
+if type(h)~="string"then return h end
+if h:match"^%a[%w%+%-%.]*://"then return h end
+if h:match"^%d+$"then return"rbxassetid://"..h end
+local i,j=h:match"^(%a[%w%-]*):(.+)$"
+if i and j then
+return GetIcon(resolveAlias(string.lower(j)),i)
+end
+return GetIcon(resolveAlias(string.lower(h)),"Lucide")
 end
 
-return{Icons=c,IconAlias=d,makeIcon=makeIcon,resolveIcon=resolveIcon}end function a.f():typeof(__modImpl())local b=a.cache.f if not b then b={c=__modImpl()}a.cache.f=b end return b.c end end do local function __modImpl()
+local function makeIcon(h,i,j)
+local k=ResolveIcon(h)
+j=j or defaultColor()
+if k and k~=""then
+local l=Instance.new"ImageLabel"
+l.BackgroundTransparency=1
+l.Size=UDim2.fromOffset(i,i)
+l.Image=k
+l.ImageColor3=j
+l.ScaleType=Enum.ScaleType.Fit
+return l
+end
+local l=Instance.new"TextLabel"
+l.BackgroundTransparency=1
+l.Size=UDim2.fromOffset(i,i)
+l.Font=Enum.Font.GothamBold
+l.TextSize=math.clamp(i-2,10,16)
+l.TextColor3=j
+l.Text=string.upper(string.sub(h or"?",1,1))
+return l
+end
+
+return{
+GetIcon=GetIcon,
+PreloadIcons=PreloadIcons,
+IconAlias=g,
+makeIcon=makeIcon,
+resolveIcon=ResolveIcon,
+
+Icons=setmetatable({},{__index=function(h,i)
+local j=LoadIconSource"Lucide"
+return j and j[i]or nil
+end}),
+}end function a.f():typeof(__modImpl())local b=a.cache.f if not b then b={c=__modImpl()}a.cache.f=b end return b.c end end do local function __modImpl()
 
 
 local b=a.a()
@@ -1022,101 +1068,205 @@ RefreshFonts=RefreshFonts,
 }end function a.h():typeof(__modImpl())local b=a.cache.h if not b then b={c=__modImpl()}a.cache.h=b end return b.c end end do local function __modImpl()
 
 
+return{
+Bg=Color3.fromRGB(3,4,8),
+Surface=Color3.fromRGB(8,11,18),
+Surface2=Color3.fromRGB(17,22,35),
+Text=Color3.fromRGB(255,255,255),
+Dim=Color3.fromRGB(120,130,150),
+Accent=Color3.fromRGB(91,140,255),
+Accent2=Color3.fromRGB(142,91,255),
+Success=Color3.fromRGB(52,211,153),
+Warn=Color3.fromRGB(251,191,36),
+Danger=Color3.fromRGB(248,113,113),
+}end function a.i():typeof(__modImpl())local b=a.cache.i if not b then b={c=__modImpl()}a.cache.i=b end return b.c end end do local function __modImpl()
+
+
+return{
+Bg=Color3.fromRGB(14,8,12),
+Surface=Color3.fromRGB(24,14,20),
+Surface2=Color3.fromRGB(36,22,30),
+Text=Color3.fromRGB(250,240,244),
+Dim=Color3.fromRGB(160,130,145),
+Accent=Color3.fromRGB(251,113,160),
+Accent2=Color3.fromRGB(244,63,94),
+Success=Color3.fromRGB(52,211,153),
+Warn=Color3.fromRGB(251,191,36),
+Danger=Color3.fromRGB(248,113,113),
+}end function a.j():typeof(__modImpl())local b=a.cache.j if not b then b={c=__modImpl()}a.cache.j=b end return b.c end end do local function __modImpl()
+
+
+return{
+Bg=Color3.fromRGB(8,10,20),
+Surface=Color3.fromRGB(14,16,32),
+Surface2=Color3.fromRGB(22,26,48),
+Text=Color3.fromRGB(238,240,252),
+Dim=Color3.fromRGB(135,142,175),
+Accent=Color3.fromRGB(129,140,248),
+Accent2=Color3.fromRGB(167,139,250),
+Success=Color3.fromRGB(52,211,153),
+Warn=Color3.fromRGB(251,191,36),
+Danger=Color3.fromRGB(248,113,113),
+}end function a.k():typeof(__modImpl())local b=a.cache.k if not b then b={c=__modImpl()}a.cache.k=b end return b.c end end do local function __modImpl()
+
+
+return{
+Bg=Color3.fromRGB(6,12,9),
+Surface=Color3.fromRGB(12,20,15),
+Surface2=Color3.fromRGB(20,32,24),
+Text=Color3.fromRGB(238,246,240),
+Dim=Color3.fromRGB(125,150,135),
+Accent=Color3.fromRGB(52,211,153),
+Accent2=Color3.fromRGB(110,231,183),
+Success=Color3.fromRGB(52,211,153),
+Warn=Color3.fromRGB(251,191,36),
+Danger=Color3.fromRGB(248,113,113),
+}end function a.l():typeof(__modImpl())local b=a.cache.l if not b then b={c=__modImpl()}a.cache.l=b end return b.c end end do local function __modImpl()
+
+
+return{
+Bg=Color3.fromRGB(13,10,6),
+Surface=Color3.fromRGB(22,17,10),
+Surface2=Color3.fromRGB(34,27,16),
+Text=Color3.fromRGB(250,244,232),
+Dim=Color3.fromRGB(160,142,115),
+Accent=Color3.fromRGB(251,191,36),
+Accent2=Color3.fromRGB(249,115,22),
+Success=Color3.fromRGB(52,211,153),
+Warn=Color3.fromRGB(251,191,36),
+Danger=Color3.fromRGB(248,113,113),
+}end function a.m():typeof(__modImpl())local b=a.cache.m if not b then b={c=__modImpl()}a.cache.m=b end return b.c end end do local function __modImpl()
+
+
+return{
+Bg=Color3.fromRGB(5,11,15),
+Surface=Color3.fromRGB(10,19,26),
+Surface2=Color3.fromRGB(17,30,40),
+Text=Color3.fromRGB(236,246,250),
+Dim=Color3.fromRGB(120,150,165),
+Accent=Color3.fromRGB(34,211,238),
+Accent2=Color3.fromRGB(59,130,246),
+Success=Color3.fromRGB(52,211,153),
+Warn=Color3.fromRGB(251,191,36),
+Danger=Color3.fromRGB(248,113,113),
+}end function a.n():typeof(__modImpl())local b=a.cache.n if not b then b={c=__modImpl()}a.cache.n=b end return b.c end end do local function __modImpl()
+
+
+return{
+Bg=Color3.fromRGB(13,6,8),
+Surface=Color3.fromRGB(22,11,14),
+Surface2=Color3.fromRGB(34,18,22),
+Text=Color3.fromRGB(250,238,240),
+Dim=Color3.fromRGB(165,128,134),
+Accent=Color3.fromRGB(248,113,113),
+Accent2=Color3.fromRGB(220,38,38),
+Success=Color3.fromRGB(52,211,153),
+Warn=Color3.fromRGB(251,191,36),
+Danger=Color3.fromRGB(248,113,113),
+}end function a.o():typeof(__modImpl())local b=a.cache.o if not b then b={c=__modImpl()}a.cache.o=b end return b.c end end do local function __modImpl()
+
+
+return{
+Bg=Color3.fromRGB(10,10,14),
+Surface=Color3.fromRGB(18,18,26),
+Surface2=Color3.fromRGB(28,28,40),
+Text=Color3.fromRGB(242,242,248),
+Dim=Color3.fromRGB(140,140,160),
+Accent=Color3.fromRGB(167,139,250),
+Accent2=Color3.fromRGB(103,232,249),
+Success=Color3.fromRGB(52,211,153),
+Warn=Color3.fromRGB(251,191,36),
+Danger=Color3.fromRGB(248,113,113),
+}end function a.p():typeof(__modImpl())local b=a.cache.p if not b then b={c=__modImpl()}a.cache.p=b end return b.c end end do local function __modImpl()
+
+
+return{
+Bg=Color3.fromRGB(10,8,4),
+Surface=Color3.fromRGB(18,15,8),
+Surface2=Color3.fromRGB(30,25,12),
+Text=Color3.fromRGB(255,246,220),
+Dim=Color3.fromRGB(165,150,105),
+Accent=Color3.fromRGB(254,231,21),
+Accent2=Color3.fromRGB(255,45,120),
+Success=Color3.fromRGB(52,211,153),
+Warn=Color3.fromRGB(251,191,36),
+Danger=Color3.fromRGB(248,113,113),
+}end function a.q():typeof(__modImpl())local b=a.cache.q if not b then b={c=__modImpl()}a.cache.q=b end return b.c end end do local function __modImpl()
+
+
+return{
+Bg=Color3.fromRGB(2,6,3),
+Surface=Color3.fromRGB(4,12,6),
+Surface2=Color3.fromRGB(8,22,11),
+Text=Color3.fromRGB(200,255,210),
+Dim=Color3.fromRGB(90,140,100),
+Accent=Color3.fromRGB(57,255,120),
+Accent2=Color3.fromRGB(20,200,90),
+Success=Color3.fromRGB(57,255,120),
+Warn=Color3.fromRGB(251,191,36),
+Danger=Color3.fromRGB(248,113,113),
+}end function a.r():typeof(__modImpl())local b=a.cache.r if not b then b={c=__modImpl()}a.cache.r=b end return b.c end end do local function __modImpl()
+
+
+return{
+Bg=Color3.fromRGB(30,31,34),
+Surface=Color3.fromRGB(43,45,49),
+Surface2=Color3.fromRGB(49,51,56),
+Text=Color3.fromRGB(255,255,255),
+Dim=Color3.fromRGB(148,155,164),
+Accent=Color3.fromRGB(88,101,242),
+Accent2=Color3.fromRGB(235,69,158),
+Success=Color3.fromRGB(87,242,135),
+Warn=Color3.fromRGB(254,231,92),
+Danger=Color3.fromRGB(237,66,69),
+}end function a.s():typeof(__modImpl())local b=a.cache.s if not b then b={c=__modImpl()}a.cache.s=b end return b.c end end do local function __modImpl()
+
+
+return{
+Bg=Color3.fromRGB(0,0,0),
+Surface=Color3.fromRGB(12,12,12),
+Surface2=Color3.fromRGB(26,26,26),
+Text=Color3.fromRGB(255,255,255),
+Dim=Color3.fromRGB(140,140,140),
+Accent=Color3.fromRGB(240,240,240),
+Accent2=Color3.fromRGB(160,160,160),
+Success=Color3.fromRGB(220,220,220),
+Warn=Color3.fromRGB(180,180,180),
+Danger=Color3.fromRGB(120,120,120),
+}end function a.t():typeof(__modImpl())local b=a.cache.t if not b then b={c=__modImpl()}a.cache.t=b end return b.c end end do local function __modImpl()
+
+
+return{
+Bg=Color3.fromRGB(4,4,7),
+Surface=Color3.fromRGB(10,10,15),
+Surface2=Color3.fromRGB(20,21,30),
+Text=Color3.fromRGB(255,255,255),
+Dim=Color3.fromRGB(150,155,172),
+Accent=Color3.fromRGB(232,236,245),
+Accent2=Color3.fromRGB(148,156,178),
+OnAccent=Color3.fromRGB(11,13,18),
+Success=Color3.fromRGB(52,211,153),
+Warn=Color3.fromRGB(251,191,36),
+Danger=Color3.fromRGB(248,113,113),
+}end function a.u():typeof(__modImpl())local b=a.cache.u if not b then b={c=__modImpl()}a.cache.u=b end return b.c end end do local function __modImpl()
+
+
 local b=a.a()
 
 b.Themes={
-Midnight={
-Bg=Color3.fromRGB(3,4,8),Surface=Color3.fromRGB(8,11,18),
-Surface2=Color3.fromRGB(17,22,35),Text=Color3.fromRGB(255,255,255),
-Dim=Color3.fromRGB(120,130,150),Accent=Color3.fromRGB(91,140,255),
-Accent2=Color3.fromRGB(142,91,255),Success=Color3.fromRGB(52,211,153),
-Warn=Color3.fromRGB(251,191,36),Danger=Color3.fromRGB(248,113,113),
-},
-Rose={
-Bg=Color3.fromRGB(14,8,12),Surface=Color3.fromRGB(24,14,20),
-Surface2=Color3.fromRGB(36,22,30),Text=Color3.fromRGB(250,240,244),
-Dim=Color3.fromRGB(160,130,145),Accent=Color3.fromRGB(251,113,160),
-Accent2=Color3.fromRGB(244,63,94),Success=Color3.fromRGB(52,211,153),
-Warn=Color3.fromRGB(251,191,36),Danger=Color3.fromRGB(248,113,113),
-},
-Indigo={
-Bg=Color3.fromRGB(8,10,20),Surface=Color3.fromRGB(14,16,32),
-Surface2=Color3.fromRGB(22,26,48),Text=Color3.fromRGB(238,240,252),
-Dim=Color3.fromRGB(135,142,175),Accent=Color3.fromRGB(129,140,248),
-Accent2=Color3.fromRGB(167,139,250),Success=Color3.fromRGB(52,211,153),
-Warn=Color3.fromRGB(251,191,36),Danger=Color3.fromRGB(248,113,113),
-},
-Forest={
-Bg=Color3.fromRGB(6,12,9),Surface=Color3.fromRGB(12,20,15),
-Surface2=Color3.fromRGB(20,32,24),Text=Color3.fromRGB(238,246,240),
-Dim=Color3.fromRGB(125,150,135),Accent=Color3.fromRGB(52,211,153),
-Accent2=Color3.fromRGB(110,231,183),Success=Color3.fromRGB(52,211,153),
-Warn=Color3.fromRGB(251,191,36),Danger=Color3.fromRGB(248,113,113),
-},
-Amber={
-Bg=Color3.fromRGB(13,10,6),Surface=Color3.fromRGB(22,17,10),
-Surface2=Color3.fromRGB(34,27,16),Text=Color3.fromRGB(250,244,232),
-Dim=Color3.fromRGB(160,142,115),Accent=Color3.fromRGB(251,191,36),
-Accent2=Color3.fromRGB(249,115,22),Success=Color3.fromRGB(52,211,153),
-Warn=Color3.fromRGB(251,191,36),Danger=Color3.fromRGB(248,113,113),
-},
-Ocean={
-Bg=Color3.fromRGB(5,11,15),Surface=Color3.fromRGB(10,19,26),
-Surface2=Color3.fromRGB(17,30,40),Text=Color3.fromRGB(236,246,250),
-Dim=Color3.fromRGB(120,150,165),Accent=Color3.fromRGB(34,211,238),
-Accent2=Color3.fromRGB(59,130,246),Success=Color3.fromRGB(52,211,153),
-Warn=Color3.fromRGB(251,191,36),Danger=Color3.fromRGB(248,113,113),
-},
-Crimson={
-Bg=Color3.fromRGB(13,6,8),Surface=Color3.fromRGB(22,11,14),
-Surface2=Color3.fromRGB(34,18,22),Text=Color3.fromRGB(250,238,240),
-Dim=Color3.fromRGB(165,128,134),Accent=Color3.fromRGB(248,113,113),
-Accent2=Color3.fromRGB(220,38,38),Success=Color3.fromRGB(52,211,153),
-Warn=Color3.fromRGB(251,191,36),Danger=Color3.fromRGB(248,113,113),
-},
-Ghost={
-Bg=Color3.fromRGB(10,10,14),Surface=Color3.fromRGB(18,18,26),
-Surface2=Color3.fromRGB(28,28,40),Text=Color3.fromRGB(242,242,248),
-Dim=Color3.fromRGB(140,140,160),Accent=Color3.fromRGB(167,139,250),
-Accent2=Color3.fromRGB(103,232,249),Success=Color3.fromRGB(52,211,153),
-Warn=Color3.fromRGB(251,191,36),Danger=Color3.fromRGB(248,113,113),
-},
-Cyberpunk={
-Bg=Color3.fromRGB(10,8,4),Surface=Color3.fromRGB(18,15,8),
-Surface2=Color3.fromRGB(30,25,12),Text=Color3.fromRGB(255,246,220),
-Dim=Color3.fromRGB(165,150,105),Accent=Color3.fromRGB(254,231,21),
-Accent2=Color3.fromRGB(255,45,120),Success=Color3.fromRGB(52,211,153),
-Warn=Color3.fromRGB(251,191,36),Danger=Color3.fromRGB(248,113,113),
-},
-Terminal={
-Bg=Color3.fromRGB(2,6,3),Surface=Color3.fromRGB(4,12,6),
-Surface2=Color3.fromRGB(8,22,11),Text=Color3.fromRGB(200,255,210),
-Dim=Color3.fromRGB(90,140,100),Accent=Color3.fromRGB(57,255,120),
-Accent2=Color3.fromRGB(20,200,90),Success=Color3.fromRGB(57,255,120),
-Warn=Color3.fromRGB(251,191,36),Danger=Color3.fromRGB(248,113,113),
-},
-Discord={
-Bg=Color3.fromRGB(30,31,34),Surface=Color3.fromRGB(43,45,49),
-Surface2=Color3.fromRGB(49,51,56),Text=Color3.fromRGB(255,255,255),
-Dim=Color3.fromRGB(148,155,164),Accent=Color3.fromRGB(88,101,242),
-Accent2=Color3.fromRGB(235,69,158),Success=Color3.fromRGB(87,242,135),
-Warn=Color3.fromRGB(254,231,92),Danger=Color3.fromRGB(237,66,69),
-},
-Mono={
-Bg=Color3.fromRGB(0,0,0),Surface=Color3.fromRGB(12,12,12),
-Surface2=Color3.fromRGB(26,26,26),Text=Color3.fromRGB(255,255,255),
-Dim=Color3.fromRGB(140,140,140),Accent=Color3.fromRGB(240,240,240),
-Accent2=Color3.fromRGB(160,160,160),Success=Color3.fromRGB(220,220,220),
-Warn=Color3.fromRGB(180,180,180),Danger=Color3.fromRGB(120,120,120),
-},
-Kronos={
-Bg=Color3.fromRGB(4,4,7),Surface=Color3.fromRGB(10,10,15),
-Surface2=Color3.fromRGB(20,21,30),Text=Color3.fromRGB(255,255,255),
-Dim=Color3.fromRGB(150,155,172),Accent=Color3.fromRGB(232,236,245),
-Accent2=Color3.fromRGB(148,156,178),OnAccent=Color3.fromRGB(11,13,18),
-Success=Color3.fromRGB(52,211,153),Warn=Color3.fromRGB(251,191,36),
-Danger=Color3.fromRGB(248,113,113),
-},
+Midnight=a.i(),
+Rose=a.j(),
+Indigo=a.k(),
+Forest=a.l(),
+Amber=a.m(),
+Ocean=a.n(),
+Crimson=a.o(),
+Ghost=a.p(),
+Cyberpunk=a.q(),
+Terminal=a.r(),
+Discord=a.s(),
+Mono=a.t(),
+Kronos=a.u(),
 }
 
 if not b.Theme then
@@ -1207,7 +1357,7 @@ oa=oa,
 agrad=agrad,
 SetAccent=SetAccent,
 SetSharp=SetSharp,
-}end function a.i():typeof(__modImpl())local b=a.cache.i if not b then b={c=__modImpl()}a.cache.i=b end return b.c end end do local function __modImpl()
+}end function a.v():typeof(__modImpl())local b=a.cache.v if not b then b={c=__modImpl()}a.cache.v=b end return b.c end end do local function __modImpl()
 
 
 
@@ -1228,7 +1378,7 @@ local function ToggleAcrylic(c)
 SetAcrylic(c)
 end
 
-return{SetAcrylic=SetAcrylic,ToggleAcrylic=ToggleAcrylic}end function a.j():typeof(__modImpl())local b=a.cache.j if not b then b={c=__modImpl()}a.cache.j=b end return b.c end end do local function __modImpl()
+return{SetAcrylic=SetAcrylic,ToggleAcrylic=ToggleAcrylic}end function a.w():typeof(__modImpl())local b=a.cache.w if not b then b={c=__modImpl()}a.cache.w=b end return b.c end end do local function __modImpl()
 
 
 
@@ -1800,7 +1950,7 @@ SanitizeFeedbackText=SanitizeFeedbackText,
 GetExecutorHwid=GetExecutorHwid,
 SendFeedbackWebhook=SendFeedbackWebhook,
 SendChatToDiscord=SendChatToDiscord,
-}end function a.k():typeof(__modImpl())local b=a.cache.k if not b then b={c=__modImpl()}a.cache.k=b end return b.c end end do local function __modImpl()
+}end function a.x():typeof(__modImpl())local b=a.cache.x if not b then b={c=__modImpl()}a.cache.x=b end return b.c end end do local function __modImpl()
 
 
 
@@ -1910,7 +2060,7 @@ GetExecutorName=GetExecutorName,
 BumpRunCount=BumpRunCount,
 FormatClock=FormatClock,
 GetRegion=GetRegion,
-}end function a.l():typeof(__modImpl())local b=a.cache.l if not b then b={c=__modImpl()}a.cache.l=b end return b.c end end do local function __modImpl()
+}end function a.y():typeof(__modImpl())local b=a.cache.y if not b then b={c=__modImpl()}a.cache.y=b end return b.c end end do local function __modImpl()
 
 
 
@@ -1918,7 +2068,7 @@ GetRegion=GetRegion,
 
 local b=a.a()
 local c=a.b()
-local d=a.l()
+local d=a.y()
 
 local e=c.cloneref_check(game:GetService"HttpService")
 local f=c.cloneref_check(game:GetService"Players")
@@ -2438,7 +2588,7 @@ end
 return z
 end
 
-return{create=create}end function a.m():typeof(__modImpl())local b=a.cache.m if not b then b={c=__modImpl()}a.cache.m=b end return b.c end end do local function __modImpl()
+return{create=create}end function a.z():typeof(__modImpl())local b=a.cache.z if not b then b={c=__modImpl()}a.cache.z=b end return b.c end end do local function __modImpl()
 
 
 local b=a.a()
@@ -2650,14 +2800,14 @@ applyData(f,g)
 return true
 end
 
-return{Save=Save,Load=Load,Export=Export,Import=Import,AutoSave=AutoSave,Snapshot=Snapshot,Restore=Restore,GetFlags=GetFlags,ApplyTable=ApplyTable}end function a.n():typeof(__modImpl())local b=a.cache.n if not b then b={c=__modImpl()}a.cache.n=b end return b.c end end do local function __modImpl()
+return{Save=Save,Load=Load,Export=Export,Import=Import,AutoSave=AutoSave,Snapshot=Snapshot,Restore=Restore,GetFlags=GetFlags,ApplyTable=ApplyTable}end function a.A():typeof(__modImpl())local b=a.cache.A if not b then b={c=__modImpl()}a.cache.A=b end return b.c end end do local function __modImpl()
 
 
 
 local b=a.a()
 local c=a.c()
 local d=a.e()
-local e=a.f()a.i()a.g()
+local e=a.f()a.v()a.g()
 
 
 local f=a.b()
@@ -2733,7 +2883,7 @@ F=#w.Elements
 H._refreshSection=apply
 if not B then apply()end
 return E
-end end function a.o():typeof(__modImpl())local b=a.cache.o if not b then b={c=__modImpl()}a.cache.o=b end return b.c end end do local function __modImpl()
+end end function a.B():typeof(__modImpl())local b=a.cache.B if not b then b={c=__modImpl()}a.cache.B=b end return b.c end end do local function __modImpl()
 
 
 
@@ -2741,7 +2891,7 @@ end end function a.o():typeof(__modImpl())local b=a.cache.o if not b then b={c=_
 local b=a.a()
 local c=a.c()
 local d=a.e()
-local e=a.f()a.i()a.g()
+local e=a.f()a.v()a.g()
 
 
 local f=a.b()
@@ -2774,7 +2924,7 @@ K.Size=UDim2.new(1,-4,0,22)K.Font=Enum.Font.Gotham K.TextSize=12
 K.TextXAlignment=0 K.TextWrapped=true K.Text=C.Text or"Label"K.Parent=B.getParent()
 g:_tag(K,"TextColor3","Dim")
 return F{Title=C.Text,Frame=K,_handle=K}
-end end function a.p():typeof(__modImpl())local b=a.cache.p if not b then b={c=__modImpl()}a.cache.p=b end return b.c end end do local function __modImpl()
+end end function a.C():typeof(__modImpl())local b=a.cache.C if not b then b={c=__modImpl()}a.cache.C=b end return b.c end end do local function __modImpl()
 
 
 
@@ -2782,7 +2932,7 @@ end end function a.p():typeof(__modImpl())local b=a.cache.p if not b then b={c=_
 local b=a.a()
 local c=a.c()
 local d=a.e()
-local e=a.f()a.i()a.g()
+local e=a.f()a.v()a.g()
 
 
 local f=a.b()
@@ -2840,7 +2990,7 @@ else
 hair(0,0,1)
 end
 return T{Title=Q.Text,Frame=Y,_handle=Y,_break=true}
-end end function a.q():typeof(__modImpl())local aa=a.cache.q if not aa then aa={c=__modImpl()}a.cache.q=aa end return aa.c end end do local function __modImpl()
+end end function a.D():typeof(__modImpl())local aa=a.cache.D if not aa then aa={c=__modImpl()}a.cache.D=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -2848,7 +2998,7 @@ end end function a.q():typeof(__modImpl())local aa=a.cache.q if not aa then aa={
 local aa=a.a()
 local ab=a.c()
 local b=a.e()
-local c=a.f()a.i()a.g()
+local c=a.f()a.v()a.g()
 
 
 local d=a.b()
@@ -2910,7 +3060,7 @@ end
 function as.Get(at)return am end
 as:Set(am)
 return ag{Title=ad.Title,Frame=an,_handle=as}
-end end function a.r():typeof(__modImpl())local aa=a.cache.r if not aa then aa={c=__modImpl()}a.cache.r=aa end return aa.c end end do local function __modImpl()
+end end function a.E():typeof(__modImpl())local aa=a.cache.E if not aa then aa={c=__modImpl()}a.cache.E=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -2918,7 +3068,7 @@ end end function a.r():typeof(__modImpl())local aa=a.cache.r if not aa then aa={
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -2994,7 +3144,7 @@ end
 _.MouseButton1Click:Connect(function()az:Clear()end)
 for aA,aB in ipairs(at.Lines or{})do az:Add(aB)end
 return b{Title=at.Title,Frame=g,_handle=az}
-end end function a.s():typeof(__modImpl())local aa=a.cache.s if not aa then aa={c=__modImpl()}a.cache.s=aa end return aa.c end end do local function __modImpl()
+end end function a.F():typeof(__modImpl())local aa=a.cache.F if not aa then aa={c=__modImpl()}a.cache.F=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -3004,7 +3154,7 @@ end end function a.s():typeof(__modImpl())local aa=a.cache.s if not aa then aa={
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -3211,14 +3361,14 @@ aV._go=function()
 af:_bumpRecent(Q.Title,b.Title or"Button",fireBtn)aU()
 end
 return g(aV)
-end end function a.t():typeof(__modImpl())local aa=a.cache.t if not aa then aa={c=__modImpl()}a.cache.t=aa end return aa.c end end do local function __modImpl()
+end end function a.G():typeof(__modImpl())local aa=a.cache.G if not aa then aa={c=__modImpl()}a.cache.G=aa end return aa.c end end do local function __modImpl()
 
 
 
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -3339,7 +3489,7 @@ f._go=function()
 af:_bumpRecent(aJ.Title,aE.Title or"Toggle",fireTg)fireTg()
 end
 return aI(f)
-end end function a.u():typeof(__modImpl())local aa=a.cache.u if not aa then aa={c=__modImpl()}a.cache.u=aa end return aa.c end end do local function __modImpl()
+end end function a.H():typeof(__modImpl())local aa=a.cache.H if not aa then aa={c=__modImpl()}a.cache.H=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -3347,7 +3497,7 @@ end end function a.u():typeof(__modImpl())local aa=a.cache.u if not aa then aa={
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -3479,7 +3629,7 @@ end)
 local a1={Title=aJ.Title,Frame=aW,Value=aV,Flag=aJ.Flag,_handle=a0,
 _set=function(a1,a2)a0:Set(a1,a2)end}
 return aM(a1)
-end end function a.v():typeof(__modImpl())local aa=a.cache.v if not aa then aa={c=__modImpl()}a.cache.v=aa end return aa.c end end do local function __modImpl()
+end end function a.I():typeof(__modImpl())local aa=a.cache.I if not aa then aa={c=__modImpl()}a.cache.I=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -3487,7 +3637,7 @@ end end function a.v():typeof(__modImpl())local aa=a.cache.v if not aa then aa={
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -3549,7 +3699,7 @@ ac.applyLock(aU,aT)
 end
 function aW.GetLocked(aX)return aT end
 return aN{Title=aK.Title,Frame=aU,_handle=aW}
-end end function a.w():typeof(__modImpl())local aa=a.cache.w if not aa then aa={c=__modImpl()}a.cache.w=aa end return aa.c end end do local function __modImpl()
+end end function a.J():typeof(__modImpl())local aa=a.cache.J if not aa then aa={c=__modImpl()}a.cache.J=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -3560,7 +3710,7 @@ local aa=a.a()
 local ab=a.c()
 local ac=a.e()
 local ad=a.f()
-local ae=a.i()a.g()
+local ae=a.v()a.g()
 
 local af=a.b()
 local am=a.d()
@@ -3771,14 +3921,14 @@ end)
 local bf={Title=aX.Title,Frame=_,Value=Q,Flag=aX.Flag,_handle=be,
 _set=function(bf,bg)be:Set(bf,bg)end}
 return a_(bf)
-end end function a.x():typeof(__modImpl())local aa=a.cache.x if not aa then aa={c=__modImpl()}a.cache.x=aa end return aa.c end end do local function __modImpl()
+end end function a.K():typeof(__modImpl())local aa=a.cache.K if not aa then aa={c=__modImpl()}a.cache.K=aa end return aa.c end end do local function __modImpl()
 
 
 
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -3867,7 +4017,7 @@ task.defer(function()pcall(aY._window._kbPanelRefresh)end)
 end
 end
 return aX{Title=aU.Title,Frame=a4,_handle=a9}
-end end function a.y():typeof(__modImpl())local aa=a.cache.y if not aa then aa={c=__modImpl()}a.cache.y=aa end return aa.c end end do local function __modImpl()
+end end function a.L():typeof(__modImpl())local aa=a.cache.L if not aa then aa={c=__modImpl()}a.cache.L=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -3877,7 +4027,7 @@ end end function a.y():typeof(__modImpl())local aa=a.cache.y if not aa then aa={
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -4509,14 +4659,14 @@ end)
 local bQ={Title=bb.Title,Frame=Q,Value=g,Flag=bb.Flag,_handle=bo,
 _set=function(bQ,bR)bo:Set(bQ,bR)end}
 return be(bQ)
-end end function a.z():typeof(__modImpl())local aa=a.cache.z if not aa then aa={c=__modImpl()}a.cache.z=aa end return aa.c end end do local function __modImpl()
+end end function a.M():typeof(__modImpl())local aa=a.cache.M if not aa then aa={c=__modImpl()}a.cache.M=aa end return aa.c end end do local function __modImpl()
 
 
 
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -4640,7 +4790,7 @@ ba:SaveConfig(bj)refresh()
 end)
 refresh()
 return a6{Title=a2.Title or"Profiles",Frame=bb,_handle={Refresh=refresh}}
-end end function a.A():typeof(__modImpl())local aa=a.cache.A if not aa then aa={c=__modImpl()}a.cache.A=aa end return aa.c end end do local function __modImpl()
+end end function a.N():typeof(__modImpl())local aa=a.cache.N if not aa then aa={c=__modImpl()}a.cache.N=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -4648,7 +4798,7 @@ end end function a.A():typeof(__modImpl())local aa=a.cache.A if not aa then aa={
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -4725,7 +4875,7 @@ task.delay(#bd.Elements*0.025,function()
 aU(bh,aT.Med,{BackgroundTransparency=0})
 end)
 return bc{Title=b.Title,Frame=bh,_handle=bh}
-end end function a.B():typeof(__modImpl())local aa=a.cache.B if not aa then aa={c=__modImpl()}a.cache.B=aa end return aa.c end end do local function __modImpl()
+end end function a.O():typeof(__modImpl())local aa=a.cache.O if not aa then aa={c=__modImpl()}a.cache.O=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -4733,7 +4883,7 @@ end end function a.B():typeof(__modImpl())local aa=a.cache.B if not aa then aa={
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -4789,7 +4939,7 @@ af:_tag(bv,"TextColor3","Dim")
 bq[bs.Label or br]={Set=function(bw,bx)bu.Text=tostring(bx)end,Frame=bt}
 end
 return bg{Title=bc.Title or"Stats",Frame=bo,_handle=bq}
-end end function a.C():typeof(__modImpl())local aa=a.cache.C if not aa then aa={c=__modImpl()}a.cache.C=aa end return aa.c end end do local function __modImpl()
+end end function a.P():typeof(__modImpl())local aa=a.cache.P if not aa then aa={c=__modImpl()}a.cache.P=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -4797,7 +4947,7 @@ end end function a.C():typeof(__modImpl())local aa=a.cache.C if not aa then aa={
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -4856,7 +5006,7 @@ end
 end
 end)
 return br{Title=bo.Title or"Loading",Frame=bx,_handle=bx}
-end end function a.D():typeof(__modImpl())local aa=a.cache.D if not aa then aa={c=__modImpl()}a.cache.D=aa end return aa.c end end do local function __modImpl()
+end end function a.Q():typeof(__modImpl())local aa=a.cache.Q if not aa then aa={c=__modImpl()}a.cache.Q=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -4864,7 +5014,7 @@ end end function a.D():typeof(__modImpl())local aa=a.cache.D if not aa then aa={
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -4923,7 +5073,7 @@ af:_tag(bL,"BackgroundColor3",bI[bJ]or"Success")
 bM.Text=string.upper(bJ)
 end
 return bD{Title=bA.Title,Frame=bK,_handle=bN}
-end end function a.E():typeof(__modImpl())local aa=a.cache.E if not aa then aa={c=__modImpl()}a.cache.E=aa end return aa.c end end do local function __modImpl()
+end end function a.R():typeof(__modImpl())local aa=a.cache.R if not aa then aa={c=__modImpl()}a.cache.R=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -4931,7 +5081,7 @@ end end function a.E():typeof(__modImpl())local aa=a.cache.E if not aa then aa={
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -4976,7 +5126,7 @@ bV.Font=Enum.Font.Gotham bV.TextSize=12 bV.TextWrapped=true
 bV.Text=bK.Hint or"This section is empty."bV.Parent=bS
 af:_tag(bV,"TextColor3","Dim")
 return bN{Title=bK.Title,Frame=bS,_handle=bS}
-end end function a.F():typeof(__modImpl())local aa=a.cache.F if not aa then aa={c=__modImpl()}a.cache.F=aa end return aa.c end end do local function __modImpl()
+end end function a.S():typeof(__modImpl())local aa=a.cache.S if not aa then aa={c=__modImpl()}a.cache.S=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -4984,7 +5134,7 @@ end end function a.F():typeof(__modImpl())local aa=a.cache.F if not aa then aa={
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -5046,7 +5196,7 @@ task.delay(#b_.Elements*0.025,function()
 bI(b3,bH.Med,{BackgroundTransparency=0})
 end)
 return bZ{Title=bW.Name,Frame=b3,_handle=b3}
-end end function a.G():typeof(__modImpl())local aa=a.cache.G if not aa then aa={c=__modImpl()}a.cache.G=aa end return aa.c end end do local function __modImpl()
+end end function a.T():typeof(__modImpl())local aa=a.cache.T if not aa then aa={c=__modImpl()}a.cache.T=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -5054,7 +5204,7 @@ end end function a.G():typeof(__modImpl())local aa=a.cache.G if not aa then aa={
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -5151,7 +5301,7 @@ af:_sfx"Click"bQ(ck.Callback)
 end)
 end
 return b5{Title=b2.Title or"Scripts",Frame=cc,_handle=cc}
-end end function a.H():typeof(__modImpl())local aa=a.cache.H if not aa then aa={c=__modImpl()}a.cache.H=aa end return aa.c end end do local function __modImpl()
+end end function a.U():typeof(__modImpl())local aa=a.cache.U if not aa then aa={c=__modImpl()}a.cache.U=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -5159,7 +5309,7 @@ end end function a.H():typeof(__modImpl())local aa=a.cache.H if not aa then aa={
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -5231,7 +5381,7 @@ af._recentRefresh=af._recentRefresh or{}
 table.insert(af._recentRefresh,refresh)
 refresh()
 return cb{Title=b8.Title or"Recent",Frame=ck,_handle={Refresh=refresh}}
-end end function a.I():typeof(__modImpl())local aa=a.cache.I if not aa then aa={c=__modImpl()}a.cache.I=aa end return aa.c end end do local function __modImpl()
+end end function a.V():typeof(__modImpl())local aa=a.cache.V if not aa then aa={c=__modImpl()}a.cache.V=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -5241,7 +5391,7 @@ end end function a.I():typeof(__modImpl())local aa=a.cache.I if not aa then aa={
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -5454,7 +5604,7 @@ end
 if typeof(cW)=="Color3"then g=cW paint()end
 end
 return cu{Title=cr.Title or"Rig Preview",Frame=cE,_handle=cS}
-end end function a.J():typeof(__modImpl())local aa=a.cache.J if not aa then aa={c=__modImpl()}a.cache.J=aa end return aa.c end end do local function __modImpl()
+end end function a.W():typeof(__modImpl())local aa=a.cache.W if not aa then aa={c=__modImpl()}a.cache.W=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -5462,7 +5612,7 @@ end end function a.J():typeof(__modImpl())local aa=a.cache.J if not aa then aa={
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -5538,7 +5688,7 @@ paint()
 local cO={Title=cy.Title,Frame=cJ,Value=cI,Flag=cy.Flag,_handle=cM,
 _set=function(cO,cP)cM:Set(cO,cP)end}
 return cB(cO)
-end end function a.K():typeof(__modImpl())local aa=a.cache.K if not aa then aa={c=__modImpl()}a.cache.K=aa end return aa.c end end do local function __modImpl()
+end end function a.X():typeof(__modImpl())local aa=a.cache.X if not aa then aa={c=__modImpl()}a.cache.X=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -5546,7 +5696,7 @@ end end function a.K():typeof(__modImpl())local aa=a.cache.K if not aa then aa={
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -5624,7 +5774,7 @@ paint()
 local cU={Title=cE.Title,Frame=cQ,Value=cP,Flag=cE.Flag,_handle=cS,
 _set=function(cU,cV)cS:Set(cU,cV)end}
 return cI(cU)
-end end function a.L():typeof(__modImpl())local aa=a.cache.L if not aa then aa={c=__modImpl()}a.cache.L=aa end return aa.c end end do local function __modImpl()
+end end function a.Y():typeof(__modImpl())local aa=a.cache.Y if not aa then aa={c=__modImpl()}a.cache.Y=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -5632,7 +5782,7 @@ end end function a.L():typeof(__modImpl())local aa=a.cache.L if not aa then aa={
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -5737,7 +5887,7 @@ end)
 local c7={Title=cR.Title,Frame=c_,Value={Q,_},Flag=cR.Flag,_handle=c5,
 _set=function(c7,c8)c5:Set(c7,c8)end}
 return cU(c7)
-end end function a.M():typeof(__modImpl())local aa=a.cache.M if not aa then aa={c=__modImpl()}a.cache.M=aa end return aa.c end end do local function __modImpl()
+end end function a.Z():typeof(__modImpl())local aa=a.cache.Z if not aa then aa={c=__modImpl()}a.cache.Z=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -5745,7 +5895,7 @@ end end function a.M():typeof(__modImpl())local aa=a.cache.M if not aa then aa={
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -5832,7 +5982,7 @@ function db.Get(dc)return c5 end
 db.Frame=c6
 task.defer(draw)
 return cZ{Title=cU.Title,Frame=c6,_handle=db}
-end end function a.N():typeof(__modImpl())local aa=a.cache.N if not aa then aa={c=__modImpl()}a.cache.N=aa end return aa.c end end do local function __modImpl()
+end end function a._():typeof(__modImpl())local aa=a.cache._ if not aa then aa={c=__modImpl()}a.cache._=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -5840,7 +5990,7 @@ end end function a.N():typeof(__modImpl())local aa=a.cache.N if not aa then aa={
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -5879,7 +6029,7 @@ f.TextXAlignment=0 f.TextYAlignment=0 f.TextWrapped=true
 f.RichText=true f.Text=c4(c7.Text or"")f.Parent=c6.getParent()
 af:_tag(f,"TextColor3","Text")
 return da{Title=c7.Title or"Text",Frame=f,_handle=f}
-end end function a.O():typeof(__modImpl())local aa=a.cache.O if not aa then aa={c=__modImpl()}a.cache.O=aa end return aa.c end end do local function __modImpl()
+end end function a.aa():typeof(__modImpl())local aa=a.cache.aa if not aa then aa={c=__modImpl()}a.cache.aa=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -5887,7 +6037,7 @@ end end function a.O():typeof(__modImpl())local aa=a.cache.O if not aa then aa={
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -5941,7 +6091,7 @@ dw.Text="COPIED"
 task.delay(1.2,function()pcall(function()dw.Text="COPY"end)end)
 end)
 return dm{Title=dj.Title or"Code",Frame=dt,_handle=du}
-end end function a.P():typeof(__modImpl())local aa=a.cache.P if not aa then aa={c=__modImpl()}a.cache.P=aa end return aa.c end end do local function __modImpl()
+end end function a.ab():typeof(__modImpl())local aa=a.cache.ab if not aa then aa={c=__modImpl()}a.cache.ab=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -5949,7 +6099,7 @@ end end function a.P():typeof(__modImpl())local aa=a.cache.P if not aa then aa={
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -6042,7 +6192,7 @@ if dA.Disabled then task.defer(function()pcall(dv,dO,true)end)end
 local dV={Title=dA.Title,Frame=dO,Value=dN,Flag=dA.Flag,_handle=dU,
 _set=function(dV,dW)dU:Set(dV,dW)end,Tooltip=dA.Tooltip}
 return dD(dV)
-end end function a.Q():typeof(__modImpl())local aa=a.cache.Q if not aa then aa={c=__modImpl()}a.cache.Q=aa end return aa.c end end do local function __modImpl()
+end end function a.ac():typeof(__modImpl())local aa=a.cache.ac if not aa then aa={c=__modImpl()}a.cache.ac=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -6050,7 +6200,7 @@ end end function a.Q():typeof(__modImpl())local aa=a.cache.Q if not aa then aa={
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -6147,7 +6297,7 @@ function dV.SetRows(dX,dY)dQ=dY or{}draw()end
 function dV.GetRows(dX)return dQ end
 draw()
 return dJ{Title=dD.Title or"Table",Frame=dR,_handle=dV}
-end end function a.R():typeof(__modImpl())local aa=a.cache.R if not aa then aa={c=__modImpl()}a.cache.R=aa end return aa.c end end do local function __modImpl()
+end end function a.ad():typeof(__modImpl())local aa=a.cache.ad if not aa then aa={c=__modImpl()}a.cache.ad=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -6155,7 +6305,7 @@ end end function a.R():typeof(__modImpl())local aa=a.cache.R if not aa then aa={
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -6233,7 +6383,7 @@ function d5.Clear(d6)d2={}draw()end
 d5.Frame=d3
 draw()
 return dX{Title=dU.Title or"Timeline",Frame=d3,_handle=d5}
-end end function a.S():typeof(__modImpl())local aa=a.cache.S if not aa then aa={c=__modImpl()}a.cache.S=aa end return aa.c end end do local function __modImpl()
+end end function a.ae():typeof(__modImpl())local aa=a.cache.ae if not aa then aa={c=__modImpl()}a.cache.ae=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -6242,7 +6392,7 @@ end end function a.S():typeof(__modImpl())local aa=a.cache.S if not aa then aa={
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -6358,7 +6508,7 @@ end
 table.insert(aa._favRefresh,refresh)
 refresh()
 return ed{Title=ea.Title or"Favorites",Frame=el,_handle={Refresh=refresh}}
-end end function a.T():typeof(__modImpl())local aa=a.cache.T if not aa then aa={c=__modImpl()}a.cache.T=aa end return aa.c end end do local function __modImpl()
+end end function a.af():typeof(__modImpl())local aa=a.cache.af if not aa then aa={c=__modImpl()}a.cache.af=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -6369,7 +6519,7 @@ end end function a.T():typeof(__modImpl())local aa=a.cache.T if not aa then aa={
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -6667,7 +6817,7 @@ _set=function(eW,eX)
 if type(eW)=="table"then eU:SetColors(eW)end
 end}
 return er(eW)
-end end function a.U():typeof(__modImpl())local aa=a.cache.U if not aa then aa={c=__modImpl()}a.cache.U=aa end return aa.c end end do local function __modImpl()
+end end function a.ag():typeof(__modImpl())local aa=a.cache.ag if not aa then aa={c=__modImpl()}a.cache.ag=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -6676,7 +6826,7 @@ end end function a.U():typeof(__modImpl())local aa=a.cache.U if not aa then aa={
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -6751,7 +6901,7 @@ er(eJ,eG)
 end
 function eK.GetLocked(eL)return eG end
 return eA{Title=ex.Title,Frame=eJ,_handle=eK}
-end end function a.V():typeof(__modImpl())local aa=a.cache.V if not aa then aa={c=__modImpl()}a.cache.V=aa end return aa.c end end do local function __modImpl()
+end end function a.ah():typeof(__modImpl())local aa=a.cache.ah if not aa then aa={c=__modImpl()}a.cache.ah=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -6760,7 +6910,7 @@ end end function a.V():typeof(__modImpl())local aa=a.cache.V if not aa then aa={
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -6894,7 +7044,7 @@ eD(e_,eT)
 end
 function e1.GetLocked(e2)return eT end
 return eN{Title=eK.Title or"Card",Frame=e_,_handle=e1}
-end end function a.W():typeof(__modImpl())local aa=a.cache.W if not aa then aa={c=__modImpl()}a.cache.W=aa end return aa.c end end do local function __modImpl()a.a()
+end end function a.ai():typeof(__modImpl())local aa=a.cache.ai if not aa then aa={c=__modImpl()}a.cache.ai=aa end return aa.c end end do local function __modImpl()a.a()
 
 
 
@@ -6907,7 +7057,7 @@ local ac=a.f()
 local ad=a.h()
 local ae=a.d()
 local af=a.b()
-local en=a.k()
+local en=a.x()
 
 local er=ae.Z
 local eu=aa.Tween
@@ -7146,7 +7296,7 @@ Destroy=function()eS:Destroy()end,
 }
 eI{Title=eH.Title or"Rating",Frame=eS,_handle=eY}
 return eY
-end end function a.X():typeof(__modImpl())local aa=a.cache.X if not aa then aa={c=__modImpl()}a.cache.X=aa end return aa.c end end do local function __modImpl()a.a()a.c()
+end end function a.aj():typeof(__modImpl())local aa=a.cache.aj if not aa then aa={c=__modImpl()}a.cache.aj=aa end return aa.c end end do local function __modImpl()a.a()a.c()
 
 
 
@@ -7321,7 +7471,7 @@ Destroy=function()eQ:Destroy()end,
 }
 ex{Title=ez,Frame=eQ,_handle=eW}
 return eW
-end end function a.Y():typeof(__modImpl())local aa=a.cache.Y if not aa then aa={c=__modImpl()}a.cache.Y=aa end return aa.c end end do local function __modImpl()a.a()a.c()a.e()a.f()a.h()a.d()
+end end function a.ak():typeof(__modImpl())local aa=a.cache.ak if not aa then aa={c=__modImpl()}a.cache.ak=aa end return aa.c end end do local function __modImpl()a.a()a.c()a.e()a.f()a.h()a.d()
 
 
 
@@ -7334,7 +7484,7 @@ end end function a.Y():typeof(__modImpl())local aa=a.cache.Y if not aa then aa={
 
 
 local aa=a.b()
-local ab=a.Y()
+local ab=a.ak()
 
 aa.cloneref_check(game:GetService"RunService")
 aa.cloneref_check(game:GetService"UserInputService")
@@ -7373,7 +7523,7 @@ end
 end)
 
 return er
-end end function a.Z():typeof(__modImpl())local aa=a.cache.Z if not aa then aa={c=__modImpl()}a.cache.Z=aa end return aa.c end end do local function __modImpl()a.a()a.c()a.e()a.f()a.h()a.d()
+end end function a.al():typeof(__modImpl())local aa=a.cache.al if not aa then aa={c=__modImpl()}a.cache.al=aa end return aa.c end end do local function __modImpl()a.a()a.c()a.e()a.f()a.h()a.d()
 
 
 
@@ -7385,8 +7535,8 @@ end end function a.Z():typeof(__modImpl())local aa=a.cache.Z if not aa then aa={
 
 
 local aa=a.b()
-local ab=a.l()
-local ac=a.Y()
+local ab=a.y()
+local ac=a.ak()
 
 local ad=aa.cloneref_check(game:GetService"RunService")
 aa.cloneref_check(game:GetService"UserInputService")
@@ -7454,7 +7604,7 @@ end
 end)
 
 return eu
-end end function a._():typeof(__modImpl())local aa=a.cache._ if not aa then aa={c=__modImpl()}a.cache._=aa end return aa.c end end do local function __modImpl()a.a()
+end end function a.am():typeof(__modImpl())local aa=a.cache.am if not aa then aa={c=__modImpl()}a.cache.am=aa end return aa.c end end do local function __modImpl()a.a()
 
 
 
@@ -7825,7 +7975,7 @@ end)
 
 reg{Title=eM,Frame=eY,_handle=e9}
 return e9
-end end function a.aa():typeof(__modImpl())local aa=a.cache.aa if not aa then aa={c=__modImpl()}a.cache.aa=aa end return aa.c end end do local function __modImpl()a.a()a.c()
+end end function a.an():typeof(__modImpl())local aa=a.cache.an if not aa then aa={c=__modImpl()}a.cache.an=aa end return aa.c end end do local function __modImpl()a.a()a.c()
 
 
 
@@ -8018,7 +8168,7 @@ end
 local eV={Instance=eN,Destroy=function()eN:Destroy()end}
 eA{Title=eF,Frame=eN,_handle=eV}
 return eV
-end end function a.ab():typeof(__modImpl())local aa=a.cache.ab if not aa then aa={c=__modImpl()}a.cache.ab=aa end return aa.c end end do local function __modImpl()
+end end function a.ao():typeof(__modImpl())local aa=a.cache.ao if not aa then aa={c=__modImpl()}a.cache.ao=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -8029,7 +8179,7 @@ end end function a.ab():typeof(__modImpl())local aa=a.cache.ab if not aa then aa
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.f()a.i()a.g()
+local ad=a.f()a.v()a.g()
 
 
 local ae=a.b()
@@ -8192,63 +8342,63 @@ end
 e8:Refresh()
 eI(e2,eX)
 return eQ{Title=eL.Title or"Cards",Frame=e2,_handle=e8}
-end end function a.ac():typeof(__modImpl())local aa=a.cache.ac if not aa then aa={c=__modImpl()}a.cache.ac=aa end return aa.c end end do local function __modImpl()
+end end function a.ap():typeof(__modImpl())local aa=a.cache.ap if not aa then aa={c=__modImpl()}a.cache.ap=aa end return aa.c end end do local function __modImpl()
 
 
 
 
 local aa={
-Section=a.o(),
-Label=a.p(),
-Divider=a.q(),
-Progress=a.r(),
-Log=a.s(),
-Button=a.t(),
-Toggle=a.u(),
-Slider=a.v(),
-Input=a.w(),
-Dropdown=a.x(),
-Keybind=a.y(),
-Colorpicker=a.z(),
-Profiles=a.A(),
-Banner=a.B(),
-StatsRow=a.C(),
-Skeleton=a.D(),
-Status=a.E(),
-Empty=a.F(),
-Profile=a.G(),
-Cards=a.H(),
-Recent=a.I(),
-RigPreview=a.J(),
-Segment=a.K(),
-Radio=a.L(),
-RangeSlider=a.M(),
-Sparkline=a.N(),
-Markdown=a.O(),
-Code=a.P(),
-Stepper=a.Q(),
-Table=a.R(),
-Timeline=a.S(),
-Favorites=a.T(),
-Avatar=a.U(),
-Paragraph=a.V(),
-Card=a.W(),
-Rating=a.X(),
-InfoGrid=a.Y(),
-ActiveUsersGrid=a.Z(),
-SystemInfoGrid=a._(),
-Leaderboard=a.aa(),
-Changelog=a.ab(),
-CardGrid=a.ac(),
+Section=a.B(),
+Label=a.C(),
+Divider=a.D(),
+Progress=a.E(),
+Log=a.F(),
+Button=a.G(),
+Toggle=a.H(),
+Slider=a.I(),
+Input=a.J(),
+Dropdown=a.K(),
+Keybind=a.L(),
+Colorpicker=a.M(),
+Profiles=a.N(),
+Banner=a.O(),
+StatsRow=a.P(),
+Skeleton=a.Q(),
+Status=a.R(),
+Empty=a.S(),
+Profile=a.T(),
+Cards=a.U(),
+Recent=a.V(),
+RigPreview=a.W(),
+Segment=a.X(),
+Radio=a.Y(),
+RangeSlider=a.Z(),
+Sparkline=a._(),
+Markdown=a.aa(),
+Code=a.ab(),
+Stepper=a.ac(),
+Table=a.ad(),
+Timeline=a.ae(),
+Favorites=a.af(),
+Avatar=a.ag(),
+Paragraph=a.ah(),
+Card=a.ai(),
+Rating=a.aj(),
+InfoGrid=a.ak(),
+ActiveUsersGrid=a.al(),
+SystemInfoGrid=a.am(),
+Leaderboard=a.an(),
+Changelog=a.ao(),
+CardGrid=a.ap(),
 
-AddChangelogEntry=a.ab(),
-AddTextbox=a.w(),
-Textbox=a.w(),
-AddConsole=a.s(),
-Console=a.s(),
-AddViewport=a.J(),
-Viewport=a.J(),
-AddLine=a.q(),
+AddChangelogEntry=a.ao(),
+AddTextbox=a.J(),
+Textbox=a.J(),
+AddConsole=a.F(),
+Console=a.F(),
+AddViewport=a.W(),
+Viewport=a.W(),
+AddLine=a.D(),
 }
 
 local ab=a.e()
@@ -8256,6 +8406,10 @@ local ab=a.e()
 local function attach(ac,ad)
 for ae,af in pairs(aa)do
 local function method(ex,ey)
+ey=ey or{}
+
+if ey.Title==nil and ey.Text~=nil then ey.Title=ey.Text end
+if ey.Description==nil and ey.Desc~=nil then ey.Description=ey.Desc end
 local ez=af(ad,ey)
 
 
@@ -8279,7 +8433,7 @@ end
 end
 end
 
-return{attach=attach,map=aa}end function a.ad():typeof(__modImpl())local aa=a.cache.ad if not aa then aa={c=__modImpl()}a.cache.ad=aa end return aa.c end end do local function __modImpl()
+return{attach=attach,map=aa}end function a.aq():typeof(__modImpl())local aa=a.cache.aq if not aa then aa={c=__modImpl()}a.cache.aq=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -8287,7 +8441,7 @@ local aa=a.a()
 local ab=a.c()
 local ac=a.e()
 local ad=a.f()
-local ae=a.i()
+local ae=a.v()
 local af=a.g()
 local ex=a.d()
 
@@ -8300,7 +8454,7 @@ local eK=ac.hairline
 local eL=ac.pad
 local eM=ac.lighting
 local eN=ad.makeIcon
-local eQ=a.ad()
+local eQ=a.aq()
 
 return function(eU,eW)
 local eX=eU.Window
@@ -8726,7 +8880,7 @@ fd._window=eX
 fd._activate=function(fi)setActive(fi~=false)end
 for fi,fj in pairs(ff)do fd[fi]=function(fk,...)return fj(fd,...)end end
 return fd
-end end function a.ae():typeof(__modImpl())local aa=a.cache.ae if not aa then aa={c=__modImpl()}a.cache.ae=aa end return aa.c end end do local function __modImpl()
+end end function a.ar():typeof(__modImpl())local aa=a.cache.ar if not aa then aa={c=__modImpl()}a.cache.ar=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -8736,7 +8890,7 @@ end end function a.ae():typeof(__modImpl())local aa=a.cache.ae if not aa then aa
 local aa=a.a()
 local ab=a.c()
 local ac=a.e()
-local ad=a.i()
+local ad=a.v()
 local ae=a.b()
 
 local af=ab.T
@@ -9050,7 +9204,7 @@ end
 if typeof(fv)=="Color3"then e0=fv paint()end
 end
 return fc
-end end function a.af():typeof(__modImpl())local aa=a.cache.af if not aa then aa={c=__modImpl()}a.cache.af=aa end return aa.c end end do local function __modImpl()a.a()
+end end function a.as():typeof(__modImpl())local aa=a.cache.as if not aa then aa={c=__modImpl()}a.cache.as=aa end return aa.c end end do local function __modImpl()a.a()
 
 
 
@@ -9058,7 +9212,7 @@ end end function a.af():typeof(__modImpl())local aa=a.cache.af if not aa then aa
 
 
 local aa=a.b()
-local ab=a.n()
+local ab=a.A()
 
 local function localConfigs(ac)
 local ad={}
@@ -9248,7 +9402,7 @@ ac._dockAdd("Config",ad.DockIcon or"cloud",
 function()ac._activateTab(af,true)end,af)
 end
 return eK
-end end function a.ag():typeof(__modImpl())local aa=a.cache.ag if not aa then aa={c=__modImpl()}a.cache.ag=aa end return aa.c end end do local function __modImpl()
+end end function a.at():typeof(__modImpl())local aa=a.cache.at if not aa then aa={c=__modImpl()}a.cache.at=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -9262,7 +9416,7 @@ local ab=a.c()
 local ac=a.e()
 local ad=a.f()
 local ae=a.h()
-local af=a.d()a.i()
+local af=a.d()a.v()
 
 local ex=a.b()
 
@@ -9273,58 +9427,59 @@ local eI=ac.stroke
 local eJ=ad.resolveIcon
 local eK=ex.cloneref_check(game:GetService"Players")
 local eL=eK.LocalPlayer
-local eM=ex.cloneref_check(game:GetService"TweenService")
+local eM=ex.cloneref_check(game:GetService"RunService")
+local eN=ex.cloneref_check(game:GetService"TweenService")
 
-local eN="rbxasset://fonts/families/RobotoMono.json"
+local eQ="rbxasset://fonts/families/RobotoMono.json"
 
-local function EscapeRichText(eQ)
-eQ=eQ:gsub("&","&amp;")
-eQ=eQ:gsub("<","&lt;")
-eQ=eQ:gsub(">","&gt;")
-return eQ
-end
-
-local function MarkdownToRichText(eQ)
-eQ=EscapeRichText(eQ)
-
-eQ=eQ:gsub("`([^`\n]+)`","<font family=\""..eN.."\">%1</font>")
-
-eQ=eQ:gsub("%*%*(.-)%*%*","<b>%1</b>")
-eQ=eQ:gsub("__(.-)__","<b>%1</b>")
-
-eQ=eQ:gsub("%*([^%s*][^*]-)%*","<i>%1</i>")
-eQ=eQ:gsub("_([^%s_][^_]-)_","<i>%1</i>")
-
-return eQ
-end
-
-local function SplitMessageSegments(eQ)
-local eU={}
-local eW=1
-while true do
-local eX,eY,eZ,e_=eQ:find("```(%w*)\n?(.-)```",eW)
-if not eX then
-local e0=eQ:sub(eW)
-if e0~=""then table.insert(eU,{kind="text",content=e0})end
-break
-end
-if eX>eW then
-local e0=eQ:sub(eW,eX-1)
-if e0:match"%S"then
-table.insert(eU,{kind="text",content=e0})
-end
-end
-e_=e_:gsub("^%s+",""):gsub("%s+$","")
-table.insert(eU,{kind="code",lang=eZ~=""and eZ or"lua",content=e_})
-eW=eY+1
-end
-if#eU==0 then
-table.insert(eU,{kind="text",content=eQ})
-end
+local function EscapeRichText(eU)
+eU=eU:gsub("&","&amp;")
+eU=eU:gsub("<","&lt;")
+eU=eU:gsub(">","&gt;")
 return eU
 end
 
-local eQ={
+local function MarkdownToRichText(eU)
+eU=EscapeRichText(eU)
+
+eU=eU:gsub("`([^`\n]+)`","<font family=\""..eQ.."\">%1</font>")
+
+eU=eU:gsub("%*%*(.-)%*%*","<b>%1</b>")
+eU=eU:gsub("__(.-)__","<b>%1</b>")
+
+eU=eU:gsub("%*([^%s*][^*]-)%*","<i>%1</i>")
+eU=eU:gsub("_([^%s_][^_]-)_","<i>%1</i>")
+
+return eU
+end
+
+local function SplitMessageSegments(eU)
+local eW={}
+local eX=1
+while true do
+local eY,eZ,e_,e0=eU:find("```(%w*)\n?(.-)```",eX)
+if not eY then
+local e1=eU:sub(eX)
+if e1~=""then table.insert(eW,{kind="text",content=e1})end
+break
+end
+if eY>eX then
+local e1=eU:sub(eX,eY-1)
+if e1:match"%S"then
+table.insert(eW,{kind="text",content=e1})
+end
+end
+e0=e0:gsub("^%s+",""):gsub("%s+$","")
+table.insert(eW,{kind="code",lang=e_~=""and e_ or"lua",content=e0})
+eX=eZ+1
+end
+if#eW==0 then
+table.insert(eW,{kind="text",content=eU})
+end
+return eW
+end
+
+local eU={
 ["and"]=true,["break"]=true,["do"]=true,["else"]=true,["elseif"]=true,
 ["end"]=true,["false"]=true,["for"]=true,["function"]=true,["if"]=true,
 ["in"]=true,["local"]=true,["nil"]=true,["not"]=true,["or"]=true,
@@ -9332,647 +9487,647 @@ local eQ={
 ["until"]=true,["while"]=true,continue=true,
 }
 
-local function HighlightLua(eU)
-local eW={}
-local eX=#eU
-local eY=1
+local function HighlightLua(eW)
+local eX={}
+local eY=#eW
+local eZ=1
 
-while eY<=eX do
-local eZ=eU:sub(eY,eY)
+while eZ<=eY do
+local e_=eW:sub(eZ,eZ)
 
-if eU:sub(eY,eY+3)=="--[["then
-local e_=select(2,eU:find("%]%]",eY+4))
-local e0=e_ or eX
-eW[#eW+1]="<font color=\"#6A9955\">"..eU:sub(eY,e0).."</font>"
-eY=e0+1
-elseif eU:sub(eY,eY+1)=="--"then
-local e_=eU:find("\n",eY,true)
-local e0=(e_ or(eX+1))-1
-eW[#eW+1]="<font color=\"#6A9955\">"..eU:sub(eY,e0).."</font>"
-eY=e0+1
-elseif eZ=='"'or eZ=="'"then
-local e_=eZ
-local e0=eY+1
-while e0<=eX do
-local e1=eU:sub(e0,e0)
-if e1=="\\"then
-e0=e0+2
-elseif e1==e_ or e1=="\n"then
+if eW:sub(eZ,eZ+3)=="--[["then
+local e0=select(2,eW:find("%]%]",eZ+4))
+local e1=e0 or eY
+eX[#eX+1]="<font color=\"#6A9955\">"..eW:sub(eZ,e1).."</font>"
+eZ=e1+1
+elseif eW:sub(eZ,eZ+1)=="--"then
+local e0=eW:find("\n",eZ,true)
+local e1=(e0 or(eY+1))-1
+eX[#eX+1]="<font color=\"#6A9955\">"..eW:sub(eZ,e1).."</font>"
+eZ=e1+1
+elseif e_=='"'or e_=="'"then
+local e0=e_
+local e1=eZ+1
+while e1<=eY do
+local e2=eW:sub(e1,e1)
+if e2=="\\"then
+e1=e1+2
+elseif e2==e0 or e2=="\n"then
 break
 else
-e0=e0+1
+e1=e1+1
 end
 end
-e0=math.min(e0,eX)
-eW[#eW+1]="<font color=\"#CE9178\">"..eU:sub(eY,e0).."</font>"
-eY=e0+1
-elseif eZ:match"%a"or eZ=="_"then
-local e_=eY
-while e_<=eX and eU:sub(e_,e_):match"[%w_]"do e_=e_+1 end
-local e0=eU:sub(eY,e_-1)
-eW[#eW+1]=eQ[e0]and("<font color=\"#C586C0\">"..e0 .."</font>")or e0
-eY=e_
-elseif eZ:match"%d"then
-local e_=eY
-while e_<=eX and eU:sub(e_,e_):match"[%d%.]"do e_=e_+1 end
-eW[#eW+1]="<font color=\"#B5CEA8\">"..eU:sub(eY,e_-1).."</font>"
-eY=e_
+e1=math.min(e1,eY)
+eX[#eX+1]="<font color=\"#CE9178\">"..eW:sub(eZ,e1).."</font>"
+eZ=e1+1
+elseif e_:match"%a"or e_=="_"then
+local e0=eZ
+while e0<=eY and eW:sub(e0,e0):match"[%w_]"do e0=e0+1 end
+local e1=eW:sub(eZ,e0-1)
+eX[#eX+1]=eU[e1]and("<font color=\"#C586C0\">"..e1 .."</font>")or e1
+eZ=e0
+elseif e_:match"%d"then
+local e0=eZ
+while e0<=eY and eW:sub(e0,e0):match"[%d%.]"do e0=e0+1 end
+eX[#eX+1]="<font color=\"#B5CEA8\">"..eW:sub(eZ,e0-1).."</font>"
+eZ=e0
 else
-eW[#eW+1]=eZ
-eY=eY+1
+eX[#eX+1]=e_
+eZ=eZ+1
 end
 end
 
-return table.concat(eW)
+return table.concat(eX)
 end
 
-local eU=ex.cloneref_check(game:GetService"TextService")
-local eW=1.06
-local eX={}
+local eW=ex.cloneref_check(game:GetService"TextService")
+local eX=1.06
+local eY={}
 
-local function MeasureText(eY,eZ,e_)
-eY=tostring(eY or"")
-e_=e_ or 10000
-local e0=eY.."\1"..eZ.."\1"..math.floor(e_)
-local e1=eX[e0]
-if e1 then return e1.X,e1.Y end
+local function MeasureText(eZ,e_,e0)
+eZ=tostring(eZ or"")
+e0=e0 or 10000
+local e1=eZ.."\1"..e_.."\1"..math.floor(e0)
+local e2=eY[e1]
+if e2 then return e2.X,e2.Y end
 
-local e2,e3=pcall(function()
-return eU:GetTextSize(
-eY,eZ,Enum.Font.GothamSemibold,
-Vector2.new(e_,100000)
+local e3,e4=pcall(function()
+return eW:GetTextSize(
+eZ,e_,Enum.Font.GothamSemibold,
+Vector2.new(e0,100000)
 )
 end)
-local e4,e5
-if e2 and e3 then
-e4=math.ceil(e3.X*eW)
-e5=math.ceil(e3.Y)
+local e5,e6
+if e3 and e4 then
+e5=math.ceil(e4.X*eX)
+e6=math.ceil(e4.Y)
 else
-e4=math.ceil(#eY*eZ*0.55)
-e5=eZ+2
+e5=math.ceil(#eZ*e_*0.55)
+e6=e_+2
 end
-eX[e0]={X=e4,Y=e5}
-return e4,e5
+eY[e1]={X=e5,Y=e6}
+return e5,e6
 end
 
-return function(eY,eZ)
-eZ=eZ or{}
-local e_=aa.Theme
-eZ.Tools=eZ.Tools or eY:_BuildDefaultChatTools()
-local e0=function(e0)return eY:Track(e0)end
+return function(eZ,e_)
+e_=e_ or{}
+local e0=aa.Theme
+e_.Tools=e_.Tools or eZ:_BuildDefaultChatTools()
+local e1=function(e1)return eZ:Track(e1)end
 
-local e1=eY:Tab{
-Title=eZ.Name or eZ.Title or"Assistant",
-Icon=eZ.Icon or"bot",
+local e2=eZ:Tab{
+Title=e_.Name or e_.Title or"Assistant",
+Icon=e_.Icon or"bot",
 Hidden=true,
 }
 
-local e2={}
-for e3,e4 in ipairs(eZ.Tools or{})do
-if e4.Name then e2[e4.Name]=e4 end
+local e3={}
+for e4,e5 in ipairs(e_.Tools or{})do
+if e5.Name then e3[e5.Name]=e5 end
 end
 
-local e3=38
 local e4=38
+local e5=38
 
-local e5=Instance.new"Frame"
-e5.Name="ChatPanel"
-e5.BackgroundTransparency=1
-e5.ClipsDescendants=true
-e5.Size=UDim2.fromScale(1,1)
-e5.ZIndex=ey.Content
-e5.Parent=e1.Page
+local e6=Instance.new"Frame"
+e6.Name="ChatPanel"
+e6.BackgroundTransparency=1
+e6.ClipsDescendants=true
+e6.Size=UDim2.fromScale(1,1)
+e6.ZIndex=ey.Content
+e6.Parent=e2.Page
 
-local e6=e5.ZIndex+1
-
-local e7=Instance.new"Frame"
-e7.Name="Content"
-e7.BackgroundTransparency=1
-e7.Size=UDim2.fromScale(1,1)
-e7.ZIndex=e5.ZIndex
-e7.Parent=e5
+local e7=e6.ZIndex+1
 
 local e8=Instance.new"Frame"
+e8.Name="Content"
 e8.BackgroundTransparency=1
-e8.Active=true
-e8.Size=UDim2.new(1,0,0,e4)
-e8.ZIndex=e6
-e8.Parent=e7
+e8.Size=UDim2.fromScale(1,1)
+e8.ZIndex=e6.ZIndex
+e8.Parent=e6
 
-local e9=Instance.new"UIPadding"
-e9.PaddingLeft=UDim.new(0,14)
-e9.PaddingRight=UDim.new(0,8)
+local e9=Instance.new"Frame"
+e9.BackgroundTransparency=1
+e9.Active=true
+e9.Size=UDim2.new(1,0,0,e5)
+e9.ZIndex=e7
 e9.Parent=e8
 
-local fa=Instance.new"Frame"
-fa.BackgroundTransparency=1
-fa.Size=UDim2.new(1,-84,1,0)
-fa.ZIndex=e6+1
-fa.Parent=e8
+local fa=Instance.new"UIPadding"
+fa.PaddingLeft=UDim.new(0,14)
+fa.PaddingRight=UDim.new(0,8)
+fa.Parent=e9
 
-local fb=Instance.new"UIListLayout"
-fb.FillDirection=Enum.FillDirection.Horizontal
-fb.VerticalAlignment=Enum.VerticalAlignment.Center
-fb.Padding=UDim.new(0,7)
-fb.Parent=fa
+local fb=Instance.new"Frame"
+fb.BackgroundTransparency=1
+fb.Size=UDim2.new(1,-84,1,0)
+fb.ZIndex=e7+1
+fb.Parent=e9
 
-local fc=Instance.new"ImageLabel"
-fc.BackgroundTransparency=1
-fc.Image=eJ(eZ.Icon or"bot")
-fc.ImageColor3=e_.Text
-fc.Size=UDim2.fromOffset(14,14)
-fc.LayoutOrder=1
-fc.ZIndex=e6+2
-fc.Parent=fa
+local fc=Instance.new"UIListLayout"
+fc.FillDirection=Enum.FillDirection.Horizontal
+fc.VerticalAlignment=Enum.VerticalAlignment.Center
+fc.Padding=UDim.new(0,7)
+fc.Parent=fb
 
-local fd=Instance.new"TextLabel"
+local fd=Instance.new"ImageLabel"
 fd.BackgroundTransparency=1
-fd.FontFace=ae.FontSemi
-fd.Text=eZ.Title or"Assistant"
-fd.TextColor3=e_.Text
-fd.TextSize=14
-fd.TextXAlignment=Enum.TextXAlignment.Left
-fd.AutomaticSize=Enum.AutomaticSize.X
-fd.Size=UDim2.fromOffset(0,16)
-fd.LayoutOrder=2
-fd.ZIndex=e6+2
-fd.Parent=fa
+fd.Image=eJ(e_.Icon or"bot")
+fd.ImageColor3=e0.Text
+fd.Size=UDim2.fromOffset(14,14)
+fd.LayoutOrder=1
+fd.ZIndex=e7+2
+fd.Parent=fb
 
-local fe=Instance.new"Frame"
+local fe=Instance.new"TextLabel"
 fe.BackgroundTransparency=1
-fe.AnchorPoint=Vector2.new(1,0.5)
-fe.Position=UDim2.new(1,0,0.5,0)
-fe.Size=UDim2.fromOffset(100,22)
-fe.ZIndex=e6+1
-fe.Parent=e8
+fe.FontFace=ae.FontSemi
+fe.Text=e_.Title or"Assistant"
+fe.TextColor3=e0.Text
+fe.TextSize=14
+fe.TextXAlignment=Enum.TextXAlignment.Left
+fe.AutomaticSize=Enum.AutomaticSize.X
+fe.Size=UDim2.fromOffset(0,16)
+fe.LayoutOrder=2
+fe.ZIndex=e7+2
+fe.Parent=fb
 
-local ff=Instance.new"UIListLayout"
-ff.FillDirection=Enum.FillDirection.Horizontal
-ff.HorizontalAlignment=Enum.HorizontalAlignment.Right
-ff.VerticalAlignment=Enum.VerticalAlignment.Center
-ff.Padding=UDim.new(0,4)
-ff.Parent=fe
+local ff=Instance.new"Frame"
+ff.BackgroundTransparency=1
+ff.AnchorPoint=Vector2.new(1,0.5)
+ff.Position=UDim2.new(1,0,0.5,0)
+ff.Size=UDim2.fromOffset(100,22)
+ff.ZIndex=e7+1
+ff.Parent=e9
 
-local function headerIconButton(fg,fh)
-local fi=Instance.new"TextButton"
-fi.Text=""
-fi.AutoButtonColor=false
-fi.BackgroundColor3=Color3.new(1,1,1)
-fi.BackgroundTransparency=1
-fi.BorderSizePixel=0
-fi.Size=UDim2.fromOffset(22,22)
-fi.LayoutOrder=fh
-fi.ZIndex=e6+1
-fi.Parent=fe
-eH(fi,6)
+local fg=Instance.new"UIListLayout"
+fg.FillDirection=Enum.FillDirection.Horizontal
+fg.HorizontalAlignment=Enum.HorizontalAlignment.Right
+fg.VerticalAlignment=Enum.VerticalAlignment.Center
+fg.Padding=UDim.new(0,4)
+fg.Parent=ff
 
-local fj=Instance.new"ImageLabel"
+local function headerIconButton(fh,fi)
+local fj=Instance.new"TextButton"
+fj.Text=""
+fj.AutoButtonColor=false
+fj.BackgroundColor3=Color3.new(1,1,1)
 fj.BackgroundTransparency=1
-fj.Image=eJ(fg)
-fj.ImageColor3=e_.Dim
-fj.Size=UDim2.fromOffset(13,13)
-fj.AnchorPoint=Vector2.new(0.5,0.5)
-fj.Position=UDim2.fromScale(0.5,0.5)
-fj.ZIndex=e6+2
-fj.Parent=fi
+fj.BorderSizePixel=0
+fj.Size=UDim2.fromOffset(22,22)
+fj.LayoutOrder=fi
+fj.ZIndex=e7+1
+fj.Parent=ff
+eH(fj,6)
 
-e0(fi.MouseEnter:Connect(function()
-ez(fi,{BackgroundTransparency=0.9},0.12)
-ez(fj,{ImageColor3=e_.Text},0.12)
+local fk=Instance.new"ImageLabel"
+fk.BackgroundTransparency=1
+fk.Image=eJ(fh)
+fk.ImageColor3=e0.Dim
+fk.Size=UDim2.fromOffset(13,13)
+fk.AnchorPoint=Vector2.new(0.5,0.5)
+fk.Position=UDim2.fromScale(0.5,0.5)
+fk.ZIndex=e7+2
+fk.Parent=fj
+
+e1(fj.MouseEnter:Connect(function()
+ez(fj,{BackgroundTransparency=0.9},0.12)
+ez(fk,{ImageColor3=e0.Text},0.12)
 end))
-e0(fi.MouseLeave:Connect(function()
-ez(fi,{BackgroundTransparency=1},0.12)
-ez(fj,{ImageColor3=e_.Dim},0.12)
+e1(fj.MouseLeave:Connect(function()
+ez(fj,{BackgroundTransparency=1},0.12)
+ez(fk,{ImageColor3=e0.Dim},0.12)
 end))
 
-return fi,fj
+return fj,fk
 end
 
-local fg,fh=headerIconButton("copy",1)
-local fi,fj=headerIconButton("refresh-cw",2)
-local fk=headerIconButton("trash-2",3)
-local fl=headerIconButton("x",4)
+local fh,fi=headerIconButton("copy",1)
+local fj,fk=headerIconButton("refresh-cw",2)
+local fl=headerIconButton("trash-2",3)
+local fm=headerIconButton("x",4)
 
-local fm=Instance.new"Frame"
-fm.BackgroundColor3=Color3.new(1,1,1)
-fm.BackgroundTransparency=0.94
-fm.BorderSizePixel=0
-fm.Position=UDim2.fromOffset(0,e4)
-fm.Size=UDim2.new(1,0,0,1)
-fm.ZIndex=e6
-fm.Parent=e7
+local fn=Instance.new"Frame"
+fn.BackgroundColor3=Color3.new(1,1,1)
+fn.BackgroundTransparency=0.94
+fn.BorderSizePixel=0
+fn.Position=UDim2.fromOffset(0,e5)
+fn.Size=UDim2.new(1,0,0,1)
+fn.ZIndex=e7
+fn.Parent=e8
 
-local fn=Instance.new"UIPadding"
-fn.PaddingLeft=UDim.new(0,14)
-fn.PaddingRight=UDim.new(0,14)
-fn.PaddingBottom=UDim.new(0,12)
-fn.Parent=e7
-
-local fo=Instance.new"Frame"
-fo.BackgroundTransparency=1
-fo.Active=true
-fo.AnchorPoint=Vector2.new(0,1)
-fo.Position=UDim2.new(0,0,1,0)
-fo.Size=UDim2.new(1,0,0,e3)
-fo.ZIndex=e6
-fo.Parent=e7
+local fo=Instance.new"UIPadding"
+fo.PaddingLeft=UDim.new(0,14)
+fo.PaddingRight=UDim.new(0,14)
+fo.PaddingBottom=UDim.new(0,12)
+fo.Parent=e8
 
 local fp=Instance.new"Frame"
-fp.BackgroundColor3=Color3.new(1,1,1)
-fp.BackgroundTransparency=0.95
-fp.BorderSizePixel=0
-fp.Size=UDim2.new(1,-(e3+6),1,0)
-fp.ZIndex=e6+1
-fp.Parent=fo
-eH(fp,9)
-local fq=eI(fp,Color3.new(1,1,1),1,0.9)
+fp.BackgroundTransparency=1
+fp.Active=true
+fp.AnchorPoint=Vector2.new(0,1)
+fp.Position=UDim2.new(0,0,1,0)
+fp.Size=UDim2.new(1,0,0,e4)
+fp.ZIndex=e7
+fp.Parent=e8
 
-local fr=Instance.new"UIPadding"
-fr.PaddingLeft=UDim.new(0,10)
-fr.PaddingRight=UDim.new(0,10)
-fr.Parent=fp
+local fq=Instance.new"Frame"
+fq.BackgroundColor3=Color3.new(1,1,1)
+fq.BackgroundTransparency=0.95
+fq.BorderSizePixel=0
+fq.Size=UDim2.new(1,-(e4+6),1,0)
+fq.ZIndex=e7+1
+fq.Parent=fp
+eH(fq,9)
+local fr=eI(fq,Color3.new(1,1,1),1,0.9)
 
-local fs=Instance.new"TextBox"
-fs.BackgroundTransparency=1
-fs.ClearTextOnFocus=false
-fs.FontFace=ae.FontReg
-fs.PlaceholderText=eZ.Placeholder or"Ask me anything..."
-fs.PlaceholderColor3=Color3.fromRGB(120,120,122)
-fs.Text=""
-fs.TextColor3=e_.Text
-fs.TextSize=13
-fs.TextXAlignment=Enum.TextXAlignment.Left
-fs.TextYAlignment=Enum.TextYAlignment.Center
-fs.ClipsDescendants=true
-fs.Size=UDim2.fromScale(1,1)
-fs.ZIndex=e6+2
-fs.Parent=fp
+local fs=Instance.new"UIPadding"
+fs.PaddingLeft=UDim.new(0,10)
+fs.PaddingRight=UDim.new(0,10)
+fs.Parent=fq
 
-e0(fs.Focused:Connect(function()
-ez(fq,{Color=e_.Accent,Transparency=0.3},0.15)
-end))
-e0(fs.FocusLost:Connect(function()
-ez(fq,{Color=Color3.new(1,1,1),Transparency=0.9},0.15)
-end))
-
-local ft=Instance.new"TextButton"
-ft.Name="Send"
+local ft=Instance.new"TextBox"
+ft.BackgroundTransparency=1
+ft.ClearTextOnFocus=false
+ft.FontFace=ae.FontReg
+ft.PlaceholderText=e_.Placeholder or"Ask me anything..."
+ft.PlaceholderColor3=Color3.fromRGB(120,120,122)
 ft.Text=""
-ft.AutoButtonColor=false
-ft.BackgroundColor3=Color3.new(1,1,1)
-ft.BackgroundTransparency=0.9
-ft.BorderSizePixel=0
-ft.AnchorPoint=Vector2.new(1,0)
-ft.Position=UDim2.new(1,0,0,0)
-ft.Size=UDim2.fromOffset(e3,e3)
-ft.ZIndex=e6+1
-ft.Parent=fo
-eH(ft,9)
+ft.TextColor3=e0.Text
+ft.TextSize=13
+ft.TextXAlignment=Enum.TextXAlignment.Left
+ft.TextYAlignment=Enum.TextYAlignment.Center
+ft.ClipsDescendants=true
+ft.Size=UDim2.fromScale(1,1)
+ft.ZIndex=e7+2
+ft.Parent=fq
 
-local fu=Instance.new"ImageLabel"
-fu.BackgroundTransparency=1
-fu.Image=eJ"send"
-fu.ImageColor3=e_.Text
-fu.Size=UDim2.fromOffset(14,14)
-fu.AnchorPoint=Vector2.new(0.5,0.5)
-fu.Position=UDim2.fromScale(0.5,0.5)
-fu.ZIndex=e6+2
-fu.Parent=ft
+e1(ft.Focused:Connect(function()
+ez(fr,{Color=e0.Accent,Transparency=0.3},0.15)
+end))
+e1(ft.FocusLost:Connect(function()
+ez(fr,{Color=Color3.new(1,1,1),Transparency=0.9},0.15)
+end))
 
-e0(ft.MouseEnter:Connect(function()ez(ft,{BackgroundTransparency=0.8},0.12)end))
-e0(ft.MouseLeave:Connect(function()ez(ft,{BackgroundTransparency=0.9},0.12)end))
+local fu=Instance.new"TextButton"
+fu.Name="Send"
+fu.Text=""
+fu.AutoButtonColor=false
+fu.BackgroundColor3=Color3.new(1,1,1)
+fu.BackgroundTransparency=0.9
+fu.BorderSizePixel=0
+fu.AnchorPoint=Vector2.new(1,0)
+fu.Position=UDim2.new(1,0,0,0)
+fu.Size=UDim2.fromOffset(e4,e4)
+fu.ZIndex=e7+1
+fu.Parent=fp
+eH(fu,9)
 
-local fv=Instance.new"ScrollingFrame"
+local fv=Instance.new"ImageLabel"
 fv.BackgroundTransparency=1
-fv.BorderSizePixel=0
-fv.Position=UDim2.fromOffset(0,e4+9)
-fv.Size=UDim2.new(1,0,1,-(e4+9+e3+10))
-fv.ScrollingDirection=Enum.ScrollingDirection.Y
-fv.ScrollBarThickness=0
-fv.ScrollBarImageTransparency=1
-fv.VerticalScrollBarInset=Enum.ScrollBarInset.None
-fv.HorizontalScrollBarInset=Enum.ScrollBarInset.None
-fv.AutomaticCanvasSize=Enum.AutomaticSize.Y
-fv.CanvasSize=UDim2.new(0,0,0,0)
-fv.ZIndex=e6
-fv.Parent=e7
+fv.Image=eJ"send"
+fv.ImageColor3=e0.Text
+fv.Size=UDim2.fromOffset(14,14)
+fv.AnchorPoint=Vector2.new(0.5,0.5)
+fv.Position=UDim2.fromScale(0.5,0.5)
+fv.ZIndex=e7+2
+fv.Parent=fu
 
-local fw=Instance.new"UIPadding"
-fw.PaddingRight=UDim.new(0,18)
-fw.Parent=fv
+e1(fu.MouseEnter:Connect(function()ez(fu,{BackgroundTransparency=0.8},0.12)end))
+e1(fu.MouseLeave:Connect(function()ez(fu,{BackgroundTransparency=0.9},0.12)end))
 
-local fx=Instance.new"UIListLayout"
-fx.Padding=UDim.new(0,8)
-fx.SortOrder=Enum.SortOrder.LayoutOrder
-fx.Parent=fv
+local fw=Instance.new"ScrollingFrame"
+fw.BackgroundTransparency=1
+fw.BorderSizePixel=0
+fw.Position=UDim2.fromOffset(0,e5+9)
+fw.Size=UDim2.new(1,0,1,-(e5+9+e4+10))
+fw.ScrollingDirection=Enum.ScrollingDirection.Y
+fw.ScrollBarThickness=0
+fw.ScrollBarImageTransparency=1
+fw.VerticalScrollBarInset=Enum.ScrollBarInset.None
+fw.HorizontalScrollBarInset=Enum.ScrollBarInset.None
+fw.AutomaticCanvasSize=Enum.AutomaticSize.Y
+fw.CanvasSize=UDim2.new(0,0,0,0)
+fw.ZIndex=e7
+fw.Parent=e8
 
-local fy=Instance.new"Frame"
-fy.Name="ContentScrollThumb"
-fy.BackgroundColor3=e_.Dim
-fy.BackgroundTransparency=0.35
-fy.BorderSizePixel=0
-fy.AnchorPoint=Vector2.new(1,0)
-fy.Size=UDim2.new(0,3,0,40)
-fy.Visible=false
-fy.ZIndex=(fv.ZIndex or 0)+6
-fy.Parent=e5
-eH(fy,2)
+local fx=Instance.new"UIPadding"
+fx.PaddingRight=UDim.new(0,18)
+fx.Parent=fw
 
-local fz=4
-e0(RunService.Heartbeat:Connect(function()
-if not e5.Visible then
-fy.Visible=false
+local fy=Instance.new"UIListLayout"
+fy.Padding=UDim.new(0,8)
+fy.SortOrder=Enum.SortOrder.LayoutOrder
+fy.Parent=fw
+
+local fz=Instance.new"Frame"
+fz.Name="ContentScrollThumb"
+fz.BackgroundColor3=e0.Dim
+fz.BackgroundTransparency=0.35
+fz.BorderSizePixel=0
+fz.AnchorPoint=Vector2.new(1,0)
+fz.Size=UDim2.new(0,3,0,40)
+fz.Visible=false
+fz.ZIndex=(fw.ZIndex or 0)+6
+fz.Parent=e6
+eH(fz,2)
+
+local fA=4
+e1(eM.Heartbeat:Connect(function()
+if not e6.Visible then
+fz.Visible=false
 return
 end
-local fA=fv.AbsoluteWindowSize.Y
-local fB=fv.AbsoluteCanvasSize.Y
-local fC=fB-fA
-if fC<=8 or fA<=0 then
-fy.Visible=false
+local fB=fw.AbsoluteWindowSize.Y
+local fC=fw.AbsoluteCanvasSize.Y
+local fD=fC-fB
+if fD<=8 or fB<=0 then
+fz.Visible=false
 return
 end
-local fD=fA-fz*2
-if fD<=0 then
-fy.Visible=false
+local fE=fB-fA*2
+if fE<=0 then
+fz.Visible=false
 return
 end
-local fE,fF=e5.AbsolutePosition,e5.AbsoluteSize
-if fF.X<=0 or fF.Y<=0 then
-fy.Visible=false
+local fF,fG=e6.AbsolutePosition,e6.AbsoluteSize
+if fG.X<=0 or fG.Y<=0 then
+fz.Visible=false
 return
 end
-local fG=math.max(30,fD*(fA/fB))
-local fH=fD-fG
-local fI=math.clamp(fv.CanvasPosition.Y/fC,0,1)
-local fJ=(fv.AbsolutePosition.Y-fE.Y)+fz+fH*fI
-local fK=(fv.AbsolutePosition.X+fv.AbsoluteSize.X)-fE.X
-fy.Visible=true
-fy.Size=UDim2.new(0,3,0,fG)
-fy.Position=UDim2.new(fK/fF.X,0,fJ/fF.Y,0)
+local fH=math.max(30,fE*(fB/fC))
+local fI=fE-fH
+local fJ=math.clamp(fw.CanvasPosition.Y/fD,0,1)
+local fK=(fw.AbsolutePosition.Y-fF.Y)+fA+fI*fJ
+local fL=(fw.AbsolutePosition.X+fw.AbsoluteSize.X)-fF.X
+fz.Visible=true
+fz.Size=UDim2.new(0,3,0,fH)
+fz.Position=UDim2.new(fL/fG.X,0,fK/fG.Y,0)
 end))
 
-local fA=0
-local fB={}
+local fB=0
+local fC={}
 
-local fC=true
-e0(fv:GetPropertyChangedSignal"AbsoluteCanvasSize":Connect(function()
-if fC then
-fv.CanvasPosition=Vector2.new(0,fv.AbsoluteCanvasSize.Y)
+local fD=true
+e1(fw:GetPropertyChangedSignal"AbsoluteCanvasSize":Connect(function()
+if fD then
+fw.CanvasPosition=Vector2.new(0,fw.AbsoluteCanvasSize.Y)
 end
 end))
-e0(fv:GetPropertyChangedSignal"CanvasPosition":Connect(function()
-local fD=fv.CanvasPosition.Y
->=fv.AbsoluteCanvasSize.Y-fv.AbsoluteWindowSize.Y-20
-fC=fD
+e1(fw:GetPropertyChangedSignal"CanvasPosition":Connect(function()
+local fE=fw.CanvasPosition.Y
+>=fw.AbsoluteCanvasSize.Y-fw.AbsoluteWindowSize.Y-20
+fD=fE
 end))
 
 local function scrollToBottom()
-fC=true
+fD=true
 task.defer(function()
-if fv and fv.Parent then
-fv.CanvasPosition=Vector2.new(0,fv.AbsoluteCanvasSize.Y)
+if fw and fw.Parent then
+fw.CanvasPosition=Vector2.new(0,fw.AbsoluteCanvasSize.Y)
 end
 end)
 end
 
-local fD=26
+local fE=26
 
-local function codeHeaderButton(fE,fF,fG)
-local fH=Instance.new"TextButton"
-fH.Text=""
-fH.AutoButtonColor=false
-fH.BackgroundColor3=Color3.new(1,1,1)
-fH.BackgroundTransparency=1
-fH.BorderSizePixel=0
-fH.AnchorPoint=Vector2.new(1,0.5)
-fH.Position=UDim2.new(1,-fG,0.5,0)
-fH.Size=UDim2.fromOffset(20,20)
-fH.ZIndex=e6+5
-fH.Parent=fE
-eH(fH,5)
-
-local fI=Instance.new"ImageLabel"
+local function codeHeaderButton(fF,fG,fH)
+local fI=Instance.new"TextButton"
+fI.Text=""
+fI.AutoButtonColor=false
+fI.BackgroundColor3=Color3.new(1,1,1)
 fI.BackgroundTransparency=1
-fI.Image=eJ(fF)
-fI.ImageColor3=e_.Dim
-fI.Size=UDim2.fromOffset(12,12)
-fI.AnchorPoint=Vector2.new(0.5,0.5)
-fI.Position=UDim2.fromScale(0.5,0.5)
-fI.ZIndex=e6+6
-fI.Parent=fH
+fI.BorderSizePixel=0
+fI.AnchorPoint=Vector2.new(1,0.5)
+fI.Position=UDim2.new(1,-fH,0.5,0)
+fI.Size=UDim2.fromOffset(20,20)
+fI.ZIndex=e7+5
+fI.Parent=fF
+eH(fI,5)
 
-e0(fH.MouseEnter:Connect(function()
-ez(fH,{BackgroundTransparency=0.85},0.12)
-ez(fI,{ImageColor3=e_.Text},0.12)
+local fJ=Instance.new"ImageLabel"
+fJ.BackgroundTransparency=1
+fJ.Image=eJ(fG)
+fJ.ImageColor3=e0.Dim
+fJ.Size=UDim2.fromOffset(12,12)
+fJ.AnchorPoint=Vector2.new(0.5,0.5)
+fJ.Position=UDim2.fromScale(0.5,0.5)
+fJ.ZIndex=e7+6
+fJ.Parent=fI
+
+e1(fI.MouseEnter:Connect(function()
+ez(fI,{BackgroundTransparency=0.85},0.12)
+ez(fJ,{ImageColor3=e0.Text},0.12)
 end))
-e0(fH.MouseLeave:Connect(function()
-ez(fH,{BackgroundTransparency=1},0.12)
-ez(fI,{ImageColor3=e_.Dim},0.12)
+e1(fI.MouseLeave:Connect(function()
+ez(fI,{BackgroundTransparency=1},0.12)
+ez(fJ,{ImageColor3=e0.Dim},0.12)
 end))
 
-return fH,fI
+return fI,fJ
 end
 
-local function addBubble(fE,fF)
-local fG=fF=="user"
-fA=fA+1
+local function addBubble(fF,fG)
+local fH=fG=="user"
+fB=fB+1
 
-fE=fE:gsub("^%s+",""):gsub("%s+$",""):gsub("\n\n\n+","\n\n")
+fF=fF:gsub("^%s+",""):gsub("%s+$",""):gsub("\n\n\n+","\n\n")
 
-local fH=Instance.new"Frame"
-fH.Name="MessageRow"
-fH.BackgroundTransparency=1
-fH.AutomaticSize=Enum.AutomaticSize.Y
-fH.Size=UDim2.new(1,0,0,0)
-fH.LayoutOrder=fA
-fH.ZIndex=e6+1
-fH.Parent=fv
+local fI=Instance.new"Frame"
+fI.Name="MessageRow"
+fI.BackgroundTransparency=1
+fI.AutomaticSize=Enum.AutomaticSize.Y
+fI.Size=UDim2.new(1,0,0,0)
+fI.LayoutOrder=fB
+fI.ZIndex=e7+1
+fI.Parent=fw
 
-local fI=Instance.new"UIScale"
-fI.Scale=0.92
-fI.Parent=fH
+local fJ=Instance.new"UIScale"
+fJ.Scale=0.92
+fJ.Parent=fI
 
-local fJ=Instance.new"UIListLayout"
-fJ.FillDirection=Enum.FillDirection.Horizontal
-fJ.HorizontalAlignment=fG and Enum.HorizontalAlignment.Right or Enum.HorizontalAlignment.Left
-fJ.VerticalAlignment=Enum.VerticalAlignment.Top
-fJ.Padding=UDim.new(0,8)
-fJ.Parent=fH
+local fK=Instance.new"UIListLayout"
+fK.FillDirection=Enum.FillDirection.Horizontal
+fK.HorizontalAlignment=fH and Enum.HorizontalAlignment.Right or Enum.HorizontalAlignment.Left
+fK.VerticalAlignment=Enum.VerticalAlignment.Top
+fK.Padding=UDim.new(0,8)
+fK.Parent=fI
 
-local fK=fG and 0.85 or 0.82
-local fL=Instance.new"Frame"
-fL.Name="Avatar"
-fL.BackgroundColor3=fG and Color3.new(1,1,1)or e_.Accent
-fL.BackgroundTransparency=1
-fL.BorderSizePixel=0
-fL.Size=UDim2.fromOffset(fD,fD)
-fL.LayoutOrder=fG and 2 or 1
-fL.ZIndex=e6+2
-fL.Parent=fH
-eH(fL,fD/2)
+local fL=fH and 0.85 or 0.82
+local fM=Instance.new"Frame"
+fM.Name="Avatar"
+fM.BackgroundColor3=fH and Color3.new(1,1,1)or e0.Accent
+fM.BackgroundTransparency=1
+fM.BorderSizePixel=0
+fM.Size=UDim2.fromOffset(fE,fE)
+fM.LayoutOrder=fH and 2 or 1
+fM.ZIndex=e7+2
+fM.Parent=fI
+eH(fM,fE/2)
 
-local fM
-if fG then
-local fN=Instance.new"ImageLabel"
-fN.BackgroundTransparency=1
-fN.ImageTransparency=1
-fN.ScaleType=Enum.ScaleType.Crop
-fN.Size=UDim2.fromScale(1,1)
-fN.ZIndex=e6+3
-fN.Parent=fL
-eH(fN,fD/2)
-fM=fN
+local fN
+if fH then
+local fO=Instance.new"ImageLabel"
+fO.BackgroundTransparency=1
+fO.ImageTransparency=1
+fO.ScaleType=Enum.ScaleType.Crop
+fO.Size=UDim2.fromScale(1,1)
+fO.ZIndex=e7+3
+fO.Parent=fM
+eH(fO,fE/2)
+fN=fO
 task.spawn(function()
-local fO,fP=pcall(
+local fP,fQ=pcall(
 eK.GetUserThumbnailAsync,
 eK,
 eL.UserId,
 Enum.ThumbnailType.HeadShot,
 Enum.ThumbnailSize.Size100x100
 )
-if fO and fP and fN.Parent then
-fN.Image=fP
+if fP and fQ and fO.Parent then
+fO.Image=fQ
 end
 end)
 else
-local fN=Instance.new"ImageLabel"
-fN.BackgroundTransparency=1
-fN.ImageTransparency=1
-fN.Image=eJ"bot"
-fN.ImageColor3=e_.Accent
-fN.Size=UDim2.fromOffset(14,14)
-fN.AnchorPoint=Vector2.new(0.5,0.5)
-fN.Position=UDim2.fromScale(0.5,0.5)
-fN.ZIndex=e6+3
-fN.Parent=fL
-fM=fN
+local fO=Instance.new"ImageLabel"
+fO.BackgroundTransparency=1
+fO.ImageTransparency=1
+fO.Image=eJ"bot"
+fO.ImageColor3=e0.Accent
+fO.Size=UDim2.fromOffset(14,14)
+fO.AnchorPoint=Vector2.new(0.5,0.5)
+fO.Position=UDim2.fromScale(0.5,0.5)
+fO.ZIndex=e7+3
+fO.Parent=fM
+fN=fO
 end
 
-local fN=SplitMessageSegments(fE)
-local fO=false
-for fP,fQ in ipairs(fN)do
-if fQ.kind=="code"then fO=true end
+local fO=SplitMessageSegments(fF)
+local fP=false
+for fQ,fR in ipairs(fO)do
+if fR.kind=="code"then fP=true end
 end
 
-local fP,fQ=10,8
-local fR=fO and 380 or 260
-local fS
-if fO then
-fS=fR
+local fQ,fR=10,8
+local fS=fP and 380 or 260
+local fT
+if fP then
+fT=fS
 else
-local fT=MeasureText(fN[1].content,13,10000)
-fS=math.min(fT,fR-fP*2)+fP*2
+local fU=MeasureText(fO[1].content,13,10000)
+fT=math.min(fU,fS-fQ*2)+fQ*2
 end
-if fv.AbsoluteSize.X>0 then
-fS=math.min(fS,math.max(200,fv.AbsoluteSize.X-20))
+if fw.AbsoluteSize.X>0 then
+fT=math.min(fT,math.max(200,fw.AbsoluteSize.X-20))
 end
 
-local fT=fG and 0.72 or 0.9
-local fU=Instance.new"Frame"
-fU.Name="Bubble"
-fU.BackgroundColor3=fG and e_.Accent or Color3.new(1,1,1)
-fU.BackgroundTransparency=1
-fU.BorderSizePixel=0
-fU.AutomaticSize=Enum.AutomaticSize.Y
-fU.Size=UDim2.fromOffset(fS,0)
-fU.LayoutOrder=fG and 1 or 2
-fU.ZIndex=e6+2
-fU.Parent=fH
-eH(fU,12)
-local fV=fG and 0.8 or 0.9
-local fW=eI(fU,Color3.new(1,1,1),1,1)
+local fU=fH and 0.72 or 0.9
+local fV=Instance.new"Frame"
+fV.Name="Bubble"
+fV.BackgroundColor3=fH and e0.Accent or Color3.new(1,1,1)
+fV.BackgroundTransparency=1
+fV.BorderSizePixel=0
+fV.AutomaticSize=Enum.AutomaticSize.Y
+fV.Size=UDim2.fromOffset(fT,0)
+fV.LayoutOrder=fH and 1 or 2
+fV.ZIndex=e7+2
+fV.Parent=fI
+eH(fV,12)
+local fW=fH and 0.8 or 0.9
+local fX=eI(fV,Color3.new(1,1,1),1,1)
 
-local fX=Instance.new"UIPadding"
-fX.PaddingTop=UDim.new(0,fQ)
-fX.PaddingBottom=UDim.new(0,fQ)
-fX.PaddingLeft=UDim.new(0,fP)
-fX.PaddingRight=UDim.new(0,fP)
-fX.Parent=fU
+local fY=Instance.new"UIPadding"
+fY.PaddingTop=UDim.new(0,fR)
+fY.PaddingBottom=UDim.new(0,fR)
+fY.PaddingLeft=UDim.new(0,fQ)
+fY.PaddingRight=UDim.new(0,fQ)
+fY.Parent=fV
 
-local fY=Instance.new"UIListLayout"
-fY.FillDirection=Enum.FillDirection.Vertical
-fY.Padding=UDim.new(0,8)
-fY.SortOrder=Enum.SortOrder.LayoutOrder
-fY.Parent=fU
+local fZ=Instance.new"UIListLayout"
+fZ.FillDirection=Enum.FillDirection.Vertical
+fZ.Padding=UDim.new(0,8)
+fZ.SortOrder=Enum.SortOrder.LayoutOrder
+fZ.Parent=fV
 
-ez(fL,{BackgroundTransparency=fK},0.16)
-ez(fM,{ImageTransparency=0},0.16)
-ez(fU,{BackgroundTransparency=fT},0.16)
-ez(fW,{Transparency=fV},0.16)
-ez(fI,{Scale=1},0.22,Enum.EasingStyle.Back,Enum.EasingDirection.Out)
+ez(fM,{BackgroundTransparency=fL},0.16)
+ez(fN,{ImageTransparency=0},0.16)
+ez(fV,{BackgroundTransparency=fU},0.16)
+ez(fX,{Transparency=fW},0.16)
+ez(fJ,{Scale=1},0.22,Enum.EasingStyle.Back,Enum.EasingDirection.Out)
 
-local fZ=0.08
-local f_=0
+local f_=0.08
+local f0=0
 
-for f0,f1 in ipairs(fN)do
-if f1.kind=="code"then
-local f2=Instance.new"Frame"
-f2.Name="CodeBlock"
-f2.BackgroundColor3=e_.Bg
-f2.BackgroundTransparency=0.1
-f2.BorderSizePixel=0
-f2.ClipsDescendants=true
-f2.AutomaticSize=Enum.AutomaticSize.Y
-f2.Size=UDim2.new(1,0,0,0)
-f2.LayoutOrder=f0
-f2.ZIndex=e6+3
-f2.Parent=fU
-eH(f2,8)
-eI(f2,Color3.new(1,1,1),1,0.92)
+for f1,f2 in ipairs(fO)do
+if f2.kind=="code"then
+local f3=Instance.new"Frame"
+f3.Name="CodeBlock"
+f3.BackgroundColor3=e0.Bg
+f3.BackgroundTransparency=0.1
+f3.BorderSizePixel=0
+f3.ClipsDescendants=true
+f3.AutomaticSize=Enum.AutomaticSize.Y
+f3.Size=UDim2.new(1,0,0,0)
+f3.LayoutOrder=f1
+f3.ZIndex=e7+3
+f3.Parent=fV
+eH(f3,8)
+eI(f3,Color3.new(1,1,1),1,0.92)
 
-local f3=Instance.new"UIListLayout"
-f3.FillDirection=Enum.FillDirection.Vertical
-f3.SortOrder=Enum.SortOrder.LayoutOrder
-f3.Parent=f2
+local f4=Instance.new"UIListLayout"
+f4.FillDirection=Enum.FillDirection.Vertical
+f4.SortOrder=Enum.SortOrder.LayoutOrder
+f4.Parent=f3
 
-local f4=Instance.new"Frame"
-f4.BackgroundTransparency=1
-f4.Size=UDim2.new(1,0,0,24)
-f4.LayoutOrder=1
-f4.ZIndex=e6+4
-f4.Parent=f2
-
-local f5=Instance.new"TextLabel"
+local f5=Instance.new"Frame"
 f5.BackgroundTransparency=1
-f5.FontFace=ae.FontReg
-f5.Text=f1.lang
-f5.TextColor3=e_.Dim
-f5.TextSize=11
-f5.TextXAlignment=Enum.TextXAlignment.Left
-f5.Position=UDim2.fromOffset(10,0)
-f5.Size=UDim2.new(1,-70,1,0)
-f5.ZIndex=e6+5
-f5.Parent=f4
+f5.Size=UDim2.new(1,0,0,24)
+f5.LayoutOrder=1
+f5.ZIndex=e7+4
+f5.Parent=f3
 
-local f6,f7=codeHeaderButton(f4,"copy",8)
-e0(f6.MouseButton1Click:Connect(function()
-local f8=ex.hasFn"setclipboard"
-if not f8 then return end
-pcall(f8,f1.content)
-ez(f7,{ImageColor3=Color3.fromRGB(120,220,140)},0.1)
+local f6=Instance.new"TextLabel"
+f6.BackgroundTransparency=1
+f6.FontFace=ae.FontReg
+f6.Text=f2.lang
+f6.TextColor3=e0.Dim
+f6.TextSize=11
+f6.TextXAlignment=Enum.TextXAlignment.Left
+f6.Position=UDim2.fromOffset(10,0)
+f6.Size=UDim2.new(1,-70,1,0)
+f6.ZIndex=e7+5
+f6.Parent=f5
+
+local f7,f8=codeHeaderButton(f5,"copy",8)
+e1(f7.MouseButton1Click:Connect(function()
+local f9=ex.hasFn"setclipboard"
+if not f9 then return end
+pcall(f9,f2.content)
+ez(f8,{ImageColor3=Color3.fromRGB(120,220,140)},0.1)
 task.delay(0.4,function()
-if f7.Parent then
-ez(f7,{ImageColor3=e_.Dim},0.15)
+if f8.Parent then
+ez(f8,{ImageColor3=e0.Dim},0.15)
 end
 end)
 end))
 
-if eZ.OnRunCode then local
-f8=codeHeaderButton(f4,"play",32)
-e0(f8.MouseButton1Click:Connect(function()
-eY:Confirm{
+if e_.OnRunCode then local
+f9=codeHeaderButton(f5,"play",32)
+e1(f9.MouseButton1Click:Connect(function()
+eZ:Confirm{
 Title="Run this code?",
 Text="This runs exactly what's shown above, right now, in this game.",
 ConfirmText="Run",
 CancelText="Cancel",
 Danger=true,
-Callback=function(f9)
-if not f9 then return end
-local ga,gb=pcall(eZ.OnRunCode,f1.content,f1.lang)
-eY:Notify{
-Title=ga and"Ran"or"Run failed",
-Text=ga and"Code executed."or tostring(gb),
-Type=ga and"success"or"error",
+Callback=function(ga)
+if not ga then return end
+local gb,gc=pcall(e_.OnRunCode,f2.content,f2.lang)
+eZ:Notify{
+Title=gb and"Ran"or"Run failed",
+Text=gb and"Code executed."or tostring(gc),
+Type=gb and"success"or"error",
 Duration=3,
 }
 end,
@@ -9980,78 +10135,78 @@ end,
 end))
 end
 
-local f8=Instance.new"Frame"
-f8.BackgroundColor3=Color3.new(1,1,1)
-f8.BackgroundTransparency=0.92
-f8.BorderSizePixel=0
-f8.Size=UDim2.new(1,0,0,1)
-f8.LayoutOrder=2
-f8.ZIndex=e6+4
-f8.Parent=f2
-
 local f9=Instance.new"Frame"
-f9.BackgroundTransparency=1
-f9.AutomaticSize=Enum.AutomaticSize.Y
-f9.Size=UDim2.new(1,0,0,0)
-f9.LayoutOrder=3
-f9.ZIndex=e6+4
-f9.Parent=f2
+f9.BackgroundColor3=Color3.new(1,1,1)
+f9.BackgroundTransparency=0.92
+f9.BorderSizePixel=0
+f9.Size=UDim2.new(1,0,0,1)
+f9.LayoutOrder=2
+f9.ZIndex=e7+4
+f9.Parent=f3
 
-local ga=Instance.new"UIPadding"
-ga.PaddingTop=UDim.new(0,8)
-ga.PaddingBottom=UDim.new(0,8)
-ga.PaddingLeft=UDim.new(0,10)
-ga.PaddingRight=UDim.new(0,10)
-ga.Parent=f9
+local ga=Instance.new"Frame"
+ga.BackgroundTransparency=1
+ga.AutomaticSize=Enum.AutomaticSize.Y
+ga.Size=UDim2.new(1,0,0,0)
+ga.LayoutOrder=3
+ga.ZIndex=e7+4
+ga.Parent=f3
 
-local gb=Instance.new"TextLabel"
-gb.BackgroundTransparency=1
-gb.FontFace=Font.new(eN,Enum.FontWeight.Regular,Enum.FontStyle.Normal)
-gb.RichText=true
-gb.Text=HighlightLua(EscapeRichText(f1.content))
-gb.TextColor3=e_.Text
-gb.TextSize=12
-gb.TextWrapped=true
-gb.TextXAlignment=Enum.TextXAlignment.Left
-gb.TextYAlignment=Enum.TextYAlignment.Top
-gb.LineHeight=1.3
-gb.AutomaticSize=Enum.AutomaticSize.Y
-gb.Size=UDim2.new(1,0,0,16)
-gb.ZIndex=e6+5
-gb.Parent=f9
+local gb=Instance.new"UIPadding"
+gb.PaddingTop=UDim.new(0,8)
+gb.PaddingBottom=UDim.new(0,8)
+gb.PaddingLeft=UDim.new(0,10)
+gb.PaddingRight=UDim.new(0,10)
+gb.Parent=ga
+
+local gc=Instance.new"TextLabel"
+gc.BackgroundTransparency=1
+gc.FontFace=Font.new(eQ,Enum.FontWeight.Regular,Enum.FontStyle.Normal)
+gc.RichText=true
+gc.Text=HighlightLua(EscapeRichText(f2.content))
+gc.TextColor3=e0.Text
+gc.TextSize=12
+gc.TextWrapped=true
+gc.TextXAlignment=Enum.TextXAlignment.Left
+gc.TextYAlignment=Enum.TextYAlignment.Top
+gc.LineHeight=1.3
+gc.AutomaticSize=Enum.AutomaticSize.Y
+gc.Size=UDim2.new(1,0,0,16)
+gc.ZIndex=e7+5
+gc.Parent=ga
 else
-local f2=Instance.new"TextLabel"
-f2.Name="Prose"
-f2.BackgroundTransparency=1
-f2.FontFace=ae.FontReg
-f2.RichText=true
-f2.Text=MarkdownToRichText(f1.content)
-f2.TextColor3=e_.Text
-f2.TextTransparency=1
-f2.TextSize=13
-f2.TextWrapped=true
-f2.TextXAlignment=Enum.TextXAlignment.Left
-f2.TextYAlignment=Enum.TextYAlignment.Top
-f2.LineHeight=1.3
-f2.AutomaticSize=Enum.AutomaticSize.Y
-f2.Size=UDim2.new(1,0,0,16)
-f2.LayoutOrder=f0
-f2.ZIndex=e6+3
+local f3=Instance.new"TextLabel"
+f3.Name="Prose"
+f3.BackgroundTransparency=1
+f3.FontFace=ae.FontReg
+f3.RichText=true
+f3.Text=MarkdownToRichText(f2.content)
+f3.TextColor3=e0.Text
+f3.TextTransparency=1
+f3.TextSize=13
+f3.TextWrapped=true
+f3.TextXAlignment=Enum.TextXAlignment.Left
+f3.TextYAlignment=Enum.TextYAlignment.Top
+f3.LineHeight=1.3
+f3.AutomaticSize=Enum.AutomaticSize.Y
+f3.Size=UDim2.new(1,0,0,16)
+f3.LayoutOrder=f1
+f3.ZIndex=e7+3
 
-f2.MaxVisibleGraphemes=0
-f2.Parent=fU
+f3.MaxVisibleGraphemes=0
+f3.Parent=fV
 
-ez(f2,{TextTransparency=0},0.16)
+ez(f3,{TextTransparency=0},0.16)
 
-local f3=utf8.len(f1.content)or#f1.content
-local f4=math.clamp(f3*0.014,0.12,1.6)
-f_=math.max(f_,f4)
-task.delay(fZ,function()
-if f2 and f2.Parent then
-eM:Create(
-f2,
-TweenInfo.new(f4,Enum.EasingStyle.Linear),
-{MaxVisibleGraphemes=f3}
+local f4=utf8.len(f2.content)or#f2.content
+local f5=math.clamp(f4*0.014,0.12,1.6)
+f0=math.max(f0,f5)
+task.delay(f_,function()
+if f3 and f3.Parent then
+eN:Create(
+f3,
+TweenInfo.new(f5,Enum.EasingStyle.Linear),
+{MaxVisibleGraphemes=f4}
 ):Play()
 end
 end)
@@ -10059,226 +10214,226 @@ end
 end
 
 scrollToBottom()
-table.insert(fB,(fG and"You"or"Assistant")..": "..fE)
+table.insert(fC,(fH and"You"or"Assistant")..": "..fF)
 
-return fZ+f_
+return f_+f0
 end
 
-local fE
+local fF
 
-local function addToolLine(fF)
-fA=fA+1
-local fG=Instance.new"Frame"
-fG.Name="ToolCall"
-fG.BackgroundTransparency=1
-fG.AutomaticSize=Enum.AutomaticSize.Y
-fG.Size=UDim2.new(1,0,0,18)
-fG.LayoutOrder=fA
-fG.ZIndex=e6+1
-fG.Parent=fv
+local function addToolLine(fG)
+fB=fB+1
+local fH=Instance.new"Frame"
+fH.Name="ToolCall"
+fH.BackgroundTransparency=1
+fH.AutomaticSize=Enum.AutomaticSize.Y
+fH.Size=UDim2.new(1,0,0,18)
+fH.LayoutOrder=fB
+fH.ZIndex=e7+1
+fH.Parent=fw
 
-local fH=Instance.new"UIListLayout"
-fH.FillDirection=Enum.FillDirection.Horizontal
-fH.VerticalAlignment=Enum.VerticalAlignment.Center
-fH.Padding=UDim.new(0,6)
-fH.Parent=fG
+local fI=Instance.new"UIListLayout"
+fI.FillDirection=Enum.FillDirection.Horizontal
+fI.VerticalAlignment=Enum.VerticalAlignment.Center
+fI.Padding=UDim.new(0,6)
+fI.Parent=fH
 
-local fI=Instance.new"ImageLabel"
-fI.BackgroundTransparency=1
-fI.Image=eJ"wrench"
-fI.ImageColor3=e_.Accent
-fI.Size=UDim2.fromOffset(11,11)
-fI.LayoutOrder=1
-fI.ZIndex=e6+2
-fI.Parent=fG
-
-local fJ=Instance.new"TextLabel"
+local fJ=Instance.new"ImageLabel"
 fJ.BackgroundTransparency=1
-fJ.FontFace=ae.FontReg
-fJ.Text="Called tool: "..tostring(fF)
-fJ.TextColor3=e_.Dim
-fJ.TextSize=11
-fJ.AutomaticSize=Enum.AutomaticSize.XY
-fJ.Size=UDim2.fromOffset(0,14)
-fJ.LayoutOrder=2
-fJ.ZIndex=e6+2
-fJ.Parent=fG
+fJ.Image=eJ"wrench"
+fJ.ImageColor3=e0.Accent
+fJ.Size=UDim2.fromOffset(11,11)
+fJ.LayoutOrder=1
+fJ.ZIndex=e7+2
+fJ.Parent=fH
+
+local fK=Instance.new"TextLabel"
+fK.BackgroundTransparency=1
+fK.FontFace=ae.FontReg
+fK.Text="Called tool: "..tostring(fG)
+fK.TextColor3=e0.Dim
+fK.TextSize=11
+fK.AutomaticSize=Enum.AutomaticSize.XY
+fK.Size=UDim2.fromOffset(0,14)
+fK.LayoutOrder=2
+fK.ZIndex=e7+2
+fK.Parent=fH
 
 scrollToBottom()
-table.insert(fB,"[Called tool: "..tostring(fF).."]")
-if fE then fE()end
+table.insert(fC,"[Called tool: "..tostring(fG).."]")
+if fF then fF()end
 end
 
-local fF,fG,fH=false
+local fG,fH,fI=false
 
 local function destroyTypingRow()
-if fH then
-for fI,fJ in ipairs(fH)do pcall(function()fJ:Cancel()end)end
-fH=nil
+if fI then
+for fJ,fK in ipairs(fI)do pcall(function()fK:Cancel()end)end
+fI=nil
 end
-if fG then
-pcall(function()fG:Destroy()end)
-fG=nil
+if fH then
+pcall(function()fH:Destroy()end)
+fH=nil
 end
 end
 
 local function buildTypingRow()
-fA=fA+1
+fB=fB+1
 
-local fI=Instance.new"Frame"
-fI.Name="TypingRow"
-fI.BackgroundTransparency=1
-fI.AutomaticSize=Enum.AutomaticSize.Y
-fI.Size=UDim2.new(1,0,0,0)
-fI.LayoutOrder=fA
-fI.ZIndex=e6+1
-fI.Parent=fv
+local fJ=Instance.new"Frame"
+fJ.Name="TypingRow"
+fJ.BackgroundTransparency=1
+fJ.AutomaticSize=Enum.AutomaticSize.Y
+fJ.Size=UDim2.new(1,0,0,0)
+fJ.LayoutOrder=fB
+fJ.ZIndex=e7+1
+fJ.Parent=fw
 
-local fJ=Instance.new"UIListLayout"
-fJ.FillDirection=Enum.FillDirection.Horizontal
-fJ.VerticalAlignment=Enum.VerticalAlignment.Top
-fJ.Padding=UDim.new(0,8)
-fJ.Parent=fI
+local fK=Instance.new"UIListLayout"
+fK.FillDirection=Enum.FillDirection.Horizontal
+fK.VerticalAlignment=Enum.VerticalAlignment.Top
+fK.Padding=UDim.new(0,8)
+fK.Parent=fJ
 
-local fK=Instance.new"Frame"
-fK.BackgroundColor3=e_.Accent
-fK.BackgroundTransparency=1
-fK.BorderSizePixel=0
-fK.Size=UDim2.fromOffset(fD,fD)
-fK.LayoutOrder=1
-fK.ZIndex=e6+2
-fK.Parent=fI
-eH(fK,fD/2)
-
-local fL=Instance.new"ImageLabel"
+local fL=Instance.new"Frame"
+fL.BackgroundColor3=e0.Accent
 fL.BackgroundTransparency=1
-fL.ImageTransparency=1
-fL.Image=eJ"bot"
-fL.ImageColor3=e_.Accent
-fL.Size=UDim2.fromOffset(14,14)
-fL.AnchorPoint=Vector2.new(0.5,0.5)
-fL.Position=UDim2.fromScale(0.5,0.5)
-fL.ZIndex=e6+3
-fL.Parent=fK
+fL.BorderSizePixel=0
+fL.Size=UDim2.fromOffset(fE,fE)
+fL.LayoutOrder=1
+fL.ZIndex=e7+2
+fL.Parent=fJ
+eH(fL,fE/2)
 
-local fM=Instance.new"Frame"
-fM.BackgroundColor3=Color3.new(1,1,1)
+local fM=Instance.new"ImageLabel"
 fM.BackgroundTransparency=1
-fM.BorderSizePixel=0
-fM.Size=UDim2.fromOffset(38,fD)
-fM.LayoutOrder=2
-fM.ZIndex=e6+2
-fM.Parent=fI
-eH(fM,12)
-local fN=eI(fM,Color3.new(1,1,1),1,1)
+fM.ImageTransparency=1
+fM.Image=eJ"bot"
+fM.ImageColor3=e0.Accent
+fM.Size=UDim2.fromOffset(14,14)
+fM.AnchorPoint=Vector2.new(0.5,0.5)
+fM.Position=UDim2.fromScale(0.5,0.5)
+fM.ZIndex=e7+3
+fM.Parent=fL
 
-local fO={}
-for fP=1,3 do
-local fQ=10+(fP-1)*9
-local fR=Instance.new"Frame"
-fR.BackgroundColor3=e_.Dim
-fR.BackgroundTransparency=1
-fR.BorderSizePixel=0
-fR.AnchorPoint=Vector2.new(0.5,0.5)
-fR.Position=UDim2.new(0,fQ,0.5,0)
-fR.Size=UDim2.fromOffset(4,4)
-fR.ZIndex=e6+3
-fR.Parent=fM
-eH(fR,2)
-ez(fR,{BackgroundTransparency=0},0.15)
+local fN=Instance.new"Frame"
+fN.BackgroundColor3=Color3.new(1,1,1)
+fN.BackgroundTransparency=1
+fN.BorderSizePixel=0
+fN.Size=UDim2.fromOffset(38,fE)
+fN.LayoutOrder=2
+fN.ZIndex=e7+2
+fN.Parent=fJ
+eH(fN,12)
+local fO=eI(fN,Color3.new(1,1,1),1,1)
 
-fO[fP]=eM:Create(
-fR,
-TweenInfo.new(0.45,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut,-1,true,(fP-1)*0.15),
-{Position=UDim2.new(0,fQ,0.5,-3)}
+local fP={}
+for fQ=1,3 do
+local fR=10+(fQ-1)*9
+local fS=Instance.new"Frame"
+fS.BackgroundColor3=e0.Dim
+fS.BackgroundTransparency=1
+fS.BorderSizePixel=0
+fS.AnchorPoint=Vector2.new(0.5,0.5)
+fS.Position=UDim2.new(0,fR,0.5,0)
+fS.Size=UDim2.fromOffset(4,4)
+fS.ZIndex=e7+3
+fS.Parent=fN
+eH(fS,2)
+ez(fS,{BackgroundTransparency=0},0.15)
+
+fP[fQ]=eN:Create(
+fS,
+TweenInfo.new(0.45,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut,-1,true,(fQ-1)*0.15),
+{Position=UDim2.new(0,fR,0.5,-3)}
 )
-fO[fP]:Play()
+fP[fQ]:Play()
 end
 
-ez(fK,{BackgroundTransparency=0.82},0.15)
-ez(fL,{ImageTransparency=0},0.15)
-ez(fM,{BackgroundTransparency=0.9},0.15)
-ez(fN,{Transparency=0.9},0.15)
+ez(fL,{BackgroundTransparency=0.82},0.15)
+ez(fM,{ImageTransparency=0},0.15)
+ez(fN,{BackgroundTransparency=0.9},0.15)
+ez(fO,{Transparency=0.9},0.15)
 
-fG,fH=fI,fO
+fH,fI=fJ,fP
 scrollToBottom()
 end
 
 local function showTyping()
-if fG then return end
-fF=true
+if fH then return end
+fG=true
 buildTypingRow()
 end
 
-function fE()
-if not fG then return end
+function fF()
+if not fH then return end
 destroyTypingRow()
 buildTypingRow()
 end
 
 local function hideTyping()
-if not fF then return end
-fF=false
+if not fG then return end
+fG=false
 destroyTypingRow()
 end
 
-local function addMessage(fI,fJ)
-fJ=tostring(fJ or"")
-if fJ==""then return end
+local function addMessage(fJ,fK)
+fK=tostring(fK or"")
+if fK==""then return end
 hideTyping()
-if fI=="tool"then
+if fJ=="tool"then
+addToolLine(fK)
+return nil
+end
+return addBubble(fK,fJ)
+end
+
+local function handleToolCall(fJ,fK)
+local fL=e3[fJ]
 addToolLine(fJ)
+if not fL or not fL.Handler then
+addMessage("assistant","Unknown tool: "..tostring(fJ))
 return nil
 end
-return addBubble(fJ,fI)
-end
-
-local function handleToolCall(fI,fJ)
-local fK=e2[fI]
-addToolLine(fI)
-if not fK or not fK.Handler then
-addMessage("assistant","Unknown tool: "..tostring(fI))
+local fM,fN=pcall(fL.Handler,fK)
+if not fM then
+addMessage("assistant","Tool error: "..tostring(fN))
 return nil
 end
-local fL,fM=pcall(fK.Handler,fJ)
-if not fL then
-addMessage("assistant","Tool error: "..tostring(fM))
-return nil
-end
-return fM
+return fN
 end
 
-local fI=false
-local fJ
+local fJ=false
+local fK
 
-local function setSending(fK)
-fI=fK
-fu.Image=eJ(fK and"square"or"send")
-end
-
-local function trySend(fK)
-local fL=fK or fs.Text
-if fI or fL==""then return end
-setSending(true)
-if not fK then fs.Text=""end
+local function setSending(fL)
 fJ=fL
-local fM=addMessage("user",fL)
-if eZ.OnSend then
-local fN=false
+fv.Image=eJ(fL and"square"or"send")
+end
+
+local function trySend(fL)
+local fM=fL or ft.Text
+if fJ or fM==""then return end
+setSending(true)
+if not fL then ft.Text=""end
+fK=fM
+local fN=addMessage("user",fM)
+if e_.OnSend then
+local fO=false
 
 task.spawn(function()
 
-if fM and fM>0 then task.wait(fM)end
-local fO,fP=pcall(eZ.OnSend,api,fL)
-if not fO then
-addMessage("assistant","Error: "..tostring(fP))
+if fN and fN>0 then task.wait(fN)end
+local fP,fQ=pcall(e_.OnSend,api,fM)
+if not fP then
+addMessage("assistant","Error: "..tostring(fQ))
 end
-fN=true
+fO=true
 setSending(false)
 end)
 
-task.delay(eZ.SendTimeout or 30,function()
-if not fN and fI then
+task.delay(e_.SendTimeout or 30,function()
+if not fO and fJ then
 hideTyping()
 addMessage("assistant","Still working... (press stop to cancel)")
 end
@@ -10289,109 +10444,109 @@ end
 end
 
 local function tryRegenerate()
-if fI or not fJ then return end
-if eZ.OnRegenerate then
-task.spawn(eZ.OnRegenerate,api,fJ)
+if fJ or not fK then return end
+if e_.OnRegenerate then
+task.spawn(e_.OnRegenerate,api,fK)
 else
-trySend(fJ)
+trySend(fK)
 end
 end
 
-local fK
+local fL
 
 local function openChat()
-if eY._active==e1 then return end
-if eY._active and not eY._active.Hidden then
-fK=eY._active
+if eZ._active==e2 then return end
+if eZ._active and not eZ._active.Hidden then
+fL=eZ._active
 end
-eY._activateTab(e1,true)
+eZ._activateTab(e2,true)
 end
 
 local function closeChat()
-if eY._active~=e1 then return end
-if fK and not fK.Hidden then
-eY._activateTab(fK,true)
-elseif eY._tabs[1]and eY._tabs[1]~=e1 then
-eY._activateTab(eY._tabs[1],true)
+if eZ._active~=e2 then return end
+if fL and not fL.Hidden then
+eZ._activateTab(fL,true)
+elseif eZ._tabs[1]and eZ._tabs[1]~=e2 then
+eZ._activateTab(eZ._tabs[1],true)
 end
 end
 
-table.insert(eY._tabChangeListeners,function(fL)
-if eZ.OnToggle then task.spawn(eZ.OnToggle,fL==e1)end
+table.insert(eZ._tabChangeListeners,function(fM)
+if e_.OnToggle then task.spawn(e_.OnToggle,fM==e2)end
 end)
 
 local function clearChat()
 hideTyping()
-for fL,fM in ipairs(fv:GetChildren())do
-if fM.Name=="MessageRow"or fM.Name=="ToolCall"then
-fM:Destroy()
+for fM,fN in ipairs(fw:GetChildren())do
+if fN.Name=="MessageRow"or fN.Name=="ToolCall"then
+fN:Destroy()
 end
 end
-table.clear(fB)
-if eZ.OnClear then task.spawn(eZ.OnClear)end
+table.clear(fC)
+if e_.OnClear then task.spawn(e_.OnClear)end
 end
 
-e0(ft.MouseButton1Click:Connect(function()
-if fI then
-if eZ.OnStop then task.spawn(eZ.OnStop,api)end
+e1(fu.MouseButton1Click:Connect(function()
+if fJ then
+if e_.OnStop then task.spawn(e_.OnStop,api)end
 else
 trySend()
 end
 end))
-e0(fs.FocusLost:Connect(function(fL)
-if fL then trySend()end
+e1(ft.FocusLost:Connect(function(fM)
+if fM then trySend()end
 end))
-e0(fl.MouseButton1Click:Connect(closeChat))
+e1(fm.MouseButton1Click:Connect(closeChat))
 
-e0(fg.MouseButton1Click:Connect(function()
-local fL=ex.hasFn"setclipboard"
-if not fL or#fB==0 then return end
-pcall(fL,table.concat(fB,"\n\n"))
-ez(fh,{ImageColor3=Color3.fromRGB(120,220,140)},0.1)
+e1(fh.MouseButton1Click:Connect(function()
+local fM=ex.hasFn"setclipboard"
+if not fM or#fC==0 then return end
+pcall(fM,table.concat(fC,"\n\n"))
+ez(fi,{ImageColor3=Color3.fromRGB(120,220,140)},0.1)
 task.delay(0.4,function()
-if fh.Parent then
-ez(fh,{ImageColor3=e_.Dim},0.15)
+if fi.Parent then
+ez(fi,{ImageColor3=e0.Dim},0.15)
 end
 end)
 end))
-e0(fi.MouseButton1Click:Connect(function()
-if fI or not fJ then return end
-ez(fj,{Rotation=fj.Rotation+180},0.25)
+e1(fj.MouseButton1Click:Connect(function()
+if fJ or not fK then return end
+ez(fk,{Rotation=fk.Rotation+180},0.25)
 tryRegenerate()
 end))
-e0(fk.MouseButton1Click:Connect(function()
+e1(fl.MouseButton1Click:Connect(function()
 clearChat()
-fJ=nil
+fK=nil
 end))
 
-local fL={}
+local fM={}
 
-fL={
-Instance=e5,
-Tab=e1,
+fM={
+Instance=e6,
+Tab=e2,
 Open=openChat,
 Close=closeChat,
 Toggle=function()
-if eY._active==e1 then closeChat()else openChat()end
+if eZ._active==e2 then closeChat()else openChat()end
 end,
-IsOpen=function()return eY._active==e1 end,
-AddMessage=function(fM,fN,fO)addMessage(fN,fO)end,
-LogToolCall=function(fM,fN)addToolLine(fN)end,
-HandleToolCall=function(fM,fN,fO)return handleToolCall(fN,fO)end,
+IsOpen=function()return eZ._active==e2 end,
+AddMessage=function(fN,fO,fP)addMessage(fO,fP)end,
+LogToolCall=function(fN,fO)addToolLine(fO)end,
+HandleToolCall=function(fN,fO,fP)return handleToolCall(fO,fP)end,
 ShowTyping=function()showTyping()end,
 HideTyping=function()hideTyping()end,
-IsSending=function()return fI end,
+IsSending=function()return fJ end,
 Clear=function()clearChat()end,
-Destroy=function()e5:Destroy()end,
+Destroy=function()e6:Destroy()end,
 }
 
-if eY._dockAdd then
-eY._dockAdd("AI",eZ.Icon or"bot",
-function()eY._activateTab(e1,true)end,e1)
+if eZ._dockAdd then
+eZ._dockAdd("AI",e_.Icon or"bot",
+function()eZ._activateTab(e2,true)end,e2)
 end
 
-return fL
-end end function a.ah():typeof(__modImpl())local aa=a.cache.ah if not aa then aa={c=__modImpl()}a.cache.ah=aa end return aa.c end end do local function __modImpl()
+return fM
+end end function a.au():typeof(__modImpl())local aa=a.cache.au if not aa then aa={c=__modImpl()}a.cache.au=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -10404,10 +10559,10 @@ local ab=a.c()
 local ac=a.e()
 local ad=a.f()
 local ae=a.h()
-local af=a.d()a.i()
+local af=a.d()a.v()
 
 local ex=a.b()
-local ey=a.k()
+local ey=a.x()
 
 local ez=af.Z
 local eH=ab.Tween
@@ -11279,7 +11434,7 @@ SetDiscordWebhook=function(fU,fV)fk=fV or""end,
 GetDiscordWebhook=function()return fk end,
 Destroy=function()e5:Destroy()end,
 }
-end end function a.ai():typeof(__modImpl())local aa=a.cache.ai if not aa then aa={c=__modImpl()}a.cache.ai=aa end return aa.c end end do local function __modImpl()
+end end function a.av():typeof(__modImpl())local aa=a.cache.av if not aa then aa={c=__modImpl()}a.cache.av=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -11405,7 +11560,7 @@ kTick()
 return eK
 end
 
-return{buildK=buildK,kTick=kTick}end function a.aj():typeof(__modImpl())local aa=a.cache.aj if not aa then aa={c=__modImpl()}a.cache.aj=aa end return aa.c end end do local function __modImpl()
+return{buildK=buildK,kTick=kTick}end function a.aw():typeof(__modImpl())local aa=a.cache.aw if not aa then aa={c=__modImpl()}a.cache.aw=aa end return aa.c end end do local function __modImpl()
 
 
 
@@ -11415,18 +11570,18 @@ local aa=a.a()
 local ab=a.c()
 local ac=a.e()
 local ad=a.b()
-local ae=a.f()a.i()a.g()
+local ae=a.f()a.v()a.g()
 
 
 local af=a.h()
-local ex=a.n()
-local ey=a.ae()
-local ez=a.af()
-local eH=a.ag()
-local eI=a.ah()
-local eJ=a.ai()
+local ex=a.A()
+local ey=a.ar()
+local ez=a.as()
+local eH=a.at()
+local eI=a.au()
+local eJ=a.av()
 local eK=a.d()
-local eL=a.aj()
+local eL=a.aw()
 
 local eM=aa
 local eN=ab.T
@@ -11980,6 +12135,81 @@ fS._dockAdd=dockAdd
 function fS.AddDockButton(fY,fZ)
 fZ=fZ or{}
 return dockAdd(fZ.Name or"Dock",fZ.Icon or"box",fZ.Callback,fZ.Tab)
+end
+
+function fS.AddTab(fY,fZ)
+local f_=type(fZ)=="table"and fZ or{Name=fZ}
+return fY:Tab{Title=f_.Name or f_.Title or"Tab",Icon=f_.Icon,Hidden=f_.Hidden}
+end
+function fS.AddTabLine(fY)
+local fZ=Instance.new"Frame"
+fZ.Name="TabLine"
+fZ.BackgroundTransparency=1
+fZ.Size=UDim2.new(1,0,0,9)
+fZ.ZIndex=2
+fZ.Parent=fY._nav
+local f_=Instance.new"Frame"
+f_.AnchorPoint=Vector2.new(0,0.5)
+f_.Position=UDim2.new(0,4,0.5,0)
+f_.Size=UDim2.new(1,-8,0,1)
+f_.BackgroundColor3=Color3.new(1,1,1)
+f_.BackgroundTransparency=0.92
+f_.BorderSizePixel=0
+f_.ZIndex=2
+f_.Parent=fZ
+return fZ
+end
+function fS.AddPanelTab(fY,fZ)
+fZ=fZ or{}
+local f_=fY
+local f0=fY:AddTab{
+Name=fZ.Name or fZ.Title,
+Icon=fZ.Icon,
+Hidden=fZ.Hidden~=false,
+}
+if fZ.OnToggle then
+table.insert(fY._tabChangeListeners,function(f1)
+task.spawn(fZ.OnToggle,f1==f0)
+end)
+end
+local f1
+local function openPanel()
+if f_._active==f0 then return end
+if f_._active and not f_._active.Hidden then
+f1=f_._active
+end
+f_._activateTab(f0,true)
+end
+local function closePanel()
+if f_._active~=f0 then return end
+if f1 and not f1.Hidden then
+f_._activateTab(f1,true)
+elseif f_._tabs[1]and f_._tabs[1]~=f0 then
+f_._activateTab(f_._tabs[1],true)
+end
+end
+local f2={
+Instance=f0.Page,
+Tab=f0,
+Open=openPanel,
+Close=closePanel,
+Toggle=function()
+if f_._active==f0 then closePanel()else openPanel()end
+end,
+IsOpen=function()return f_._active==f0 end,
+}
+for f3,f4 in pairs{
+AddToggle="AddToggle",AddSlider="AddSlider",
+AddDropdown="AddDropdown",AddTextbox="AddTextbox",
+AddButton="AddButton",AddKeybind="AddKeybind",
+AddColorPicker="AddColorpicker",AddParagraph="AddParagraph",
+AddSection="AddSection",AddSpacing="AddEmpty",AddHeader="AddSection",
+}do
+if f0[f4]then
+f2[f3]=function(f5,...)return f0[f4](f0,...)end
+end
+end
+return f2
 end
 
 function fS._activateTab(fY,fZ)
@@ -13829,7 +14059,7 @@ af.paintFonts(fd)
 aa._lastWindow=fS
 table.insert(aa._Windows,fS)
 return fS
-end end function a.ak():typeof(__modImpl())local aa=a.cache.ak if not aa then aa={c=__modImpl()}a.cache.ak=aa end return aa.c end end end
+end end function a.ax():typeof(__modImpl())local aa=a.cache.ax if not aa then aa={c=__modImpl()}a.cache.ax=aa end return aa.c end end end
 
 
 
@@ -13842,16 +14072,20 @@ local ab=a.b()a.c()a.e()
 local ac=a.f()
 local ad=a.g()
 local ae=a.h()
-local af=a.i()
-local ex=a.j()
-local ey=a.k()
-local ez=a.m()
-local eH=a.ak()
+local af=a.v()
+local ex=a.w()
+local ey=a.x()
+local ez=a.z()
+local eH=a.ax()
 
 ab.claimUnload()
 
 local eI=aa
-eI.Build="r10"
+eI.Build="r13"
+
+eI.PreloadIcons=function(eJ,eK)
+return ac.PreloadIcons(eK)
+end
 eI.Themes=af.Themes
 eI.Icons=ac.Icons
 eI.IconAlias=ac.IconAlias
