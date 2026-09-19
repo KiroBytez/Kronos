@@ -8231,14 +8231,11 @@ Avatar=a.U(),
 Paragraph=a.V(),
 Card=a.W(),
 Rating=a.X(),
-AddRating=a.X(),
 InfoGrid=a.Y(),
 ActiveUsersGrid=a.Z(),
 SystemInfoGrid=a._(),
 Leaderboard=a.aa(),
-AddLeaderboard=a.aa(),
 Changelog=a.ab(),
-AddChangelogEntry=a.ab(),
 CardGrid=a.ac(),
 }
 
@@ -8246,7 +8243,7 @@ local ab=a.e()
 
 local function attach(ac,ad)
 for ae,af in pairs(aa)do
-ac[ae]=function(ex,ey)
+local function method(ex,ey)
 local ez=af(ad,ey)
 
 
@@ -8259,6 +8256,13 @@ pcall(function()ab.applyLock(eI.Frame,true)end)
 end
 end
 return ez
+end
+ac[ae]=method
+
+
+
+if string.sub(ae,1,3)~="Add"then
+ac["Add"..ae]=method
 end
 end
 end
@@ -13840,6 +13844,7 @@ local eH=a.ak()
 ab.claimUnload()
 
 local eI=aa
+eI.Build="r9"
 eI.Themes=af.Themes
 eI.Icons=ac.Icons
 eI.IconAlias=ac.IconAlias
