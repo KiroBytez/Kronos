@@ -7190,42 +7190,48 @@ local eK=ez(ey.Description and 64 or 46)
 if#eI>0 then
 eK.Size=UDim2.new(1,-4,0,eK.Size.Y.Offset+34)
 end
-eA(eK,ey.Title or"Paragraph",ey.Description,eJ and 160 or 24)
+local eL,eM=eA(eK,ey.Title or"Paragraph",ey.Description,eJ and 160 or 24)
 if eJ then
-local eL=Instance.new"ImageLabel"
-eL.BackgroundTransparency=1
-eL.AnchorPoint=Vector2.new(1,0)eL.Position=UDim2.new(1,-12,0,8)
-eL.Size=UDim2.fromOffset(ey.ImageSize or 48,ey.ImageSize or 48)
-eL.Image=ey.Image eL.ScaleType=Enum.ScaleType.Crop
-eL.Parent=eK
-ek(eL,8)
+local eN=Instance.new"ImageLabel"
+eN.BackgroundTransparency=1
+eN.AnchorPoint=Vector2.new(1,0)eN.Position=UDim2.new(1,-12,0,8)
+eN.Size=UDim2.fromOffset(ey.ImageSize or 48,ey.ImageSize or 48)
+eN.Image=ey.Image eN.ScaleType=Enum.ScaleType.Crop
+eN.Parent=eK
+ek(eN,8)
 end
-for eL,eM in ipairs(eI)do
-local eN=Instance.new"TextButton"eN.Text=""
-eN.Position=UDim2.new(0,12+(eL-1)*118,1,-30)
-eN.Size=UDim2.new(0,110,0,24)eN.BackgroundColor3=eE.Surface2
-eN.BorderSizePixel=0 ek(eN,6)eN.AutoButtonColor=false eN.Parent=eK
-el(eN,true)
-af:_tag(eN,"BackgroundColor3","Surface2")
-local eO=Instance.new"TextLabel"eO.BackgroundTransparency=1
-eO.Size=UDim2.fromScale(1,1)eO.Font=Enum.Font.GothamBold
-eO.TextSize=11 eO.TextTruncate=Enum.TextTruncate.AtEnd
-eO.Text=tostring(eM.Title or eM.Text or"Open")eO.Parent=eN
-af:_tag(eO,"TextColor3","Text")
-eo(eN)
-eN.MouseButton1Click:Connect(function()
+for eN,eO in ipairs(eI)do
+local eP=Instance.new"TextButton"eP.Text=""
+eP.Position=UDim2.new(0,12+(eN-1)*118,1,-30)
+eP.Size=UDim2.new(0,110,0,24)eP.BackgroundColor3=eE.Surface2
+eP.BorderSizePixel=0 ek(eP,6)eP.AutoButtonColor=false eP.Parent=eK
+el(eP,true)
+af:_tag(eP,"BackgroundColor3","Surface2")
+local eQ=Instance.new"TextLabel"eQ.BackgroundTransparency=1
+eQ.Size=UDim2.fromScale(1,1)eQ.Font=Enum.Font.GothamBold
+eQ.TextSize=11 eQ.TextTruncate=Enum.TextTruncate.AtEnd
+eQ.Text=tostring(eO.Title or eO.Text or"Open")eQ.Parent=eP
+af:_tag(eQ,"TextColor3","Text")
+eo(eP)
+eP.MouseButton1Click:Connect(function()
 if eH then return end
-af:_sfx"Click"ej(eM.Callback)
+af:_sfx"Click"ej(eO.Callback)
 end)
 end
 es(eK,eH)
-local eL={}
-function eL.SetLocked(eM,eN)
-eH=eN and true or false
+local eN={}
+function eN.SetTitle(eO,eP)
+pcall(function()eL.Text=tostring(eP or"")end)
+end
+function eN.SetDescription(eO,eP)
+pcall(function()if eM then eM.Text=tostring(eP or"")end end)
+end
+function eN.SetLocked(eO,eP)
+eH=eP and true or false
 es(eK,eH)
 end
-function eL.GetLocked(eM)return eH end
-return eB{Title=ey.Title,Frame=eK,_handle=eL}
+function eN.GetLocked(eO)return eH end
+return eB{Title=ey.Title,Frame=eK,_handle=eN}
 end end function a.ai():typeof(__modImpl())local aa=a.cache.ai if not aa then aa={c=__modImpl()}a.cache.ai=aa end return aa.c end end do local function __modImpl()
 
 
@@ -7363,6 +7369,9 @@ end)
 end
 eE(e0,eU)
 local e2={}
+function e2.Destroy(e3)
+pcall(function()e0:Destroy()end)
+end
 function e2.SetLocked(e3,e4)
 eU=e4 and true or false
 eE(e0,eU)
@@ -8768,7 +8777,9 @@ CardGrid=a.aq(),
 
 AddChangelogEntry=a.ap(),
 AddTextbox=a.K(),
+AddTextBox=a.K(),
 Textbox=a.K(),
+AddColorPicker=a.N(),
 AddConsole=a.G(),
 Console=a.G(),
 AddViewport=a.X(),
@@ -9115,7 +9126,9 @@ fm.TextTruncate=Enum.TextTruncate.AtEnd
 fm.Text=fi
 fm.Parent=fg
 ae.tag(fm,"TextColor3","Dim")
+return fl,fm
 end
+return fl,nil
 end
 local function reg(fg)
 table.insert(fe.Elements,fg)
