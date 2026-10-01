@@ -8893,11 +8893,19 @@ e2.Visible=true
 
 
 
+
+
+
 local fi,fj,fk=pcall(function()
 return e6.AbsolutePosition.Y,e2.Parent.AbsolutePosition.Y
 end)
+local fl=1
+pcall(function()
+fl=(eX._viewScale and eX._viewScale.Scale)or 1
+end)
+if type(fl)~="number"or not(fl>0)then fl=1 end
 if fi and fj and fk and e6.AbsoluteSize.Y>0 then
-fly1(e2,{Position=UDim2.new(0,0,0,fj-fk-2)})
+fly1(e2,{Position=UDim2.new(0,0,0,(fj-fk)/fl-2)})
 return
 end
 fly1(e2,{Position=UDim2.new(0,0,0,(e7-1)*38+6)})
@@ -12400,6 +12408,7 @@ fQ.BackgroundTransparency=1 fQ.ClipsDescendants=true fQ.Parent=fK
 
 local fR={
 _gui=fc,_main=fg,_side=fM,_nav=fN,_pages=fQ,_pill=fP,
+_viewScale=fj,
 _tabs={},_active=nil,_toggleKey=e8,_visible=true,_keybinds={},
 _conns={},_acrylicPref=e9,_popouts={},
 _tabChangeListeners={},
