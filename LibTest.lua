@@ -8849,27 +8849,31 @@ fe._pl=fc
 local ff=eY.SubTitle or eY.Subtitle or"scripthub"
 
 local function setActive(fg)
+
+
+
+local fh=(eX._active==fe)
 eX._active=fe
 pcall(function()
 e3.Text=string.upper(ff).."  /  "..string.upper(e4)
 end)
-for fh,fi in ipairs(eX._tabs)do
-local fj=fi==fe
-fi.Page.Visible=fj
-local fk=fi._label
-fk.TextTransparency=0
-fly1(fi.Btn,{BackgroundTransparency=1},eG.Hover)
-if fj then
-ae.tag(fk,"TextColor3","Text")
-if fi._icon and fi._icon:IsA"ImageLabel"then
-fi._icon.ImageTransparency=0
-fly1(fi._icon,{ImageColor3=aa.Theme.Accent},eG.Hover)
+for fi,fj in ipairs(eX._tabs)do
+local fk=fj==fe
+fj.Page.Visible=fk
+local fl=fj._label
+fl.TextTransparency=0
+fly1(fj.Btn,{BackgroundTransparency=1},eG.Hover)
+if fk then
+ae.tag(fl,"TextColor3","Text")
+if fj._icon and fj._icon:IsA"ImageLabel"then
+fj._icon.ImageTransparency=0
+fly1(fj._icon,{ImageColor3=aa.Theme.Accent},eG.Hover)
 end
 else
-ae.tag(fk,"TextColor3","Dim")
-if fi._icon and fi._icon:IsA"ImageLabel"then
-fi._icon.ImageTransparency=0
-fly1(fi._icon,{ImageColor3=aa.Theme.Dim},eG.Hover)
+ae.tag(fl,"TextColor3","Dim")
+if fj._icon and fj._icon:IsA"ImageLabel"then
+fj._icon.ImageTransparency=0
+fly1(fj._icon,{ImageColor3=aa.Theme.Dim},eG.Hover)
 end
 end
 end
@@ -8883,35 +8887,35 @@ e2.Visible=false
 return
 end
 e2.Visible=true
-local fh={}
-for fi,fj in ipairs(e1:GetChildren())do
-if fj:IsA"GuiObject"and fj.Visible and fj.AbsoluteSize.Y>0 then
-table.insert(fh,fj)
+local fi={}
+for fj,fk in ipairs(e1:GetChildren())do
+if fk:IsA"GuiObject"and fk.Visible and fk.AbsoluteSize.Y>0 then
+table.insert(fi,fk)
 end
 end
-table.sort(fh,function(fi,fj)return fi.LayoutOrder<fj.LayoutOrder end)
+table.sort(fi,function(fj,fk)return fj.LayoutOrder<fk.LayoutOrder end)
 
 
-local fi=6
-if fh[1]then
+local fj=6
+if fi[1]then
 pcall(function()
-fi=fh[1].AbsolutePosition.Y-e2.Parent.AbsolutePosition.Y-2
+fj=fi[1].AbsolutePosition.Y-e2.Parent.AbsolutePosition.Y-2
 end)
 end
-for fj,fk in ipairs(fh)do
-if fk==e6 then
-fly1(e2,{Position=UDim2.new(0,0,0,fi)})
+for fk,fl in ipairs(fi)do
+if fl==e6 then
+fly1(e2,{Position=UDim2.new(0,0,0,fj)})
 return
 end
-fi=fi+fk.AbsoluteSize.Y+4
+fj=fj+fl.AbsoluteSize.Y+4
 end
-local fj=e2.Parent
-if e6.Parent and fj and fj.Parent and e6.AbsoluteSize.Y>0 then
-local fk,fl,fm=pcall(function()
-return e6.AbsolutePosition.Y,fj.AbsolutePosition.Y
+local fk=e2.Parent
+if e6.Parent and fk and fk.Parent and e6.AbsoluteSize.Y>0 then
+local fl,fm,fn=pcall(function()
+return e6.AbsolutePosition.Y,fk.AbsolutePosition.Y
 end)
-if fk and fl and fm then
-fly1(e2,{Position=UDim2.new(0,0,0,fl-fm-2)})
+if fl and fm and fn then
+fly1(e2,{Position=UDim2.new(0,0,0,fm-fn-2)})
 return
 end
 end
@@ -8921,32 +8925,32 @@ syncPill()
 task.delay(0.2,function()
 if e6.Parent then syncPill()end
 end)
-if fg then
+if fg and not fh then
 fb.Position=UDim2.new(0,14,0,0)
 fly1(fb,{Position=UDim2.new(0,0,0,0)})
-local fh=0
-for fi,fj in ipairs(fb:GetChildren())do
-if fj:IsA"Frame"or fj:IsA"CanvasGroup"then
-fh+=1
-local fk=math.min(fh*0.02,0.3)
-task.delay(fk,function()
-if not fj.Parent then return end
-local fl=Instance.new"Frame"
-fl.Name="_cascade"
-fl.Size=UDim2.fromScale(1,1)
-fl.BackgroundColor3=eZ.Surface2
-fl.BackgroundTransparency=0.55
-fl.BorderSizePixel=0
-eJ(fl,10)
-fl.Parent=fj
-eH(fl,eG.Fast,{BackgroundTransparency=1})
-task.delay(0.2,function()pcall(function()fl:Destroy()end)end)
+local fi=0
+for fj,fk in ipairs(fb:GetChildren())do
+if fk:IsA"Frame"or fk:IsA"CanvasGroup"then
+fi+=1
+local fl=math.min(fi*0.02,0.3)
+task.delay(fl,function()
+if not fk.Parent then return end
+local fm=Instance.new"Frame"
+fm.Name="_cascade"
+fm.Size=UDim2.fromScale(1,1)
+fm.BackgroundColor3=eZ.Surface2
+fm.BackgroundTransparency=0.55
+fm.BorderSizePixel=0
+eJ(fm,10)
+fm.Parent=fk
+eH(fm,eG.Fast,{BackgroundTransparency=1})
+task.delay(0.2,function()pcall(function()fm:Destroy()end)end)
 end)
 end
 end
 end
-for fh,fi in ipairs(eX._tabChangeListeners or{})do
-pcall(fi,fe)
+for fi,fj in ipairs(eX._tabChangeListeners or{})do
+pcall(fj,fe)
 end
 end
 e6.MouseButton1Click:Connect(function()af.sfx"Swap"setActive(true)end)
