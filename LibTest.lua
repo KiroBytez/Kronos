@@ -5473,73 +5473,80 @@ b2.opts or{}
 b3=b3 or{}
 local cb=b3.Cards or{}
 local cc=math.clamp(b3.Columns or 2,1,3)
-local cd=Instance.new"Frame"cd.BackgroundTransparency=1
-cd.Size=UDim2.new(1,-4,0,0)cd.AutomaticSize=Enum.AutomaticSize.Y
-cd.Parent=b2.getParent()
-local ce=Instance.new"UIListLayout"ce.Padding=UDim.new(0,8)
-ce.SortOrder=Enum.SortOrder.LayoutOrder ce.Parent=cd
+
+local cd=b3.Expanded==true or b3.Collapsible==false
+local ce=Instance.new"Frame"ce.BackgroundTransparency=1
+ce.Size=UDim2.new(1,-4,0,0)ce.AutomaticSize=Enum.AutomaticSize.Y
+ce.Parent=b2.getParent()
+local cf=Instance.new"UIListLayout"cf.Padding=UDim.new(0,8)
+cf.SortOrder=Enum.SortOrder.LayoutOrder cf.Parent=ce
 
 
 
 
-local cf,cg=0
-for ci,ck in ipairs(cb)do
-if(ci-1)%cc==0 then
-cg=Instance.new"Frame"cg.BackgroundTransparency=1
-cg.Size=UDim2.new(1,0,0,68)cg.AutomaticSize=Enum.AutomaticSize.Y
-cg.Parent=cd
-local cm=Instance.new"UIListLayout"cm.FillDirection=Enum.FillDirection.Horizontal
-cm.Padding=UDim.new(0,8)cm.SortOrder=Enum.SortOrder.LayoutOrder cm.Parent=cg
-cf+=1
+local cg,ci=0
+for ck,cm in ipairs(cb)do
+if(ck-1)%cc==0 then
+ci=Instance.new"Frame"ci.BackgroundTransparency=1
+ci.Size=UDim2.new(1,0,0,68)ci.AutomaticSize=Enum.AutomaticSize.Y
+ci.Parent=ce
+local co=Instance.new"UIListLayout"co.FillDirection=Enum.FillDirection.Horizontal
+co.Padding=UDim.new(0,8)co.SortOrder=Enum.SortOrder.LayoutOrder co.Parent=ci
+cg+=1
 end
-local cm=false
-local co=Instance.new"Frame"
-co.Size=UDim2.new(1/cc,-8+8/cc,0,68)
-co.BackgroundColor3=b9.Surface co.BorderSizePixel=0
-bT(co,10)co.LayoutOrder=ci co.Parent=cg
-bV(co,true)
-af:_tag(co,"BackgroundColor3","Surface")
-bX(co,10)
+local co=cd and true or false
+local cp=Instance.new"Frame"
+cp.Size=UDim2.new(1/cc,-8+8/cc,0,co and 118 or 68)
+cp.BackgroundColor3=b9.Surface cp.BorderSizePixel=0
+bT(cp,10)cp.LayoutOrder=ck cp.Parent=ci
+bV(cp,true)
+af:_tag(cp,"BackgroundColor3","Surface")
+bX(cp,10)
 
 
-local cp=Instance.new"TextButton"cp.Text=""
-cp.Size=UDim2.fromScale(1,1)cp.BackgroundTransparency=1 cp.Parent=co
-local cq=b0(ck.Icon or"box",16,b9.Dim)
-cq.Position=UDim2.new(0,10,0,10)cq.Parent=co
-if cq:IsA"TextLabel"then cq.Size=UDim2.new(0,16,0,16)end
-local cr=Instance.new"TextLabel"cr.BackgroundTransparency=1
-cr.Position=UDim2.new(0,34,0,8)cr.Size=UDim2.new(1,-42,0,18)
-cr.Font=Enum.Font.GothamBold cr.TextSize=13 cr.TextXAlignment=0
-cr.TextTruncate=Enum.TextTruncate.AtEnd cr.Text=ck.Title or"Script"cr.Parent=co
-af:_tag(cr,"TextColor3","Text")
+local cq=Instance.new"TextButton"cq.Text=""
+cq.Size=UDim2.fromScale(1,1)cq.BackgroundTransparency=1 cq.Parent=cp
+local cr=b0(cm.Icon or"box",16,b9.Dim)
+cr.Position=UDim2.new(0,10,0,10)cr.Parent=cp
+if cr:IsA"TextLabel"then cr.Size=UDim2.new(0,16,0,16)end
 local cs=Instance.new"TextLabel"cs.BackgroundTransparency=1
-cs.Position=UDim2.new(0,10,0,30)cs.Size=UDim2.new(1,-20,0,28)
-cs.Font=Enum.Font.Gotham cs.TextSize=11
-cs.TextXAlignment=0 cs.TextYAlignment=0
-cs.TextWrapped=true cs.TextTruncate=Enum.TextTruncate.AtEnd
-cs.Text=ck.Desc or""cs.Visible=false cs.Parent=co
-af:_tag(cs,"TextColor3","Dim")
-local ct=Instance.new"TextButton"ct.Text=""
-ct.AnchorPoint=Vector2.new(0,1)ct.Position=UDim2.new(0,10,1,-10)
-ct.Size=UDim2.new(1,-20,0,28)ct.BorderSizePixel=0
-bT(ct,7)ct.AutoButtonColor=false ct.Visible=false ct.Parent=co
-af:agrad(ct,15)
-local cu=Instance.new"TextLabel"cu.BackgroundTransparency=1
-cu.Size=UDim2.fromScale(1,1)cu.Font=Enum.Font.GothamBold
-cu.TextSize=11
-cu.Text="LAUNCH"cu.Parent=ct
-af:oa(cu)
-cp.MouseButton1Click:Connect(function()
-cm=not cm
+cs.Position=UDim2.new(0,34,0,8)cs.Size=UDim2.new(1,-42,0,18)
+cs.Font=Enum.Font.GothamBold cs.TextSize=13 cs.TextXAlignment=0
+cs.TextTruncate=Enum.TextTruncate.AtEnd cs.Text=cm.Title or"Script"cs.Parent=cp
+af:_tag(cs,"TextColor3","Text")
+local ct=Instance.new"TextLabel"ct.BackgroundTransparency=1
+ct.Position=UDim2.new(0,10,0,30)ct.Size=UDim2.new(1,-20,0,28)
+ct.Font=Enum.Font.Gotham ct.TextSize=11
+ct.TextXAlignment=0 ct.TextYAlignment=0
+ct.TextWrapped=true ct.TextTruncate=Enum.TextTruncate.AtEnd
+ct.Text=cm.Desc or""ct.Visible=co ct.Parent=cp
+af:_tag(ct,"TextColor3","Dim")
+local cu=Instance.new"TextButton"cu.Text=""
+cu.AnchorPoint=Vector2.new(0,1)cu.Position=UDim2.new(0,10,1,-10)
+cu.Size=UDim2.new(1,-20,0,28)cu.BorderSizePixel=0
+bT(cu,7)cu.AutoButtonColor=false cu.Visible=co cu.Parent=cp
+af:agrad(cu,15)
+local cv=Instance.new"TextLabel"cv.BackgroundTransparency=1
+cv.Size=UDim2.fromScale(1,1)cv.Font=Enum.Font.GothamBold
+cv.TextSize=11
+cv.Text="LAUNCH"cv.Parent=cu
+af:oa(cv)
+if cd then
+
+cq.Active=false
+else
+cq.MouseButton1Click:Connect(function()
+co=not co
 af:_sfx"Click"
-bJ(co,bI.Fast,{Size=UDim2.new(1/cc,-8+8/cc,0,cm and 118 or 68)})
-cs.Visible,ct.Visible=cm,cm
-end)
-ct.MouseButton1Click:Connect(function()
-af:_sfx"Click"bR(ck.Callback)
+bJ(cp,bI.Fast,{Size=UDim2.new(1/cc,-8+8/cc,0,co and 118 or 68)})
+ct.Visible,cu.Visible=co,co
 end)
 end
-return b6{Title=b3.Title or"Scripts",Frame=cd,_handle=cd}
+cu.MouseButton1Click:Connect(function()
+af:_sfx"Click"bR(cm.Callback)
+end)
+end
+return b6{Title=b3.Title or"Scripts",Frame=ce,_handle=ce}
 end end function a.U():typeof(__modImpl())local aa=a.cache.U if not aa then aa={c=__modImpl()}a.cache.U=aa end return aa.c end end do local function __modImpl()
 
 
