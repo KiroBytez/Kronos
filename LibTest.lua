@@ -2685,31 +2685,33 @@ local c=a.b()
 
 local d=c.cloneref_check(game:GetService"HttpService")
 
-local function Save(e,f)
+local function Save(e,f,g)
 f=f or"default"
-local g={}
-for h,i in pairs(b.Flags)do
-if string.sub(h,1,8)~="_loaded_"then
-if typeof(i)=="Color3"then
-g[h]={"__c3",i.R,i.G,i.B}
-elseif typeof(i)=="EnumItem"then
-g[h]={"__k",i.Name}
+local h={}
+for i,j in pairs(b.Flags)do
+if string.sub(i,1,8)~="_loaded_"then
+if typeof(j)=="Color3"then
+h[i]={"__c3",j.R,j.G,j.B}
+elseif typeof(j)=="EnumItem"then
+h[i]={"__k",j.Name}
 else
-local j=pcall(function()d:JSONEncode(i)end)
-if j then g[h]=i end
+local k=pcall(function()d:JSONEncode(j)end)
+if k then h[i]=j end
 end
 end
 end
 pcall(function()
-local h=c.hasFn
-local i=h"makefolder"
-local j=h"isfolder"
-local k=h"writefile"
-local l="Kronos/"..tostring(e._cfgTitle or"Kronos")
-if i and j and not j(l)then i(l)end
-if k then k(l.."/"..f..".json",d:JSONEncode(g))end
+local i=c.hasFn
+local j=i"makefolder"
+local k=i"isfolder"
+local l=i"writefile"
+local m="Kronos/"..tostring(e._cfgTitle or"Kronos")
+if j and k and not k(m)then j(m)end
+if l then l(m.."/"..f..".json",d:JSONEncode(h))end
 end)
+if not g then
 e:Notify{Title="Config saved",Content=f,Duration=2}
+end
 end
 
 local function Load(e,f)
@@ -2849,7 +2851,7 @@ h=h or"autosave"i=i or 30
 f._autoTask=task.spawn(function()
 while b._gui and b._gui.Parent do
 task.wait(i)
-if b._gui and b._gui.Parent then pcall(function()Save(f,h)end)end
+if b._gui and b._gui.Parent then pcall(function()Save(f,h,true)end)end
 end
 end)
 end
@@ -8887,37 +8889,16 @@ e2.Visible=false
 return
 end
 e2.Visible=true
-local fi={}
-for fj,fk in ipairs(e1:GetChildren())do
-if fk:IsA"GuiObject"and fk.Visible and fk.AbsoluteSize.Y>0 then
-table.insert(fi,fk)
-end
-end
-table.sort(fi,function(fj,fk)return fj.LayoutOrder<fk.LayoutOrder end)
 
 
-local fj=6
-if fi[1]then
-pcall(function()
-fj=fi[1].AbsolutePosition.Y-e2.Parent.AbsolutePosition.Y-2
+
+
+local fi,fj,fk=pcall(function()
+return e6.AbsolutePosition.Y,e2.Parent.AbsolutePosition.Y
 end)
-end
-for fk,fl in ipairs(fi)do
-if fl==e6 then
-fly1(e2,{Position=UDim2.new(0,0,0,fj)})
+if fi and fj and fk and e6.AbsoluteSize.Y>0 then
+fly1(e2,{Position=UDim2.new(0,0,0,fj-fk-2)})
 return
-end
-fj=fj+fl.AbsoluteSize.Y+4
-end
-local fk=e2.Parent
-if e6.Parent and fk and fk.Parent and e6.AbsoluteSize.Y>0 then
-local fl,fm,fn=pcall(function()
-return e6.AbsolutePosition.Y,fk.AbsolutePosition.Y
-end)
-if fl and fm and fn then
-fly1(e2,{Position=UDim2.new(0,0,0,fm-fn-2)})
-return
-end
 end
 fly1(e2,{Position=UDim2.new(0,0,0,(e7-1)*38+6)})
 end
