@@ -28,7 +28,7 @@
 ]]
 local a={cache={}::any}do do local function __modImpl()
 local b={
-Version="2.0",
+Version="2.0.2",
 Flags={},
 _live={},
 _tags={},
@@ -720,27 +720,27 @@ return q
 end
 return nil
 end
-local function feedbackRow(m,n,o,p)
-local q=Instance.new"Frame"q.BackgroundTransparency=1
-q.Size=UDim2.new(1,0,0,o or 26)q.LayoutOrder=n or 2 q.Parent=m
-local r=Instance.new"TextBox"
-r.PlaceholderText=p or"Leave a comment..."
-r.PlaceholderColor3=Color3.fromRGB(120,126,142)
-r.Text=""r.Font=Enum.Font.Gotham r.TextSize=12
-r.Position=UDim2.new(0,0,0,0)r.Size=UDim2.new(1,-40,1,0)
-r.BackgroundColor3=Color3.fromRGB(28,30,40)
-r.BorderSizePixel=0 corner(r,7)r.ClearTextOnFocus=false r.Parent=q
-pad(r,0,0,8,8)
-local s=Instance.new"TextButton"s.Text=""
-s.AnchorPoint=Vector2.new(1,0)s.Position=UDim2.new(1,0,0,0)
-s.Size=UDim2.fromOffset(32,o or 26)
-s.BackgroundColor3=Color3.fromRGB(45,48,60)
-s.BorderSizePixel=0 corner(s,7)s.AutoButtonColor=false s.Parent=q
-local t=Instance.new"TextLabel"t.BackgroundTransparency=1
-t.Size=UDim2.fromScale(1,1)t.Font=Enum.Font.GothamBold
-t.TextSize=12 t.TextColor3=Color3.fromRGB(235,238,245)
-t.Text=">"t.Parent=s
-return{frame=q,Box=r,SendBtn=s}
+local function feedbackRow(m,n,o,p,q)
+local r=Instance.new"Frame"r.BackgroundTransparency=1
+r.Size=UDim2.new(1,0,0,o or 26)r.LayoutOrder=n or 2 r.Parent=m
+local s=Instance.new"TextBox"
+s.PlaceholderText=p or"Leave a comment..."
+s.PlaceholderColor3=q or Color3.fromRGB(120,126,142)
+s.Text=""s.Font=Enum.Font.Gotham s.TextSize=12
+s.Position=UDim2.new(0,0,0,0)s.Size=UDim2.new(1,-40,1,0)
+s.BackgroundColor3=Color3.fromRGB(28,30,40)
+s.BorderSizePixel=0 corner(s,7)s.ClearTextOnFocus=false s.Parent=r
+pad(s,0,0,8,8)
+local t=Instance.new"TextButton"t.Text=""
+t.AnchorPoint=Vector2.new(1,0)t.Position=UDim2.new(1,0,0,0)
+t.Size=UDim2.fromOffset(32,o or 26)
+t.BackgroundColor3=Color3.fromRGB(45,48,60)
+t.BorderSizePixel=0 corner(t,7)t.AutoButtonColor=false t.Parent=r
+local u=Instance.new"TextLabel"u.BackgroundTransparency=1
+u.Size=UDim2.fromScale(1,1)u.Font=Enum.Font.GothamBold
+u.TextSize=12 u.TextColor3=Color3.fromRGB(235,238,245)
+u.Text=">"u.Parent=t
+return{frame=r,Box=s,SendBtn=t}
 end
 
 
@@ -896,7 +896,7 @@ aim="crosshair",aimbot="crosshair",movement="move",player="user",
 world="globe",misc="box",config="save",profiles="save",
 themes="paintbrush",theme="paintbrush",console="terminal",log="terminal",
 keybinds="keyboard",premium="crown",home="house",settings="settings",
-performance="gauge",notifications="bell",
+performance="gauge",notifications="bell",chat="message-circle",
 
 chevron="chevron-down",sliders="sliders-horizontal",
 dashboard="layout-dashboard",bellring="bell-ring",
@@ -1141,6 +1141,7 @@ Surface=Color3.fromRGB(8,11,18),
 Surface2=Color3.fromRGB(17,22,35),
 Text=Color3.fromRGB(255,255,255),
 Dim=Color3.fromRGB(120,130,150),
+Placeholder=Color3.fromRGB(120,130,150),
 Accent=Color3.fromRGB(91,140,255),
 Accent2=Color3.fromRGB(142,91,255),
 Success=Color3.fromRGB(52,211,153),
@@ -1155,6 +1156,7 @@ Surface=Color3.fromRGB(24,14,20),
 Surface2=Color3.fromRGB(36,22,30),
 Text=Color3.fromRGB(250,240,244),
 Dim=Color3.fromRGB(160,130,145),
+Placeholder=Color3.fromRGB(160,130,145),
 Accent=Color3.fromRGB(251,113,160),
 Accent2=Color3.fromRGB(244,63,94),
 Success=Color3.fromRGB(52,211,153),
@@ -1169,6 +1171,7 @@ Surface=Color3.fromRGB(14,16,32),
 Surface2=Color3.fromRGB(22,26,48),
 Text=Color3.fromRGB(238,240,252),
 Dim=Color3.fromRGB(135,142,175),
+Placeholder=Color3.fromRGB(135,142,175),
 Accent=Color3.fromRGB(129,140,248),
 Accent2=Color3.fromRGB(167,139,250),
 Success=Color3.fromRGB(52,211,153),
@@ -1183,6 +1186,7 @@ Surface=Color3.fromRGB(12,20,15),
 Surface2=Color3.fromRGB(20,32,24),
 Text=Color3.fromRGB(238,246,240),
 Dim=Color3.fromRGB(125,150,135),
+Placeholder=Color3.fromRGB(125,150,135),
 Accent=Color3.fromRGB(52,211,153),
 Accent2=Color3.fromRGB(110,231,183),
 Success=Color3.fromRGB(52,211,153),
@@ -1197,6 +1201,7 @@ Surface=Color3.fromRGB(22,17,10),
 Surface2=Color3.fromRGB(34,27,16),
 Text=Color3.fromRGB(250,244,232),
 Dim=Color3.fromRGB(160,142,115),
+Placeholder=Color3.fromRGB(160,142,115),
 Accent=Color3.fromRGB(251,191,36),
 Accent2=Color3.fromRGB(249,115,22),
 Success=Color3.fromRGB(52,211,153),
@@ -1211,6 +1216,7 @@ Surface=Color3.fromRGB(10,19,26),
 Surface2=Color3.fromRGB(17,30,40),
 Text=Color3.fromRGB(236,246,250),
 Dim=Color3.fromRGB(120,150,165),
+Placeholder=Color3.fromRGB(120,150,165),
 Accent=Color3.fromRGB(34,211,238),
 Accent2=Color3.fromRGB(59,130,246),
 Success=Color3.fromRGB(52,211,153),
@@ -1225,6 +1231,7 @@ Surface=Color3.fromRGB(22,11,14),
 Surface2=Color3.fromRGB(34,18,22),
 Text=Color3.fromRGB(250,238,240),
 Dim=Color3.fromRGB(165,128,134),
+Placeholder=Color3.fromRGB(165,128,134),
 Accent=Color3.fromRGB(248,113,113),
 Accent2=Color3.fromRGB(220,38,38),
 Success=Color3.fromRGB(52,211,153),
@@ -1239,6 +1246,7 @@ Surface=Color3.fromRGB(18,18,26),
 Surface2=Color3.fromRGB(28,28,40),
 Text=Color3.fromRGB(242,242,248),
 Dim=Color3.fromRGB(140,140,160),
+Placeholder=Color3.fromRGB(140,140,160),
 Accent=Color3.fromRGB(167,139,250),
 Accent2=Color3.fromRGB(103,232,249),
 Success=Color3.fromRGB(52,211,153),
@@ -1253,6 +1261,7 @@ Surface=Color3.fromRGB(18,15,8),
 Surface2=Color3.fromRGB(30,25,12),
 Text=Color3.fromRGB(255,246,220),
 Dim=Color3.fromRGB(165,150,105),
+Placeholder=Color3.fromRGB(165,150,105),
 Accent=Color3.fromRGB(254,231,21),
 Accent2=Color3.fromRGB(255,45,120),
 Success=Color3.fromRGB(52,211,153),
@@ -1267,6 +1276,7 @@ Surface=Color3.fromRGB(4,12,6),
 Surface2=Color3.fromRGB(8,22,11),
 Text=Color3.fromRGB(200,255,210),
 Dim=Color3.fromRGB(90,140,100),
+Placeholder=Color3.fromRGB(90,140,100),
 Accent=Color3.fromRGB(57,255,120),
 Accent2=Color3.fromRGB(20,200,90),
 Success=Color3.fromRGB(57,255,120),
@@ -1281,6 +1291,7 @@ Surface=Color3.fromRGB(43,45,49),
 Surface2=Color3.fromRGB(49,51,56),
 Text=Color3.fromRGB(255,255,255),
 Dim=Color3.fromRGB(148,155,164),
+Placeholder=Color3.fromRGB(148,155,164),
 Accent=Color3.fromRGB(88,101,242),
 Accent2=Color3.fromRGB(235,69,158),
 Success=Color3.fromRGB(87,242,135),
@@ -1295,6 +1306,7 @@ Surface=Color3.fromRGB(12,12,12),
 Surface2=Color3.fromRGB(26,26,26),
 Text=Color3.fromRGB(255,255,255),
 Dim=Color3.fromRGB(140,140,140),
+Placeholder=Color3.fromRGB(140,140,140),
 Accent=Color3.fromRGB(240,240,240),
 Accent2=Color3.fromRGB(160,160,160),
 Success=Color3.fromRGB(220,220,220),
@@ -1309,6 +1321,7 @@ Surface=Color3.fromRGB(10,10,15),
 Surface2=Color3.fromRGB(20,21,30),
 Text=Color3.fromRGB(255,255,255),
 Dim=Color3.fromRGB(150,155,172),
+Placeholder=Color3.fromRGB(150,155,172),
 Accent=Color3.fromRGB(232,236,245),
 Accent2=Color3.fromRGB(148,156,178),
 OnAccent=Color3.fromRGB(11,13,18),
@@ -2493,17 +2506,18 @@ end
 local A="No AI provider configured -- add at least one entry with an Endpoint to Providers."
 for B,C in ipairs(i)do
 if C.Endpoint and C.Endpoint~=""then
-local D=false
-for E=1,x do
-if E>1 then task.wait(1.5*(E-1))end
-local F,G,H,I=callProvider(C,z)
-if F then return F end
-A=G
-if H then break end
-if not I then return nil,A end
-D=(E==x)
+for D=1,x do
+if D>1 then task.wait(1.5*(D-1))end
+local E,F,G,H=callProvider(C,z)
+if E then return E end
+A=F
+
+
+
+
+if G then break end
+if not H then break end
 end
-if D then return nil,A end
 end
 end
 return nil,A
@@ -3378,6 +3392,7 @@ local function busyStart(aW)
 if aQ then return end aQ=true
 ringBuild()
 aM.Visible=false
+if aN then pcall(function()aN.Visible=false end)end
 if aR then aR.Visible=true end
 ringPaint(aW and 0 or nil)
 if not aW then
@@ -3396,7 +3411,13 @@ if aR then
 aR.Visible=false
 pcall(function()aR.Rotation=0 end)
 end
+
+if aN and aN.Parent then
+aM.Visible=false
+aN.Visible=true
+else
 aM.Visible=true
+end
 end
 function aV.set(aW)
 if not aQ then busyStart(true)end
@@ -3784,7 +3805,7 @@ local aS=aJ.Locked==true
 local aT=aK(aJ.Description and 50 or 40)
 aL(aT,aJ.Title or"Input",nil,200)
 local aU=Instance.new"TextBox"
-aU.PlaceholderText=aJ.Placeholder or"Type..."aU.PlaceholderColor3=aQ.Dim
+aU.PlaceholderText=aJ.Placeholder or"Type..."aU.PlaceholderColor3=aQ.Placeholder
 aU.Text=aJ.Value or aJ.Default or""
 aU.Font=Enum.Font.Gotham aU.TextSize=12
 aU.AnchorPoint=Vector2.new(1,0.5)aU.Position=UDim2.new(1,-12,0.5,0)
@@ -3911,6 +3932,7 @@ for bi,bj in ipairs(bc)do pcall(function()bj:Disconnect()end)end
 bc=nil
 end
 if a7 then pcall(function()a7:Destroy()end)a7=nil end
+if bf then pcall(function()bf:Cancel()end)bf=nil end
 if a8 then pcall(function()a8:Destroy()end)a8=nil end
 a9,ba=nil,nil
 end
@@ -3959,13 +3981,25 @@ if bs:IsA"GuiObject"then bs.ZIndex=as.Z.Popup+2 end
 else
 at:_tag(bq,"TextColor3","Text")
 end
-bp.MouseEnter:Connect(function()bp.BackgroundTransparency=0.4 at:_tag(bp,"BackgroundColor3","Surface2")end)
-bp.MouseLeave:Connect(function()if not(e and table.find(f,bo)or f==bo)then bp.BackgroundTransparency=1 end end)
+local bs
+bp.MouseEnter:Connect(function()
+if bs then pcall(function()bs:Cancel()end)end
+at:_tag(bp,"BackgroundColor3","Surface2")
+bs=aD(bp,aw.Hover,{BackgroundTransparency=0.4})
+if not bs then bp.BackgroundTransparency=0.4 end
+end)
+bp.MouseLeave:Connect(function()
+if bs then pcall(function()bs:Cancel()end)bs=nil end
+if not(e and table.find(f,bo)or f==bo)then
+local bt=aD(bp,aw.Hover,{BackgroundTransparency=1})
+if not bt then bp.BackgroundTransparency=1 end
+end
+end)
 bp.MouseButton1Click:Connect(function()
 at:_sfx"Click"
 if e then
-local bs=table.find(f,bo)
-if bs then table.remove(f,bs)else table.insert(f,bo)end
+local bt=table.find(f,bo)
+if bt then table.remove(f,bt)else table.insert(f,bo)end
 bh:Set(f)
 if ba then renderItems(ba.Text)else renderItems""end
 else
@@ -3981,8 +4015,9 @@ a9.CanvasSize=UDim2.new(0,0,0,math.max(bm+4,1))
 local bn=math.clamp(bm+4+36,72,aU+36)
 local bo=aS*bg
 if bd then
-if bf then pcall(function()bf:Cancel()end)end
-bf=aD(a8,aw.Med,{Size=UDim2.new(0,bo,0,bn)})
+
+if bf then pcall(function()bf:Cancel()end)bf=nil end
+a8.Size=UDim2.new(0,bo,0,bn)
 else
 if bf then pcall(function()bf:Cancel()end)bf=nil end
 a8.Size=UDim2.new(0,bo,0,bn)
@@ -3994,9 +4029,13 @@ if not a8 or not g.Parent then return end
 local bj,bk=g.AbsolutePosition,g.AbsoluteSize
 local bl=Vector2.new(1200,800)
 pcall(function()bl=workspace.CurrentCamera.ViewportSize end)
-local bm=bi or a8.Size.Y.Offset
+local bm=tonumber(bi)or a8.Size.Y.Offset
+
+if not(bm>=40)then bm=math.max(120,a8.Size.Y.Offset)end
 if bm<1 then bm=120 end
 local bn=bj.X+bk.X-aS*bg-12
+
+bn=math.clamp(bn,8,math.max(8,bl.X-aS*bg-8))
 
 local bo=bj.Y+bk.Y+6*bg
 if bo+bm>bl.Y-10 then
@@ -4014,14 +4053,14 @@ bg=ac.popupZoom()
 a8=Instance.new"Frame"
 a8.Size=UDim2.new(0,aS*bg,0,0)a8.BackgroundColor3=a1.Bg
 a8.BorderSizePixel=0 aJ(a8,8)a8.Parent=a4
-if bg~=1 then
-local bi=Instance.new"UIScale"bi.Scale=bg bi.Parent=a8
-end
+
+
+
 a8.ZIndex=as.Z.Popup a8.ClipsDescendants=true
 aK(a8,true)
 at:_tag(a8,"BackgroundColor3","Bg")
 ba=Instance.new"TextBox"ba.PlaceholderText="Filter..."
-ba.PlaceholderColor3=a1.Dim ba.Text=""
+ba.PlaceholderColor3=a1.Placeholder ba.Text=""
 ba.Font=Enum.Font.Gotham ba.TextSize=11*bg
 ba.Size=UDim2.new(1,-8,0,24*bg)ba.Position=UDim2.new(0,4*bg,0,4*bg)
 ba.BackgroundColor3=a1.Surface2 ba.BorderSizePixel=0
@@ -4037,13 +4076,33 @@ a9.ScrollBarThickness=3 a9.CanvasSize=UDim2.new(0,0,0,0)
 a9.ZIndex=as.Z.Popup a9.Parent=a8
 ae.tag(a9,"ScrollBarImageColor3","Surface2")
 bd=true
-renderItems""
+
+
+local bi=renderItems""
+
+if type(bi)~="number"or bi~=bi or bi<72 then bi=120 end
 bd=false
-local bi=a8.Size.Y.Offset
 a8.Size=UDim2.new(0,aS*bg,0,0)
 placeList(bi)
 if bf then pcall(function()bf:Cancel()end)end
 bf=aD(a8,aw.Med,{Size=UDim2.new(0,aS*bg,0,bi)})
+if not bf then a8.Size=UDim2.new(0,aS*bg,0,bi)end
+
+
+
+
+local bj,bk,bl=a8,bi,bf
+task.delay(0.45,function()
+if a6 and a8==bj and bj and bj.Parent then
+pcall(function()
+if bj.AbsoluteSize.Y<40 then
+if bl then pcall(function()bl:Cancel()end)end
+bj.Size=UDim2.new(0,aS*bg,0,bk)
+end
+placeList(bk)
+end)
+end
+end)
 bb=ba:GetPropertyChangedSignal"Text":Connect(function()
 if a6 then renderItems(ba.Text)end
 end)
@@ -4234,9 +4293,9 @@ bs.AnchorPoint=Vector2.new(1,0.5)bs.Position=UDim2.new(1,-12,0.5,0)
 bs.Size=UDim2.fromOffset(56,26)bs.BackgroundColor3=bq
 bs.BorderSizePixel=0 aU(bs,8)bs.AutoButtonColor=false bs.Parent=br
 aV(bs,true)
-local e={}
-local f,g,Q,_=false
-local bt
+local bt={}
+local e,f,g,Q=false
+local _
 local bu,bv,bw
 local bx,by,bz
 local bA,bB,bC,bD,bE,bF
@@ -4308,7 +4367,7 @@ aT(bb.Callback,bS,bp)aT(bb.OnChanged,bS,bp)
 end
 end
 end
-function e.Set(bR,bS,bT,bU)
+function bt.Set(bR,bS,bT,bU)
 if type(bS)=="table"and typeof(bS)~="Color3"then
 bS=Color3.new(bS[1]or 0,bS[2]or 0,bS[3]or 0)
 end
@@ -4323,25 +4382,25 @@ push(bU)
 syncFields()
 end
 end
-function e.Get(bR)return bq,bp end
+function bt.Get(bR)return bq,bp end
 local function closePopup()
-if not f then return end
-f=false
+if not e then return end
+e=false
 af.close(closePopup)
 bK,bL,bM=false,false,false
 bO=nil
 for bR,bS in ipairs(bQ)do pcall(function()bS:Disconnect()end)end
 bQ={}
-if _ then
-for bR,bS in ipairs(_)do pcall(function()bS:Disconnect()end)end
-_=nil
+if Q then
+for bR,bS in ipairs(Q)do pcall(function()bS:Disconnect()end)end
+Q=nil
 end
-if Q then pcall(function()Q:Destroy()end)Q=nil end
-if g then
-local bR=g
-g=nil
-if bt then pcall(function()bt:Cancel()end)end
-bt=aJ(bR,aI.Fast,{Size=UDim2.new(0,bR.Size.X.Offset,0,0)})
+if g then pcall(function()g:Destroy()end)g=nil end
+if f then
+local bR=f
+f=nil
+if _ then pcall(function()_:Cancel()end)end
+_=aJ(bR,aI.Fast,{Size=UDim2.new(0,bR.Size.X.Offset,0,0)})
 task.delay(0.2,function()pcall(function()bR:Destroy()end)end)
 end
 bx,by,bz=nil,nil,nil
@@ -4377,7 +4436,7 @@ end
 
 
 local function placePopup(bR,bS)
-if not g then return end
+if not f then return end
 
 bR=bR*ac.popupZoom()
 local bT=Vector2.new(1200,800)
@@ -4389,7 +4448,7 @@ local bW,bX=bV.AbsolutePosition,bV.AbsoluteSize
 
 
 
-local bY=g.AbsoluteSize.Y
+local bY=f.AbsoluteSize.Y
 if bY<1 then bY=bS end
 local bZ=math.clamp(bW.Y+(bX.Y-bY)/2,10,math.max(10,bT.Y-bY-10))
 local b_=bW.X+bX.X+bU
@@ -4419,7 +4478,7 @@ if b_+bR>bT.X-10 then
 b_=math.max(10,bT.X-bR-10)
 end
 end
-g.Position=UDim2.fromOffset(b_,bZ)
+f.Position=UDim2.fromOffset(b_,bZ)
 return
 end
 
@@ -4429,11 +4488,11 @@ local bY=bW.X+bX.X-bR-12
 if bY<10 then bY=math.max(10,bW.X-bR-8)end
 local bZ=bW.Y+46
 if bZ+bS>bT.Y-10 then bZ=math.max(10,bW.Y-bS-6)end
-g.Position=UDim2.fromOffset(bY,bZ)
+f.Position=UDim2.fromOffset(bY,bZ)
 end
 local function openPopup()
-if f then return end
-f=true
+if e then return end
+e=true
 bG,bH,bI=bm,bn,bo
 bJ=bp
 bP=currentColor()
@@ -4448,29 +4507,29 @@ local bV=bU+a8+bR
 local bW=a9+a5+a7
 local bX=bW+b+a7+22
 local bY=bX+32+bR
-Q=af.backdrop(bk,requestClose)
+g=af.backdrop(bk,requestClose)
 local bZ=ac.popupZoom()
-g=Instance.new"Frame"
-g.Name=ae.GetStealthName()
-g.BackgroundColor3=bh.Bg
-g.BackgroundTransparency=1
-g.BorderSizePixel=0
-g.ClipsDescendants=true
-g.ZIndex=af.Z.Popup
-g.Size=UDim2.new(0,bV*bZ,0,0)
-g.Parent=bk
+f=Instance.new"Frame"
+f.Name=ae.GetStealthName()
+f.BackgroundColor3=bh.Bg
+f.BackgroundTransparency=1
+f.BorderSizePixel=0
+f.ClipsDescendants=true
+f.ZIndex=af.Z.Popup
+f.Size=UDim2.new(0,bV*bZ,0,0)
+f.Parent=bk
 if bZ~=1 then
-local b_=Instance.new"UIScale"b_.Scale=bZ b_.Parent=g
+local b_=Instance.new"UIScale"b_.Scale=bZ b_.Parent=f
 end
-aU(g,10)
-aV(g,true)
-aD:_tag(g,"BackgroundColor3","Bg")
+aU(f,10)
+aV(f,true)
+aD:_tag(f,"BackgroundColor3","Bg")
 placePopup(bV,bY)
 local b_=Instance.new"TextLabel"b_.BackgroundTransparency=1
 b_.Position=UDim2.new(0,bR,0,6)b_.Size=UDim2.new(1,-bR*2,0,22)
 b_.Font=Enum.Font.GothamBold b_.TextSize=14 b_.TextXAlignment=0
 b_.TextTruncate=Enum.TextTruncate.AtEnd b_.Text=bb.Title or"Color"
-b_.Parent=g
+b_.Parent=f
 b_.ZIndex=af.Z.Popup+1
 aD:_tag(b_,"TextColor3","Text")
 
@@ -4484,7 +4543,7 @@ bu.ScaleType=Enum.ScaleType.Stretch
 bu.BorderSizePixel=0
 bu.ClipsDescendants=true
 bu.ZIndex=af.Z.Popup+1
-bu.Parent=g
+bu.Parent=f
 aU(bu,8)
 aV(bu,true)
 bx=Instance.new"Frame"
@@ -4507,7 +4566,7 @@ bv.BackgroundColor3=Color3.fromRGB(255,255,255)
 bv.BorderSizePixel=0
 bv.ClipsDescendants=true
 bv.ZIndex=af.Z.Popup+1
-bv.Parent=g
+bv.Parent=f
 aU(bv,3)
 local b1=Instance.new"UIGradient"b1.Rotation=90
 b1.Color=ColorSequence.new{
@@ -4539,7 +4598,7 @@ bw.BackgroundColor3=currentColor()
 bw.BorderSizePixel=0
 bw.ClipsDescendants=true
 bw.ZIndex=af.Z.Popup+1
-bw.Parent=g
+bw.Parent=f
 aU(bw,3)
 aV(bw,true)
 local b3=Instance.new"ImageLabel"
@@ -4587,7 +4646,7 @@ b8.BackgroundTransparency=1
 b8.Position=UDim2.new(0,b7,0,bW)
 b8.Size=UDim2.fromOffset(b6,b)
 b8.ZIndex=af.Z.Popup+1
-b8.Parent=g
+b8.Parent=f
 aU(b8,8)
 aV(b8,true)
 return b8
@@ -4616,7 +4675,7 @@ ce.BackgroundTransparency=1
 ce.Position=UDim2.new(0,ca,0,cd)
 ce.Size=UDim2.new(0,a8,0,36)
 ce.ZIndex=af.Z.Popup+1
-ce.Parent=g
+ce.Parent=f
 local cf=Instance.new"TextLabel"
 cf.BackgroundTransparency=1
 cf.Font=Enum.Font.Gotham cf.TextSize=11
@@ -4685,7 +4744,7 @@ cy.ZIndex=af.Z.Popup+2
 cy.BackgroundColor3=bh.Surface2
 aV(cy,true)
 aD:_tag(cy,"BackgroundColor3","Surface2")
-cy.Parent=g
+cy.Parent=f
 aU(cy,9)
 local cz=Instance.new"TextLabel"
 cz.BackgroundTransparency=1 cz.Size=UDim2.fromScale(1,1)
@@ -4737,7 +4796,7 @@ updateAlpha(cw.Position)
 end
 end)
 table.insert(bQ,a0.InputChanged:Connect(function(cw)
-if not g then return end
+if not f then return end
 if cw~=bO
 and not(bO and bO.UserInputType==Enum.UserInputType.MouseButton1
 and cw.UserInputType==Enum.UserInputType.MouseMovement)then
@@ -4759,13 +4818,13 @@ bO=nil
 end
 end))
 bB:GetPropertyChangedSignal"Text":Connect(function()
-if not g then return end
+if not f then return end
 local cw=bB.Text:gsub("[^%x]","")
 cw=cw:sub(1,6)
 if cw~=bB.Text then bB.Text=cw end
 end)
 bB.FocusLost:Connect(function()
-if not g then return end
+if not f then return end
 local cw=bB.Text:gsub("#","")
 if#cw==3 then
 cw=cw:sub(1,1):rep(2)..cw:sub(2,2):rep(2)..cw:sub(3,3):rep(2)
@@ -4782,14 +4841,14 @@ syncFields()
 end)
 local function filterDigits(cw)
 cw:GetPropertyChangedSignal"Text":Connect(function()
-if not g then return end
+if not f then return end
 local cx=cw.Text:gsub("%D",""):sub(1,3)
 if cx~=cw.Text then cw.Text=cx end
 end)
 end
 filterDigits(bC)filterDigits(bD)filterDigits(bE)
 local function onRGBCommit()
-if not g then return end
+if not f then return end
 local cw=math.clamp(tonumber(bC.Text)or 0,0,255)
 local cx=math.clamp(tonumber(bD.Text)or 0,0,255)
 local cy=math.clamp(tonumber(bE.Text)or 0,0,255)
@@ -4800,40 +4859,40 @@ bC.FocusLost:Connect(onRGBCommit)
 bD.FocusLost:Connect(onRGBCommit)
 bE.FocusLost:Connect(onRGBCommit)
 bF.FocusLost:Connect(function()
-if not g then return end
+if not f then return end
 local cw=bF.Text:gsub("%%","")
 local cx=math.clamp(tonumber(cw)or 0,0,100)
 bp=1-cx/100
 applyColor(true)
 end)
 syncFields()
-if bt then pcall(function()bt:Cancel()end)end
-bt=aJ(g,TweenInfo.new(0.44,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),
+if _ then pcall(function()_:Cancel()end)end
+_=aJ(f,TweenInfo.new(0.44,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),
 {Size=UDim2.new(0,bV*ac.popupZoom(),0,bY*ac.popupZoom()),BackgroundTransparency=0})
 
-_={}
+Q={}
 local function follow()
-if not f then return end
+if not e then return end
 if not br:IsDescendantOf(game)then closePopup()return end
 if bg._visible==false then closePopup()return end
 if bf.Page and bf.Page.Visible==false then closePopup()return end
 placePopup(bV,bY)
 end
-table.insert(_,br:GetPropertyChangedSignal"AbsolutePosition":Connect(follow))
-table.insert(_,br:GetPropertyChangedSignal"AbsoluteSize":Connect(follow))
+table.insert(Q,br:GetPropertyChangedSignal"AbsolutePosition":Connect(follow))
+table.insert(Q,br:GetPropertyChangedSignal"AbsoluteSize":Connect(follow))
 if bg._main then
-table.insert(_,bg._main:GetPropertyChangedSignal"AbsolutePosition":Connect(follow))
-table.insert(_,bg._main:GetPropertyChangedSignal"AbsoluteSize":Connect(follow))
+table.insert(Q,bg._main:GetPropertyChangedSignal"AbsolutePosition":Connect(follow))
+table.insert(Q,bg._main:GetPropertyChangedSignal"AbsoluteSize":Connect(follow))
 end
 pcall(function()
-table.insert(_,workspace.CurrentCamera:GetPropertyChangedSignal"ViewportSize":Connect(follow))
+table.insert(Q,workspace.CurrentCamera:GetPropertyChangedSignal"ViewportSize":Connect(follow))
 end)
 end
 bs.MouseButton1Click:Connect(function()
-if f then closePopup()else openPopup()end
+if e then closePopup()else openPopup()end
 end)
-local bR={Title=bb.Title,Frame=br,Value=bq,Flag=bb.Flag,_handle=e,
-_set=function(bR,bS)e:Set(bR,bS)end}
+local bR={Title=bb.Title,Frame=br,Value=bq,Flag=bb.Flag,_handle=bt,
+_set=function(bR,bS)bt:Set(bR,bS)end}
 return be(bR)
 end end function a.M():typeof(__modImpl())local aa=a.cache.M if not aa then aa={c=__modImpl()}a.cache.M=aa end return aa.c end end do local function __modImpl()
 
@@ -4878,7 +4937,7 @@ bd.Font=Enum.Font.GothamMedium bd.TextSize=13 bd.TextXAlignment=0
 bd.Text=a4.Title or"Profiles"bd.Parent=bc
 af:_tag(bd,"TextColor3","Text")
 local be=Instance.new"TextBox"be.PlaceholderText="Profile name..."
-be.PlaceholderColor3=b.Dim be.Text="default"
+be.PlaceholderColor3=b.Placeholder be.Text="default"
 be.Font=Enum.Font.Gotham be.TextSize=12
 be.Position=UDim2.new(0,12,0,28)be.Size=UDim2.new(1,-94,0,28)
 be.BackgroundColor3=b.Surface2 be.BorderSizePixel=0
@@ -7213,7 +7272,7 @@ local e2=eL.Rating
 local e3=eZ+(eX and 42 or 0)+8
 local e4=eG(e0,0,5,Color3.fromRGB(255,196,64),20,e2.Default or 0)
 e4.frame.Position=UDim2.new(0,12,0,e3)
-local e5=eH(e0,0,26,e2.Placeholder or"Leave a comment...")
+local e5=eH(e0,0,26,e2.Placeholder or"Leave a comment...",eR.Placeholder)
 e5.frame.Position=UDim2.new(0,12,0,e3+24)
 e5.frame.Size=UDim2.new(1,-24,0,26)
 e5.SendBtn.MouseButton1Click:Connect(function()
@@ -7369,7 +7428,7 @@ eU.BackgroundTransparency=1
 eU.ClearTextOnFocus=false
 eU.FontFace=eG
 eU.PlaceholderText=eK or"Give us some feedback!"
-eU.PlaceholderColor3=Color3.fromRGB(120,120,122)
+eU.PlaceholderColor3=eM.Placeholder
 eU.Text=""
 eU.TextColor3=eM.Text
 eU.TextSize=13
@@ -8448,7 +8507,7 @@ local e8=eK("search",13,eU.Dim)
 e8.Position=UDim2.new(0,10,0.5,-7)e8.Parent=e7
 e6=Instance.new"TextBox"
 e6.PlaceholderText=eM.SearchPlaceholder or"Search..."
-e6.PlaceholderColor3=eU.Dim e6.Text=""
+e6.PlaceholderColor3=eU.Placeholder e6.Text=""
 e6.Font=Enum.Font.Gotham e6.TextSize=12
 e6.TextXAlignment=0
 e6.Position=UDim2.new(0,30,0,0)e6.Size=UDim2.new(1,-38,1,0)
@@ -8831,7 +8890,14 @@ table.insert(fh,fj)
 end
 end
 table.sort(fh,function(fi,fj)return fi.LayoutOrder<fj.LayoutOrder end)
-local fi=-2
+
+
+local fi=6
+if fh[1]then
+pcall(function()
+fi=fh[1].AbsolutePosition.Y-e2.Parent.AbsolutePosition.Y-2
+end)
+end
 for fj,fk in ipairs(fh)do
 if fk==e6 then
 fly1(e2,{Position=UDim2.new(0,0,0,fi)})
@@ -8849,7 +8915,7 @@ fly1(e2,{Position=UDim2.new(0,0,0,fl-fm-2)})
 return
 end
 end
-fly1(e2,{Position=UDim2.new(0,0,0,(e7-1)*38-2)})
+fly1(e2,{Position=UDim2.new(0,0,0,(e7-1)*38+6)})
 end
 syncPill()
 task.delay(0.2,function()
@@ -10045,7 +10111,7 @@ fr.BackgroundTransparency=1
 fr.ClearTextOnFocus=false
 fr.FontFace=ae.FontReg
 fr.PlaceholderText=eY.Placeholder or"Ask me anything..."
-fr.PlaceholderColor3=Color3.fromRGB(120,120,122)
+fr.PlaceholderColor3=eZ.Placeholder
 fr.Text=""
 fr.TextColor3=eZ.Text
 fr.TextSize=13
@@ -11122,7 +11188,7 @@ fA.BackgroundTransparency=1
 fA.ClearTextOnFocus=false
 fA.FontFace=ae.FontReg
 fA.PlaceholderText=eW.Placeholder or"Message everyone using this script..."
-fA.PlaceholderColor3=Color3.fromRGB(120,120,122)
+fA.PlaceholderColor3=eX.Placeholder
 fA.Text=""
 fA.TextColor3=eX.Text
 fA.TextSize=13
@@ -12237,7 +12303,7 @@ eW(fu,true)
 local fv=e1("search",14,fa.Dim)
 fv.Position=UDim2.new(0,9,0.5,-7)fv.Parent=fu
 local fw=Instance.new"TextBox"fw.PlaceholderText="Search"
-fw.PlaceholderColor3=fa.Dim fw.Text=""fw.Font=Enum.Font.GothamBold
+fw.PlaceholderColor3=fa.Placeholder fw.Text=""fw.Font=Enum.Font.GothamBold
 fw.TextSize=12 e4:_tag(fw,"TextColor3","Text")
 fw.Position=UDim2.new(0,28,0,0)fw.Size=UDim2.new(1,-80,1,0)
 fw.BackgroundTransparency=1 fw.ClearTextOnFocus=false fw.Parent=fu
@@ -12414,7 +12480,7 @@ f_.BackgroundTransparency=0.5 f_.LayoutOrder=0
 f_.BorderSizePixel=0 eU(f_,8)f_.AutoButtonColor=false f_.Parent=fX
 eW(f_,true)
 eL:_tag(f_,"BackgroundColor3","Surface2")
-local f0=ae.makeIcon("chevron-up",14,fa.Dim)
+local f0=ae.makeIcon("chevron-down",14,fa.Dim)
 f0.AnchorPoint=Vector2.new(0.5,0.5)f0.Position=UDim2.new(0.5,0,0.5,0)
 f0.Parent=f_
 fR._dockArrow=f_
@@ -12464,7 +12530,8 @@ fR._dockOpen=fX and true or false
 local fZ=fR._dockArrowIcon
 if fZ and fZ:IsA"ImageLabel"then
 pcall(function()
-fZ.Image=ae.resolveIcon(fX and"chevron-up"or"chevron-down")
+
+fZ.Image=ae.resolveIcon(fX and"chevron-down"or"chevron-up")
 end)
 end
 local f_=0
@@ -13018,7 +13085,10 @@ end))
 function fR.Notify(f6,f7)
 f7=f7 or{}
 eL:_sfx"Notify"
-eJ.closeAny()
+
+
+
+
 table.insert(eL._inbox,1,{Title=f7.Title or"Kronos",
 Content=f7.Content or f7.Text or"",At=os.date"%H:%M"})
 while#eL._inbox>30 do table.remove(eL._inbox)end
@@ -13268,7 +13338,7 @@ eL:_tag(gl,"TextColor3","Dim")gl.Text=string.upper(tostring(gi.Label))gl.Parent=
 gg+=16
 end
 local gl=Instance.new"TextBox"
-gl.PlaceholderText=gi.Placeholder or""gl.PlaceholderColor3=fa.Dim
+gl.PlaceholderText=gi.Placeholder or""gl.PlaceholderColor3=fa.Placeholder
 gl.Text=gi.Default or""
 gl.Font=Enum.Font.Gotham gl.TextSize=13
 gl.TextXAlignment=0 gl.TextYAlignment=gj and 0 or 1
@@ -13355,7 +13425,7 @@ gf.Position=UDim2.new(0,16,0,36)gf.Size=UDim2.new(1,-32,0,15)
 gf.Font=Enum.Font.Gotham gf.TextSize=11 ge.TextXAlignment=0 gf.TextXAlignment=0
 eL:_tag(gf,"TextColor3","Dim")gf.Text=string.upper(f7.Subtitle or"key required")gf.Parent=gc
 local gg=Instance.new"TextBox"gg.PlaceholderText="Paste key..."
-gg.PlaceholderColor3=fa.Dim gg.Text=""
+gg.PlaceholderColor3=fa.Placeholder gg.Text=""
 gg.Font=Enum.Font.Code gg.TextSize=12
 gg.Position=UDim2.new(0,16,0,60)gg.Size=UDim2.new(1,-32,0,32)
 gg.BackgroundColor3=fa.Surface2 gg.BorderSizePixel=0
@@ -13460,7 +13530,7 @@ do
 local gb=Instance.new"UIScale"gb.Scale=ac.popupZoom()gb.Parent=ga
 end
 local gb=Instance.new"TextBox"gb.PlaceholderText="Type a command..."
-gb.PlaceholderColor3=fa.Dim gb.Text=""
+gb.PlaceholderColor3=fa.Placeholder gb.Text=""
 gb.Font=Enum.Font.Gotham gb.TextSize=14
 gb.Position=UDim2.new(0,14,0,12)gb.Size=UDim2.new(1,-28,0,32)
 gb.BackgroundTransparency=1 gb.ClearTextOnFocus=false gb.Parent=ga
@@ -14539,8 +14609,8 @@ local eG=a.ax()
 ab.claimUnload()
 
 local eH=aa
-eH.Build="r20"
 
+eH.Build=eH.Version
 eH.PreloadIcons=function(eI,eJ)
 return ac.PreloadIcons(eJ)
 end
