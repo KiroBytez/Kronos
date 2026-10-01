@@ -8864,7 +8864,7 @@ local function setActive(fg)
 local fh=(eX._active==fe)
 eX._active=fe
 pcall(function()
-e3.Text=string.upper(ff).."  /  "..string.upper(e4)
+e3.Text=string.upper(ff)
 end)
 for fi,fj in ipairs(eX._tabs)do
 local fk=fj==fe
@@ -12200,6 +12200,8 @@ end
 
 
 local fn=e5.Intro
+if fn==nil then fn=e5.LoadingScreen end
+if fn==nil then fn=e5.ShowLoadingScreen end
 if fn==nil then fn=true end
 local fo={}
 if type(fn)=="table"then fo=fn fn=true end
@@ -12332,127 +12334,162 @@ fw.Font=Enum.Font.Gotham fw.TextSize=11 fv.TextXAlignment=0
 fw.TextXAlignment=0 e4:_tag(fw,"TextColor3","Dim")
 fw.Text=string.upper(e7).."  |  V"..e4.Version fw.Parent=fr
 
-
-local fx=Instance.new"Frame"
-fx.AnchorPoint=Vector2.new(1,0)fx.Position=UDim2.new(1,-64,0,4)
-fx.Size=UDim2.new(0,170,0,32)fx.BackgroundColor3=fa.Bg
-fx.BorderSizePixel=0 eU(fx,8)fx.Parent=fr
-eW(fx,true)
-local fy=e1("search",14,fa.Dim)
-fy.Position=UDim2.new(0,9,0.5,-7)fy.Parent=fx
-local fz=Instance.new"TextBox"fz.PlaceholderText="Search"
-fz.PlaceholderColor3=fa.Placeholder fz.Text=""fz.Font=Enum.Font.GothamBold
-fz.TextSize=12 e4:_tag(fz,"TextColor3","Text")
-fz.Position=UDim2.new(0,28,0,0)fz.Size=UDim2.new(1,-80,1,0)
-fz.BackgroundTransparency=1 fz.ClearTextOnFocus=false fz.Parent=fx
-local fA=Instance.new"TextLabel"fA.BackgroundTransparency=1
-fA.AnchorPoint=Vector2.new(1,0.5)fA.Position=UDim2.new(1,-8,0.5,0)
-fA.Size=UDim2.new(0,44,0,18)fA.Font=Enum.Font.Code fA.TextSize=11
-e4:_tag(fA,"TextColor3","Text")fA.Text="Ctrl K"fA.Parent=fx
-e4:_tag(fx,"BackgroundColor3","Bg")
+local fx=e5.ShowBreadcrumb
+if fx==nil then fx=e5.Breadcrumb end
+if fx==nil then fx=true end
+fw.Visible=fx and true or false
 
 
-local fB=Instance.new"TextButton"fB.Text=""
-fB.AnchorPoint=Vector2.new(1,0)fB.Position=UDim2.new(1,-256,0,4)
-fB.Size=UDim2.fromOffset(32,32)fB.BackgroundColor3=fa.Bg
-fB.BorderSizePixel=0 eU(fB,8)fB.Parent=fr
-eW(fB,true)
-e4:_tag(fB,"BackgroundColor3","Bg")
-local fC=e1("keyboard",15,fa.Dim)
-fC.AnchorPoint=Vector2.new(0.5,0.5)fC.Position=UDim2.new(0.5,0,0.5,0)
-fC.Parent=fB
-fB.MouseButton1Click:Connect(function()end)
-
-local fD=Instance.new"TextButton"fD.Text=""
-fD.AnchorPoint=Vector2.new(1,0)fD.Position=UDim2.new(1,-296,0,4)
-fD.Size=UDim2.fromOffset(32,32)fD.BackgroundColor3=fa.Bg
-fD.BorderSizePixel=0 eU(fD,8)fD.Parent=fr
-eW(fD,true)
-e4:_tag(fD,"BackgroundColor3","Bg")
-local fE=e1("menu",15,fa.Dim)
-fE.AnchorPoint=Vector2.new(0.5,0.5)fE.Position=UDim2.new(0.5,0,0.5,0)
-fE.Parent=fD
-fD.MouseButton1Click:Connect(function()end)
 
 
-local fF=Instance.new"Frame"fF.BackgroundTransparency=1
-fF.AnchorPoint=Vector2.new(1,0)fF.Position=UDim2.new(1,0,0,4)
-fF.Size=UDim2.new(0,56,0,32)fF.Parent=fr
-local fG=Instance.new"UIListLayout"fG.FillDirection=Enum.FillDirection.Horizontal
-fG.VerticalAlignment=Enum.VerticalAlignment.Center
-fG.HorizontalAlignment=Enum.HorizontalAlignment.Center
-fG.Padding=UDim.new(0,7)fG.Parent=fF
-local function dot(fH,fI)
-local fJ=Instance.new"TextButton"fJ.Text=""
-fJ.Size=UDim2.fromOffset(12,12)fJ.BackgroundColor3=fH
-fJ.BorderSizePixel=0 eU(fJ,99)fJ.AutoButtonColor=false fJ.Parent=fF
-fJ.MouseEnter:Connect(function()eN(fJ,eM.Hover,{BackgroundTransparency=0.25})end)
-fJ.MouseLeave:Connect(function()eN(fJ,eM.Hover,{BackgroundTransparency=0})end)
-return fJ
+local fy=Instance.new"Frame"
+fy.AnchorPoint=Vector2.new(1,0)fy.Position=UDim2.new(1,-64,0,4)
+fy.Size=UDim2.new(0,32,0,32)fy.BackgroundColor3=fa.Bg
+fy.BorderSizePixel=0 eU(fy,8)fy.Parent=fr
+eW(fy,true)
+local fz=e1("search",14,fa.Dim)
+fz.AnchorPoint=Vector2.new(0.5,0.5)
+fz.Position=UDim2.new(0.5,0,0.5,0)fz.Parent=fy
+local fA=Instance.new"TextBox"fA.PlaceholderText="Search"
+fA.PlaceholderColor3=fa.Placeholder fA.Text=""fA.Font=Enum.Font.GothamBold
+fA.TextSize=12 e4:_tag(fA,"TextColor3","Text")
+fA.Position=UDim2.new(0,28,0,0)fA.Size=UDim2.new(1,-80,1,0)
+fA.BackgroundTransparency=1 fA.ClearTextOnFocus=false fA.Parent=fy
+fA.Visible=false
+local fB=Instance.new"TextLabel"fB.BackgroundTransparency=1
+fB.AnchorPoint=Vector2.new(1,0.5)fB.Position=UDim2.new(1,-8,0.5,0)
+fB.Size=UDim2.new(0,44,0,18)fB.Font=Enum.Font.Code fB.TextSize=11
+e4:_tag(fB,"TextColor3","Text")fB.Text="Ctrl K"fB.Parent=fy
+fB.Visible=false
+e4:_tag(fy,"BackgroundColor3","Bg")
+local fC=false
+local fD
+local function setSearchIconCentered(fE)
+if fE then
+fz.AnchorPoint=Vector2.new(0.5,0.5)
+fz.Position=UDim2.new(0.5,0,0.5,0)
+else
+fz.AnchorPoint=Vector2.new(0,0)
+fz.Position=UDim2.new(0,9,0.5,-7)
 end
-local fH=dot(Color3.fromRGB(39,201,63))
-local fI=dot(Color3.fromRGB(255,189,46))
-local fJ=dot(Color3.fromRGB(255,95,86))
-fJ.MouseButton1Click:Connect(function()end)
-fI.MouseButton1Click:Connect(function()end)
-fH.MouseButton1Click:Connect(function()end)
+end
+local function expandSearch()
+if fC then return end
+fC=true
+fD.Visible=false
+setSearchIconCentered(false)
+eN(fy,eM.Hover,{Size=UDim2.new(0,170,0,32)})
+fA.Visible=true
+fB.Visible=true
+task.defer(function()pcall(function()fA:CaptureFocus()end)end)
+end
+fD=Instance.new"TextButton"fD.Text=""
+fD.Size=UDim2.fromScale(1,1)fD.BackgroundTransparency=1
+fD.Parent=fy
+fD.MouseButton1Click:Connect(function()expandSearch()end)
 
 
-local fK=Instance.new"TextButton"fK.Text=""
-fK.AnchorPoint=Vector2.new(1,0)fK.Position=UDim2.new(1,-336,0,4)
-fK.Size=UDim2.fromOffset(32,32)fK.BackgroundColor3=fa.Bg
-fK.BorderSizePixel=0 eU(fK,8)fK.Parent=fr
-eW(fK,true)
-e4:_tag(fK,"BackgroundColor3","Bg")
-local fL=e1("bellring",14,fa.Dim)
-fL.AnchorPoint=Vector2.new(0.5,0.5)fL.Position=UDim2.new(0.5,0,0.5,0)
-fL.Parent=fK
-local fM=Instance.new"Frame"fM.Size=UDim2.fromOffset(8,8)
-fM.Position=UDim2.new(1,-7,0,3)fM.BorderSizePixel=0
-fM.BackgroundColor3=Color3.fromRGB(248,113,113)
-eU(fM,99)fM.Parent=fK fM.Visible=false
+local fE=Instance.new"TextButton"fE.Text=""
+fE.AnchorPoint=Vector2.new(1,0)fE.Position=UDim2.new(1,-256,0,4)
+fE.Size=UDim2.fromOffset(32,32)fE.BackgroundColor3=fa.Bg
+fE.BorderSizePixel=0 eU(fE,8)fE.Parent=fr
+eW(fE,true)
+e4:_tag(fE,"BackgroundColor3","Bg")
+local fF=e1("keyboard",15,fa.Dim)
+fF.AnchorPoint=Vector2.new(0.5,0.5)fF.Position=UDim2.new(0.5,0,0.5,0)
+fF.Parent=fE
+fE.MouseButton1Click:Connect(function()end)
+
+local fG=Instance.new"TextButton"fG.Text=""
+fG.AnchorPoint=Vector2.new(1,0)fG.Position=UDim2.new(1,-296,0,4)
+fG.Size=UDim2.fromOffset(32,32)fG.BackgroundColor3=fa.Bg
+fG.BorderSizePixel=0 eU(fG,8)fG.Parent=fr
+eW(fG,true)
+e4:_tag(fG,"BackgroundColor3","Bg")
+local fH=e1("menu",15,fa.Dim)
+fH.AnchorPoint=Vector2.new(0.5,0.5)fH.Position=UDim2.new(0.5,0,0.5,0)
+fH.Parent=fG
+fG.MouseButton1Click:Connect(function()end)
+
+
+local fI=Instance.new"Frame"fI.BackgroundTransparency=1
+fI.AnchorPoint=Vector2.new(1,0)fI.Position=UDim2.new(1,0,0,4)
+fI.Size=UDim2.new(0,56,0,32)fI.Parent=fr
+local fJ=Instance.new"UIListLayout"fJ.FillDirection=Enum.FillDirection.Horizontal
+fJ.VerticalAlignment=Enum.VerticalAlignment.Center
+fJ.HorizontalAlignment=Enum.HorizontalAlignment.Center
+fJ.Padding=UDim.new(0,7)fJ.Parent=fI
+local function dot(fK,fL)
+local fM=Instance.new"TextButton"fM.Text=""
+fM.Size=UDim2.fromOffset(12,12)fM.BackgroundColor3=fK
+fM.BorderSizePixel=0 eU(fM,99)fM.AutoButtonColor=false fM.Parent=fI
+fM.MouseEnter:Connect(function()eN(fM,eM.Hover,{BackgroundTransparency=0.25})end)
+fM.MouseLeave:Connect(function()eN(fM,eM.Hover,{BackgroundTransparency=0})end)
+return fM
+end
+local fK=dot(Color3.fromRGB(39,201,63))
+local fL=dot(Color3.fromRGB(255,189,46))
+local fM=dot(Color3.fromRGB(255,95,86))
+fM.MouseButton1Click:Connect(function()end)
+fL.MouseButton1Click:Connect(function()end)
 fK.MouseButton1Click:Connect(function()end)
+
+
+local fN=Instance.new"TextButton"fN.Text=""
+fN.AnchorPoint=Vector2.new(1,0)fN.Position=UDim2.new(1,-336,0,4)
+fN.Size=UDim2.fromOffset(32,32)fN.BackgroundColor3=fa.Bg
+fN.BorderSizePixel=0 eU(fN,8)fN.Parent=fr
+eW(fN,true)
+e4:_tag(fN,"BackgroundColor3","Bg")
+local fO=e1("bellring",14,fa.Dim)
+fO.AnchorPoint=Vector2.new(0.5,0.5)fO.Position=UDim2.new(0.5,0,0.5,0)
+fO.Parent=fN
+local fP=Instance.new"Frame"fP.Size=UDim2.fromOffset(8,8)
+fP.Position=UDim2.new(1,-7,0,3)fP.BorderSizePixel=0
+fP.BackgroundColor3=Color3.fromRGB(248,113,113)
+eU(fP,99)fP.Parent=fN fP.Visible=false
+fN.MouseButton1Click:Connect(function()end)
 
 e0(fr,fg)
 
 
-local fN=Instance.new"Frame"fN.Name="Body"
-fN.Position=UDim2.new(0,0,0,62)fN.Size=UDim2.new(1,0,1,-62)
-fN.BackgroundTransparency=1 fN.Parent=fg
-local fO=Instance.new"UIPadding"fO.PaddingLeft=UDim.new(0,12)
-fO.PaddingRight=UDim.new(0,12)fO.PaddingBottom=UDim.new(0,12)fO.Parent=fN
+local fQ=Instance.new"Frame"fQ.Name="Body"
+fQ.Position=UDim2.new(0,0,0,62)fQ.Size=UDim2.new(1,0,1,-62)
+fQ.BackgroundTransparency=1 fQ.Parent=fg
+local fR=Instance.new"UIPadding"fR.PaddingLeft=UDim.new(0,12)
+fR.PaddingRight=UDim.new(0,12)fR.PaddingBottom=UDim.new(0,12)fR.Parent=fQ
 
-local fP=Instance.new"Frame"fP.Name="Sidebar"
-fP.Size=UDim2.new(0,164,1,0)fP.BackgroundColor3=fa.Bg
-fP.BackgroundTransparency=(e9 and not e4._transparent)and 0.15 or 0
-fP.BorderSizePixel=0 eU(fP,10)fP.Parent=fN
-eW(fP,true)
-e4:_tag(fP,"BackgroundColor3","Bg")
-eY(fP,10)
-eX(fP,8,8,8,8)
-
-local fQ=Instance.new"Frame"fQ.Name="Nav"
-fQ.Size=UDim2.new(1,0,1,0)fQ.BackgroundTransparency=1 fQ.Parent=fP
-local fR=Instance.new"UIListLayout"fR.Padding=UDim.new(0,4)
-fR.SortOrder=Enum.SortOrder.LayoutOrder fR.Parent=fQ
-
-
-
-
-local fS=Instance.new"Frame"fS.Name="_pill"
-fS.Size=UDim2.new(1,0,0,38)fS.Position=UDim2.new(0,0,0,-2)
-fS.BackgroundColor3=fa.Surface2 fS.BorderSizePixel=0
-fS.ZIndex=0
-eU(fS,8)fS.Parent=fP
+local fS=Instance.new"Frame"fS.Name="Sidebar"
+fS.Size=UDim2.new(0,164,1,0)fS.BackgroundColor3=fa.Bg
+fS.BackgroundTransparency=(e9 and not e4._transparent)and 0.15 or 0
+fS.BorderSizePixel=0 eU(fS,10)fS.Parent=fQ
 eW(fS,true)
-e4:_tag(fS,"BackgroundColor3","Surface2")
+e4:_tag(fS,"BackgroundColor3","Bg")
+eY(fS,10)
+eX(fS,8,8,8,8)
 
-local fT=Instance.new"Frame"fT.Name="Pages"
-fT.Position=UDim2.new(0,176,0,0)fT.Size=UDim2.new(1,-176,1,0)
-fT.BackgroundTransparency=1 fT.ClipsDescendants=true fT.Parent=fN
+local fT=Instance.new"Frame"fT.Name="Nav"
+fT.Size=UDim2.new(1,0,1,0)fT.BackgroundTransparency=1 fT.Parent=fS
+local fU=Instance.new"UIListLayout"fU.Padding=UDim.new(0,4)
+fU.SortOrder=Enum.SortOrder.LayoutOrder fU.Parent=fT
 
-local fU={
-_gui=fc,_main=fg,_side=fP,_nav=fQ,_pages=fT,_pill=fS,
+
+
+
+local fV=Instance.new"Frame"fV.Name="_pill"
+fV.Size=UDim2.new(1,0,0,38)fV.Position=UDim2.new(0,0,0,-2)
+fV.BackgroundColor3=fa.Surface2 fV.BorderSizePixel=0
+fV.ZIndex=0
+eU(fV,8)fV.Parent=fS
+eW(fV,true)
+e4:_tag(fV,"BackgroundColor3","Surface2")
+
+local fW=Instance.new"Frame"fW.Name="Pages"
+fW.Position=UDim2.new(0,176,0,0)fW.Size=UDim2.new(1,-176,1,0)
+fW.BackgroundTransparency=1 fW.ClipsDescendants=true fW.Parent=fQ
+
+local fX={
+_gui=fc,_main=fg,_side=fS,_nav=fT,_pages=fW,_pill=fV,
 _viewScale=fj,_loading=true,
 _tabs={},_active=nil,_toggleKey=e8,_visible=true,_keybinds={},
 _conns={},_acrylicPref=e9,_popouts={},
@@ -12461,423 +12498,446 @@ _tabChangeListeners={},
 
 
 
-fl=fU
-fU._loading=not fk
+fl=fX
+fX._loading=not fk
 
 
 
 do
-local fV=Instance.new"BindableEvent"
-fU._popoutEvent=fV
+local fY=Instance.new"BindableEvent"
+fX._popoutEvent=fY
 end
-function fU._popoutKick(fV)
-pcall(function()fV._popoutEvent:Fire()end)
+function fX._popoutKick(fY)
+pcall(function()fY._popoutEvent:Fire()end)
 end
 
-function fU.Track(fV,fW)table.insert(fV._conns,fW)return fW end
-local fV
-local fW
-local fX,fY
-fU._cfgTitle=e6
-fU._body=fN
+function fX.Track(fY,fZ)table.insert(fY._conns,fZ)return fZ end
+local fY
+local fZ
+local f_,f0
+fX._cfgTitle=e6
+fX._body=fQ
 
-fU._folder="Kronos/"..tostring(e6)
+fX._folder="Kronos/"..tostring(e6)
 pcall(function()
 if makefolder and isfolder and not isfolder"Kronos"then makefolder"Kronos"end
-if makefolder and isfolder and not isfolder(fU._folder)then makefolder(fU._folder)end
+if makefolder and isfolder and not isfolder(fX._folder)then makefolder(fX._folder)end
 end)
 
 
 
 
-fU._dock=nil
-fU._dockBtns={}
-local fZ=false
-local function dockRefresh(f_)
-for f0,f1 in ipairs(fU._dockBtns)do
-if f1.tab then pcall(function()f1.api.SetActive(f_==f1.tab)end)end
+fX._dock=nil
+fX._dockBtns={}
+local f1=false
+local function dockRefresh(f2)
+for f3,f4 in ipairs(fX._dockBtns)do
+if f4.tab then pcall(function()f4.api.SetActive(f2==f4.tab)end)end
 end
 end
 local function ensureDock()
-if fU._dock and fU._dock.Parent then return fU._dock end
-local f_=Instance.new"Frame"
-f_.Name=ad.GetStealthName()
-f_.AnchorPoint=Vector2.new(0,1)
-f_.Position=UDim2.new(0,8,1,-8)
-f_.Size=UDim2.new(1,-16,0,32)
-f_.BackgroundTransparency=1 f_.BorderSizePixel=0
-f_.ClipsDescendants=true f_.Parent=fP
-local f0=Instance.new"UIListLayout"
-f0.FillDirection=Enum.FillDirection.Horizontal
-f0.VerticalAlignment=Enum.VerticalAlignment.Center
-f0.Padding=UDim.new(0,6)f0.Parent=f_
-local f1=Instance.new"UIPadding"
-f1.PaddingBottom=UDim.new(0,40)f1.Parent=fQ
-fU._dock=f_
-fU._dockList=f0
+if fX._dock and fX._dock.Parent then return fX._dock end
+local f2=Instance.new"Frame"
+f2.Name=ad.GetStealthName()
+f2.AnchorPoint=Vector2.new(0,1)
+f2.Position=UDim2.new(0,8,1,-8)
+f2.Size=UDim2.new(1,-16,0,32)
+f2.BackgroundTransparency=1 f2.BorderSizePixel=0
+f2.ClipsDescendants=true f2.Parent=fS
+local f3=Instance.new"UIListLayout"
+f3.FillDirection=Enum.FillDirection.Horizontal
+f3.VerticalAlignment=Enum.VerticalAlignment.Center
+f3.Padding=UDim.new(0,6)f3.Parent=f2
+local f4=Instance.new"UIPadding"
+f4.PaddingBottom=UDim.new(0,40)f4.Parent=fT
+fX._dock=f2
+fX._dockList=f3
 
-fU._dockOpen=true
-fU._dockMemory=true
-local f2=Instance.new"TextButton"f2.Text=""
-f2.Size=UDim2.fromOffset(28,28)f2.BackgroundColor3=fa.Surface2
-f2.BackgroundTransparency=0.5 f2.LayoutOrder=0
-f2.BorderSizePixel=0 eU(f2,8)f2.AutoButtonColor=false f2.Parent=f_
-eW(f2,true)
-eL:_tag(f2,"BackgroundColor3","Surface2")
-local f3=ae.makeIcon("chevron-down",14,fa.Dim)
-f3.AnchorPoint=Vector2.new(0.5,0.5)f3.Position=UDim2.new(0.5,0,0.5,0)
-f3.Parent=f2
-fU._dockArrow=f2
-fU._dockArrowIcon=f3
-f2.MouseButton1Click:Connect(function()
+fX._dockOpen=true
+fX._dockMemory=true
+local f5=Instance.new"TextButton"f5.Text=""
+f5.Size=UDim2.fromOffset(28,28)f5.BackgroundColor3=fa.Surface2
+f5.BackgroundTransparency=0.5 f5.LayoutOrder=0
+f5.BorderSizePixel=0 eU(f5,8)f5.AutoButtonColor=false f5.Parent=f2
+eW(f5,true)
+eL:_tag(f5,"BackgroundColor3","Surface2")
+local f6=ae.makeIcon("chevron-down",14,fa.Dim)
+f6.AnchorPoint=Vector2.new(0.5,0.5)f6.Position=UDim2.new(0.5,0,0.5,0)
+f6.Parent=f5
+fX._dockArrow=f5
+fX._dockArrowIcon=f6
+f5.MouseButton1Click:Connect(function()
 eL:_sfx"Click"
-fU._dockSetOpen(not fU._dockOpen,true)
-fU._dockMemory=fU._dockOpen
+fX._dockSetOpen(not fX._dockOpen,true)
+fX._dockMemory=fX._dockOpen
 end)
-return f_
+return f2
 end
 
 
-local function layoutDock(f_)
-local f0=fU._dock
-if not f0 or not f0.Parent then return end
-local f1=fU._sbMode==1
-local f2=fU._dockList
-if f2 then
-f2.FillDirection=f1 and Enum.FillDirection.Vertical or Enum.FillDirection.Horizontal
+local function layoutDock(f2)
+local f3=fX._dock
+if not f3 or not f3.Parent then return end
+local f4=fX._sbMode==1
+local f5=fX._dockList
+if f5 then
+f5.FillDirection=f4 and Enum.FillDirection.Vertical or Enum.FillDirection.Horizontal
 end
-local f3=fU._sbMode==1
-if fU._dockArrow then
-fU._dockArrow.Visible=f3
+local f6=fX._sbMode==1
+if fX._dockArrow then
+fX._dockArrow.Visible=f6
 end
-local f4=0
-for f5,f6 in ipairs(fU._dockBtns)do
-if f6.btn and f6.btn.Parent and f6.btn.Visible then f4+=1 end
+local f7=0
+for f8,f9 in ipairs(fX._dockBtns)do
+if f9.btn and f9.btn.Parent and f9.btn.Visible then f7+=1 end
 end
-local f5=(f3 and 1 or 0)+(fU._dockOpen and f4 or 0)
-if f5<=0 then
-f0.Visible=false
+local f8=(f6 and 1 or 0)+(fX._dockOpen and f7 or 0)
+if f8<=0 then
+f3.Visible=false
 return
 end
-f0.Visible=true
-local f6
-if f1 then
-f6=UDim2.new(0,44,0,f5*28+(f5-1)*6)
+f3.Visible=true
+local f9
+if f4 then
+f9=UDim2.new(0,44,0,f8*28+(f8-1)*6)
 else
-f6=UDim2.new(0,f5*28+(f5-1)*6,0,32)
+f9=UDim2.new(0,f8*28+(f8-1)*6,0,32)
 end
-if f_ then eN(f0,eM.Med,{Size=f6})
-else pcall(function()f0.Size=f6 end)end
+if f2 then eN(f3,eM.Med,{Size=f9})
+else pcall(function()f3.Size=f9 end)end
 end
-function fU._dockSetOpen(f_,f0)
-fU._dockOpen=f_ and true or false
-local f1=fU._dockArrowIcon
-if f1 and f1:IsA"ImageLabel"then
+function fX._dockSetOpen(f2,f3)
+fX._dockOpen=f2 and true or false
+local f4=fX._dockArrowIcon
+if f4 and f4:IsA"ImageLabel"then
 pcall(function()
 
-f1.Image=ae.resolveIcon(f_ and"chevron-down"or"chevron-up")
+f4.Image=ae.resolveIcon(f2 and"chevron-down"or"chevron-up")
 end)
 end
-local f2=0
-for f3,f4 in ipairs(fU._dockBtns)do
-if f4.btn and f4.btn.Parent then
-f2+=1
-local f5=fU._dockOpen
-if f5 then
-f4.btn.Visible=true
+local f5=0
+for f6,f7 in ipairs(fX._dockBtns)do
+if f7.btn and f7.btn.Parent then
+f5+=1
+local f8=fX._dockOpen
+if f8 then
+f7.btn.Visible=true
 pcall(function()
-f4.btn.BackgroundTransparency=0.5
-if f4.ic then f4.ic.ImageTransparency=0 end
+f7.btn.BackgroundTransparency=0.5
+if f7.ic then f7.ic.ImageTransparency=0 end
 end)
-if f0 then local
-f6, f7=f4.btn, f4.ic
-task.delay(f2*0.03,function()
-if f6.Parent then eN(f6,eM.Fast,{BackgroundTransparency=0.5})end
+if f3 then local
+f9, ga=f7.btn, f7.ic
+task.delay(f5*0.03,function()
+if f9.Parent then eN(f9,eM.Fast,{BackgroundTransparency=0.5})end
 end)
 end
 else
-local f6=f4.btn
-if f0 then
-eN(f6,eM.Fast,{BackgroundTransparency=1})
+local f9=f7.btn
+if f3 then
+eN(f9,eM.Fast,{BackgroundTransparency=1})
 task.delay(0.16,function()
-if f6.Parent then f6.Visible=false end
+if f9.Parent then f9.Visible=false end
 end)
 else
-f6.Visible=false
+f9.Visible=false
 end
 end
 end
 end
-layoutDock(f0)
+layoutDock(f3)
 end
-local function dockAdd(f_,f0,f1,f2)
-for f3,f4 in ipairs(fU._dockBtns)do
-if f4.name==f_ then
-f4.cb=f1 or f4.cb
-f4.tab=f2 or f4.tab
-return f4.api
+local function dockAdd(f2,f3,f4,f5)
+for f6,f7 in ipairs(fX._dockBtns)do
+if f7.name==f2 then
+f7.cb=f4 or f7.cb
+f7.tab=f5 or f7.tab
+return f7.api
 end
 end
-local f3=ensureDock()
-local f4=Instance.new"TextButton"f4.Text=""
-f4.Size=UDim2.fromOffset(28,28)f4.BackgroundColor3=fa.Surface2
-f4.BackgroundTransparency=0.5
-f4.LayoutOrder=#fU._dockBtns+1
-f4.BorderSizePixel=0 eU(f4,8)f4.AutoButtonColor=false f4.Parent=f3
-eW(f4,true)
-eL:_tag(f4,"BackgroundColor3","Surface2")
-local f5=ae.makeIcon(f0 or"box",15,fa.Dim)
-f5.AnchorPoint=Vector2.new(0.5,0.5)f5.Position=UDim2.new(0.5,0,0.5,0)
-f5.Parent=f4
-local f6=false
-local f7={}
+local f6=ensureDock()
+local f7=Instance.new"TextButton"f7.Text=""
+f7.Size=UDim2.fromOffset(28,28)f7.BackgroundColor3=fa.Surface2
+f7.BackgroundTransparency=0.5
+f7.LayoutOrder=#fX._dockBtns+1
+f7.BorderSizePixel=0 eU(f7,8)f7.AutoButtonColor=false f7.Parent=f6
+eW(f7,true)
+eL:_tag(f7,"BackgroundColor3","Surface2")
+local f8=ae.makeIcon(f3 or"box",15,fa.Dim)
+f8.AnchorPoint=Vector2.new(0.5,0.5)f8.Position=UDim2.new(0.5,0,0.5,0)
+f8.Parent=f7
+local f9=false
+local ga={}
 
 
-local function refreshBtn(f8)
-local f9=0.5
-if f6 then f9=0.15
-elseif f8 then f9=0.3 end
-flyTo(f4,{BackgroundTransparency=f9},eM.Hover)
-if f5:IsA"ImageLabel"then
-flyTo(f5,{ImageColor3=f6 and fa.Text or fa.Dim},eM.Hover)
+local function refreshBtn(gb)
+local gc=0.5
+if f9 then gc=0.15
+elseif gb then gc=0.3 end
+flyTo(f7,{BackgroundTransparency=gc},eM.Hover)
+if f8:IsA"ImageLabel"then
+flyTo(f8,{ImageColor3=f9 and fa.Text or fa.Dim},eM.Hover)
 end
 end
-function f7.SetActive(f8)
-f6=f8 and true or false
+function ga.SetActive(gb)
+f9=gb and true or false
 refreshBtn(false)
 end
-f4.MouseEnter:Connect(function()
-if f6 then return end
+f7.MouseEnter:Connect(function()
+if f9 then return end
 refreshBtn(true)
 end)
-f4.MouseLeave:Connect(function()
-if f6 then return end
+f7.MouseLeave:Connect(function()
+if f9 then return end
 refreshBtn(false)
 end)
-f4.MouseButton1Click:Connect(function()
-eL:_sfx"Click"eO(f1)
+f7.MouseButton1Click:Connect(function()
+eL:_sfx"Click"eO(f4)
 end)
-table.insert(fU._dockBtns,{name=f_,tab=f2,cb=f1,api=f7,btn=f4,ic=f5})
+table.insert(fX._dockBtns,{name=f2,tab=f5,cb=f4,api=ga,btn=f7,ic=f8})
 layoutDock(false)
-if f2 and not fZ then
-fZ=true
-table.insert(fU._tabChangeListeners,function(f8)
-dockRefresh(f8)
+if f5 and not f1 then
+f1=true
+table.insert(fX._tabChangeListeners,function(gb)
+dockRefresh(gb)
 end)
 end
-return f7
+return ga
 end
-fU._dockAdd=dockAdd
-function fU.AddDockButton(f_,f0)
-f0=f0 or{}
-return dockAdd(f0.Name or"Dock",f0.Icon or"box",f0.Callback,f0.Tab)
+fX._dockAdd=dockAdd
+function fX.AddDockButton(f2,f3)
+f3=f3 or{}
+return dockAdd(f3.Name or"Dock",f3.Icon or"box",f3.Callback,f3.Tab)
 end
 
-function fU.AddTab(f_,f0)
-local f1=type(f0)=="table"and f0 or{Name=f0}
-return f_:Tab{Title=f1.Name or f1.Title or"Tab",Icon=f1.Icon,Hidden=f1.Hidden}
+function fX.AddTab(f2,f3)
+local f4=type(f3)=="table"and f3 or{Name=f3}
+return f2:Tab{Title=f4.Name or f4.Title or"Tab",Icon=f4.Icon,Hidden=f4.Hidden}
 end
-function fU.AddTabLine(f_)
-local f0=Instance.new"Frame"
-f0.Name="TabLine"
-f0.BackgroundTransparency=1
-f0.Size=UDim2.new(1,0,0,9)
-f0.ZIndex=2
-f0.Parent=f_._nav
-local f1=Instance.new"Frame"
-f1.AnchorPoint=Vector2.new(0,0.5)
-f1.Position=UDim2.new(0,4,0.5,0)
-f1.Size=UDim2.new(1,-8,0,1)
-f1.BackgroundColor3=Color3.new(1,1,1)
-f1.BackgroundTransparency=0.92
-f1.BorderSizePixel=0
-f1.ZIndex=2
-f1.Parent=f0
-return f0
+function fX.AddTabLine(f2)
+local f3=Instance.new"Frame"
+f3.Name="TabLine"
+f3.BackgroundTransparency=1
+f3.Size=UDim2.new(1,0,0,9)
+f3.ZIndex=2
+f3.Parent=f2._nav
+local f4=Instance.new"Frame"
+f4.AnchorPoint=Vector2.new(0,0.5)
+f4.Position=UDim2.new(0,4,0.5,0)
+f4.Size=UDim2.new(1,-8,0,1)
+f4.BackgroundColor3=Color3.new(1,1,1)
+f4.BackgroundTransparency=0.92
+f4.BorderSizePixel=0
+f4.ZIndex=2
+f4.Parent=f3
+return f3
 end
-function fU.AddPanelTab(f_,f0)
-f0=f0 or{}
-local f1=f_
-local f2=f_:AddTab{
-Name=f0.Name or f0.Title,
-Icon=f0.Icon,
-Hidden=f0.Hidden~=false,
+function fX.AddPanelTab(f2,f3)
+f3=f3 or{}
+local f4=f2
+local f5=f2:AddTab{
+Name=f3.Name or f3.Title,
+Icon=f3.Icon,
+Hidden=f3.Hidden~=false,
 }
-if f0.OnToggle then
-table.insert(f_._tabChangeListeners,function(f3)
-task.spawn(f0.OnToggle,f3==f2)
+if f3.OnToggle then
+table.insert(f2._tabChangeListeners,function(f6)
+task.spawn(f3.OnToggle,f6==f5)
 end)
 end
-local f3
+local f6
 local function openPanel()
-if f1._active==f2 then return end
-if f1._active and not f1._active.Hidden then
-f3=f1._active
+if f4._active==f5 then return end
+if f4._active and not f4._active.Hidden then
+f6=f4._active
 end
-f1._activateTab(f2,true)
+f4._activateTab(f5,true)
 end
 local function closePanel()
-if f1._active~=f2 then return end
-if f3 and not f3.Hidden then
-f1._activateTab(f3,true)
-elseif f1._tabs[1]and f1._tabs[1]~=f2 then
-f1._activateTab(f1._tabs[1],true)
+if f4._active~=f5 then return end
+if f6 and not f6.Hidden then
+f4._activateTab(f6,true)
+elseif f4._tabs[1]and f4._tabs[1]~=f5 then
+f4._activateTab(f4._tabs[1],true)
 end
 end
-local f4={
-Instance=f2.Page,
-Tab=f2,
+local f7={
+Instance=f5.Page,
+Tab=f5,
 Open=openPanel,
 Close=closePanel,
 Toggle=function()
-if f1._active==f2 then closePanel()else openPanel()end
+if f4._active==f5 then closePanel()else openPanel()end
 end,
-IsOpen=function()return f1._active==f2 end,
+IsOpen=function()return f4._active==f5 end,
 }
-for f5,f6 in pairs{
+for f8,f9 in pairs{
 AddToggle="AddToggle",AddSlider="AddSlider",
 AddDropdown="AddDropdown",AddTextbox="AddTextbox",
 AddButton="AddButton",AddKeybind="AddKeybind",
 AddColorPicker="AddColorpicker",AddParagraph="AddParagraph",
 AddSection="AddSection",AddSpacing="AddEmpty",AddHeader="AddSection",
 }do
-if f2[f6]then
-f4[f5]=function(f7,...)return f2[f6](f2,...)end
+if f5[f9]then
+f7[f8]=function(ga,...)return f5[f9](f5,...)end
 end
 end
-return f4
-end
-
-function fU._activateTab(f_,f0)
-if f_ and f_._activate then pcall(f_._activate,f0~=false)end
+return f7
 end
 
-function fU._flash(f_,f0)
-if not f0 or not f0.Parent then return end
-local f1=Instance.new"Frame"f1.Name="_flash"
-f1.Size=UDim2.fromScale(1,1)f1.BackgroundColor3=fa.Accent
-f1.BackgroundTransparency=0.75 f1.BorderSizePixel=0
-eU(f1,10)f1.Parent=f0
-eN(f1,TweenInfo.new(0.18,Enum.EasingStyle.Quart,Enum.EasingDirection.Out),
+function fX._activateTab(f2,f3)
+if f2 and f2._activate then pcall(f2._activate,f3~=false)end
+end
+
+function fX._flash(f2,f3)
+if not f3 or not f3.Parent then return end
+local f4=Instance.new"Frame"f4.Name="_flash"
+f4.Size=UDim2.fromScale(1,1)f4.BackgroundColor3=fa.Accent
+f4.BackgroundTransparency=0.75 f4.BorderSizePixel=0
+eU(f4,10)f4.Parent=f3
+eN(f4,TweenInfo.new(0.18,Enum.EasingStyle.Quart,Enum.EasingDirection.Out),
 {BackgroundTransparency=1})
-task.delay(0.2,function()pcall(function()f1:Destroy()end)end)
+task.delay(0.2,function()pcall(function()f4:Destroy()end)end)
 end
 
-fU:Track(e2.InputBegan:Connect(function(f_,f0)
-if f0 then return end
-if f_.KeyCode==fU._toggleKey then fU:Toggle()end
-if f_.KeyCode==Enum.KeyCode.K and e2:IsKeyDown(Enum.KeyCode.LeftControl)then
-fU:TogglePalette()
+fX:Track(e2.InputBegan:Connect(function(f2,f3)
+if f3 then return end
+if f2.KeyCode==fX._toggleKey then fX:Toggle()end
+if f2.KeyCode==Enum.KeyCode.K and e2:IsKeyDown(Enum.KeyCode.LeftControl)then
+fX:TogglePalette()
 end
-if f_.KeyCode==Enum.KeyCode.P and e2:IsKeyDown(Enum.KeyCode.LeftControl)then
-fU:TogglePalette()
+if f2.KeyCode==Enum.KeyCode.P and e2:IsKeyDown(Enum.KeyCode.LeftControl)then
+fX:TogglePalette()
 end
-if f_.KeyCode==Enum.KeyCode.Tab and e2:IsKeyDown(Enum.KeyCode.LeftControl)then
-local f1=table.find(fU._tabs,fU._active)or 0
-local f2=fU._tabs[(f1%#fU._tabs)+1]
-if f2 then eL:_sfx"Swap"fU._activateTab(f2,true)end
+if f2.KeyCode==Enum.KeyCode.Tab and e2:IsKeyDown(Enum.KeyCode.LeftControl)then
+local f4=table.find(fX._tabs,fX._active)or 0
+local f5=fX._tabs[(f4%#fX._tabs)+1]
+if f5 then eL:_sfx"Swap"fX._activateTab(f5,true)end
 end
 end))
 
-fz:GetPropertyChangedSignal"Text":Connect(function()
-local f_=string.lower(fz.Text)
-for f0,f1 in ipairs(fU._tabs)do
-local f2=f_==""or string.find(string.lower(f1.Title),f_,1,true)~=nil
-for f3,f4 in ipairs(f1.Elements)do
-local f5
-if f_==""then
-f5=true
-elseif f2 then
-f5=true
-else
-
-
-
-
-local f6=string.lower(tostring(f4.Title or"").." "..tostring(f4.Flag or""))
-local f7=f4._handle
+fA:GetPropertyChangedSignal"Text":Connect(function()
+local f2=string.lower(fA.Text)
+for f3,f4 in ipairs(fX._tabs)do
+local f5=f2==""or string.find(string.lower(f4.Title),f2,1,true)~=nil
+for f6,f7 in ipairs(f4.Elements)do
 local f8
-if type(f7)=="table"then
-f8=f7.Get
-elseif f7~=nil then
-local f9,ga=pcall(function()return f7.Get end)
-if f9 then f8=ga end
-end
-if type(f8)=="function"then
-local f9,ga=pcall(f8,f7)
-if f9 then
-if type(ga)=="string"or type(ga)=="number"then
-f6=f6 .." "..string.lower(tostring(ga))
-elseif type(ga)=="table"then
-for gb,gc in ipairs(ga)do f6=f6 .." "..string.lower(tostring(gc))end
-end
-end
-end
-f5=string.find(f6,f_,1,true)~=nil
-end
-f4._searchVisible=(f_=="")and nil or f5
-if f4.Frame then f4.Frame.Visible=f5 end
-end
-f1.Btn.Visible=(f2 or f_=="")and not f1._hidden
-if f_~=""and not f1._hidden then
+if f2==""then
+f8=true
+elseif f5 then
+f8=true
+else
 
-for f3,f4 in ipairs(f1.Elements)do
-if f4.Frame and f4.Frame.Visible then f1.Btn.Visible=true break end
+
+
+
+local f9=string.lower(tostring(f7.Title or"").." "..tostring(f7.Flag or""))
+local ga=f7._handle
+local gb
+if type(ga)=="table"then
+gb=ga.Get
+elseif ga~=nil then
+local gc,gd=pcall(function()return ga.Get end)
+if gc then gb=gd end
+end
+if type(gb)=="function"then
+local gc,gd=pcall(gb,ga)
+if gc then
+if type(gd)=="string"or type(gd)=="number"then
+f9=f9 .." "..string.lower(tostring(gd))
+elseif type(gd)=="table"then
+for ge,gf in ipairs(gd)do f9=f9 .." "..string.lower(tostring(gf))end
+end
+end
+end
+f8=string.find(f9,f2,1,true)~=nil
+end
+f7._searchVisible=(f2=="")and nil or f8
+if f7.Frame then f7.Frame.Visible=f8 end
+end
+f4.Btn.Visible=(f5 or f2=="")and not f4._hidden
+if f2~=""and not f4._hidden then
+
+for f6,f7 in ipairs(f4.Elements)do
+if f7.Frame and f7.Frame.Visible then f4.Btn.Visible=true break end
 end
 else
 
-for f3,f4 in ipairs(f1.Elements)do
-if f4._refreshSection then pcall(f4._refreshSection)end
+for f6,f7 in ipairs(f4.Elements)do
+if f7._refreshSection then pcall(f7._refreshSection)end
 end
 end
 end
 end)
 
 
-fz.Focused:Connect(function()eN(fx,eM.Hover,{Size=UDim2.new(0,190,0,32)})end)
-fz.FocusLost:Connect(function()eN(fx,eM.Hover,{Size=UDim2.new(0,170,0,32)})end)
+fA.Focused:Connect(function()
+if not fC then
+fC=true
+if fD then fD.Visible=false end
+setSearchIconCentered(false)
+fA.Visible=true
+fB.Visible=true
+end
+eN(fy,eM.Hover,{Size=UDim2.new(0,190,0,32)})
+end)
+fA.FocusLost:Connect(function()
+if fA.Text~=""then
+eN(fy,eM.Hover,{Size=UDim2.new(0,170,0,32)})
+return
+end
+fC=false
+eN(fy,eM.Hover,{Size=UDim2.new(0,32,0,32)})
+task.delay(0.15,function()
+if fC then return end
+fA.Visible=false
+fB.Visible=false
+setSearchIconCentered(true)
+if fD then fD.Visible=true end
+end)
+end)
 
-function fU.SetVisible(f_,f0)
-f_._visible=f0
+function fX.SetVisible(f2,f3)
+f2._visible=f3
 
 local function pillTarget()
-local f1,f2=fc.AbsoluteSize.X,fc.AbsoluteSize.Y
-if f1<1 then f1,f2=1200,800 end
-local f3,f4=fV.AbsolutePosition,fV.AbsoluteSize
-return UDim2.new(0,f3.X+f4.X/2-f1/2,0,f3.Y+f4.Y/2-f2/2)
+local f4,f5=fc.AbsoluteSize.X,fc.AbsoluteSize.Y
+if f4<1 then f4,f5=1200,800 end
+local f6,f7=fY.AbsolutePosition,fY.AbsoluteSize
+return UDim2.new(0,f6.X+f7.X/2-f4/2,0,f6.Y+f7.Y/2-f5/2)
 end
-if f0 then
+if f3 then
 fc.Enabled=true
-f_._mini=false
-if fX then fX.Visible=false end
-if fV then fV.Visible=false end
+f2._mini=false
+if f_ then f_.Visible=false end
+if fY then fY.Visible=false end
 fg.Position=pillTarget()
 fj.Scale=baseScale()*0.55
 fg.GroupTransparency=1
 fe.BackgroundTransparency=1
-if f_._acrylicPref then eL:SetAcrylic(true,e5.Blur or 16)end
+if f2._acrylicPref then eL:SetAcrylic(true,e5.Blur or 16)end
 eL:_sfx"Open"
 
-flyTo(fg,{Position=f_._lastPos or UDim2.new(0.5,0,0.5,0),GroupTransparency=0},
+flyTo(fg,{Position=f2._lastPos or UDim2.new(0.5,0,0.5,0),GroupTransparency=0},
 TweenInfo.new(0.45,Enum.EasingStyle.Quint,Enum.EasingDirection.Out))
 eN(fj,TweenInfo.new(0.35,Enum.EasingStyle.Back,Enum.EasingDirection.Out),{Scale=baseScale()})
 
 dimTo(0.5,TweenInfo.new(0.45,Enum.EasingStyle.Quint,Enum.EasingDirection.Out))
 else
-f_._mini=false
-f_._lastPos=fg.Position
-if fX then fX.Visible=false end
+f2._mini=false
+f2._lastPos=fg.Position
+if f_ then f_.Visible=false end
 eL:SetAcrylic(false)
-for f1,f2 in pairs(eL.Sound._cache)do pcall(function()f2:Stop()end)end
+for f4,f5 in pairs(eL.Sound._cache)do pcall(function()f5:Stop()end)end
 flyTo(fg,{Position=pillTarget(),GroupTransparency=1},
 TweenInfo.new(0.35,Enum.EasingStyle.Quint,Enum.EasingDirection.In),
 function()
-if f_._visible then return end
+if f2._visible then return end
 fc.Enabled=false
-if fV then
-fV.Visible=true
-fW.Scale=0.5
-eN(fW,eM.Spring,{Scale=1})
+if fY then
+fY.Visible=true
+fZ.Scale=0.5
+eN(fZ,eM.Spring,{Scale=1})
 end
 end)
 flyTo(fj,{Scale=baseScale()*0.55},eM.Fast)
@@ -12885,256 +12945,273 @@ flyTo(fj,{Scale=baseScale()*0.55},eM.Fast)
 dimTo(1,TweenInfo.new(0.35,Enum.EasingStyle.Quint,Enum.EasingDirection.In))
 end
 end
-function fU.Toggle(f_)f_:SetVisible(not f_._visible)end
+function fX.Toggle(f2)f2:SetVisible(not f2._visible)end
 
 
-function fU.SetToggleKey(f_,f0)
-if type(f0)=="string"then f0=Enum.KeyCode[f0]end
-if typeof(f0)=="EnumItem"then
-if f_._toggleKey==f0 then return end
-f_._toggleKey=f0
-f_:Notify{Title="Hide key",Content="Now bound to "..f0.Name,Duration=1.5}
+function fX.SetToggleKey(f2,f3)
+if type(f3)=="string"then f3=Enum.KeyCode[f3]end
+if typeof(f3)=="EnumItem"then
+if f2._toggleKey==f3 then return end
+f2._toggleKey=f3
+f2:Notify{Title="Hide key",Content="Now bound to "..f3.Name,Duration=1.5}
 end
 end
-function fU.GetToggleKey(f_)return f_._toggleKey end
+function fX.GetToggleKey(f2)return f2._toggleKey end
 
 
-function fU.OnClose(f_,f0)
-if type(f0)=="function"then f_._onCloseCb=f0 end
+function fX.OnClose(f2,f3)
+if type(f3)=="function"then f2._onCloseCb=f3 end
 end
 
-function fU.SetMini(f_,f0)
-f0=f0 and true or false
-if f0==f_._mini then return end
-f_._mini=f0
-if f0 then
-f_._visible=false
-f_._lastPos=fg.Position
-fV.Visible=false
+function fX.SetMini(f2,f3)
+f3=f3 and true or false
+if f3==f2._mini then return end
+f2._mini=f3
+if f3 then
+f2._visible=false
+f2._lastPos=fg.Position
+fY.Visible=false
 eL:SetAcrylic(false)
-for f1,f2 in pairs(eL.Sound._cache)do pcall(function()f2:Stop()end)end
+for f4,f5 in pairs(eL.Sound._cache)do pcall(function()f5:Stop()end)end
 eN(fg,eM.Fast,{GroupTransparency=1})
 eN(fj,eM.Fast,{Scale=baseScale()*0.7})
 dimTo(1,eM.Fast)
 task.delay(0.2,function()
-if not f_._mini then return end
+if not f2._mini then return end
 fc.Enabled=false
-fX.Visible=true
-fY.Scale=0.5
-eN(fY,eM.Spring,{Scale=1})
+f_.Visible=true
+f0.Scale=0.5
+eN(f0,eM.Spring,{Scale=1})
 end)
 else
-fX.Visible=false
-f_:SetVisible(true)
+f_.Visible=false
+f2:SetVisible(true)
 end
 end
 
 
 
-fU._sbMode=0
-fU._focus=false
-function fU._applyLayout(f_)
-local f0=f_._focus and 2 or f_._sbMode
-local f1=f0==1
-fP.Visible=f0~=2
-if f0==0 then
-flyTo(fP,{Size=UDim2.new(0,164,1,0)})
-fT.Position=UDim2.new(0,176,0,0)
-fT.Size=UDim2.new(1,-176,1,0)
-elseif f0==1 then
-flyTo(fP,{Size=UDim2.new(0,58,1,0)})
-fT.Position=UDim2.new(0,70,0,0)
-fT.Size=UDim2.new(1,-70,1,0)
+
+
+
+
+local f2=e5.Sidebar
+local f3=0
+if type(f2)=="number"and f2>=0 and f2<=2 then
+f3=math.floor(f2)
+elseif type(f2)=="string"then
+local f4=string.lower(f2)
+if f4=="icons"or f4=="icons-only"or f4=="icons only"then f3=1
+elseif f4=="hidden"then f3=2 end
+end
+fX._sbMode=f3
+if f2~=nil then fX._userToggledSide=true end
+fX._focus=false
+function fX._applyLayout(f4)
+local f5=f4._focus and 2 or f4._sbMode
+local f6=f5==1
+fS.Visible=f5~=2
+if f5==0 then
+flyTo(fS,{Size=UDim2.new(0,164,1,0)})
+fW.Position=UDim2.new(0,176,0,0)
+fW.Size=UDim2.new(1,-176,1,0)
+elseif f5==1 then
+flyTo(fS,{Size=UDim2.new(0,58,1,0)})
+fW.Position=UDim2.new(0,70,0,0)
+fW.Size=UDim2.new(1,-70,1,0)
 else
-fT.Position=UDim2.new(0,0,0,0)
-fT.Size=UDim2.new(1,0,1,0)
+fW.Position=UDim2.new(0,0,0,0)
+fW.Size=UDim2.new(1,0,1,0)
 end
-for f2,f3 in ipairs(f_._tabs)do
-if f3._label then f3._label.Visible=not f1 end
-if f3._icon and f3._icon:IsA"GuiObject"then
-f3._icon.Position=f1 and UDim2.new(0,13,0.5,0)or UDim2.new(0,14,0.5,0)
+for f7,f8 in ipairs(f4._tabs)do
+if f8._label then f8._label.Visible=not f6 end
+if f8._icon and f8._icon:IsA"GuiObject"then
+f8._icon.Position=f6 and UDim2.new(0,13,0.5,0)or UDim2.new(0,14,0.5,0)
 end
 end
 
 
-if f_._dockSetOpen then
-if f1 then
-f_._dockMemory=f_._dockOpen
-f_._dockSetOpen(false,true)
+if f4._dockSetOpen then
+if f6 then
+f4._dockMemory=f4._dockOpen
+f4._dockSetOpen(false,true)
 else
-f_._dockMemory=true
-f_._dockSetOpen(true,true)
+f4._dockMemory=true
+f4._dockSetOpen(true,true)
 end
 end
 end
-function fU.CycleSidebar(f_)
-f_._sbMode=(f_._sbMode+1)%3
-f_:_applyLayout()
-f_:Notify{Title="Sidebar",Content=({"Full","Icons only","Hidden"})[f_._sbMode+1],Duration=1.5}
+function fX.CycleSidebar(f4)
+f4._sbMode=(f4._sbMode+1)%3
+f4:_applyLayout()
+f4:Notify{Title="Sidebar",Content=({"Full","Icons only","Hidden"})[f4._sbMode+1],Duration=1.5}
 end
-function fU.SetFocus(f_,f0)
-f_._focus=f0 and true or false
-f_:_applyLayout()
+function fX.SetFocus(f4,f5)
+f4._focus=f5 and true or false
+f4:_applyLayout()
 end
 local function fitCard()
-local f_=Vector2.new(1200,800)
-pcall(function()f_=workspace.CurrentCamera.ViewportSize end)
-local f0=math.clamp(math.min(f_.X/700,f_.Y/520),0.6,1)
-fh=f0
+local f4=Vector2.new(1200,800)
+pcall(function()f4=workspace.CurrentCamera.ViewportSize end)
+local f5=math.clamp(math.min(f4.X/700,f4.Y/520),0.6,1)
+fh=f5
 fj.Scale=baseScale()
-if f_.X<760 or e2.TouchEnabled then
-if fU._sbMode==0 and not fU._userToggledSide then
-fU._sbMode=2 fU:_applyLayout()
+if f4.X<760 or e2.TouchEnabled then
+if fX._sbMode==0 and not fX._userToggledSide then
+fX._sbMode=2 fX:_applyLayout()
 end
 end
 end
-fD.MouseButton1Click:Connect(function()
+fG.MouseButton1Click:Connect(function()
 eL:_sfx"Click"
-fU._userToggledSide=true
-fU:CycleSidebar()
+fX._userToggledSide=true
+fX:CycleSidebar()
 end)
-fB.MouseButton1Click:Connect(function()
-eL:_sfx"Click"fU:ToggleKeybindList()
+fE.MouseButton1Click:Connect(function()
+eL:_sfx"Click"fX:ToggleKeybindList()
 end)
 
 
-local f_=e5.ConfirmClose
-if f_==nil then f_=true end
+local f4=e5.ConfirmClose
+if f4==nil then f4=true end
 local function requestClose()
 eL:_sfx"Click"
-if f_==false then fU:Destroy()return end
-local f0=(type(f_)=="table")and f_ or{}
-fU:Dialog{
-Title=f0.Title or"Close Kronos?",
-Content=f0.Content or"The hub will close permanently and all features will be disabled.",
+if f4==false then fX:Destroy()return end
+local f5=(type(f4)=="table")and f4 or{}
+fX:Dialog{
+Title=f5.Title or"Close Kronos?",
+Content=f5.Content or"The hub will close permanently and all features will be disabled.",
 Buttons={
-{Title=f0.Cancel or"Cancel"},
-{Title=f0.Confirm or"Close",Callback=function()fU:Destroy()end},
+{Title=f5.Cancel or"Cancel"},
+{Title=f5.Confirm or"Close",Callback=function()fX:Destroy()end},
 },
 }
 end
-fJ.MouseButton1Click:Connect(function()requestClose()end)
-fI.MouseButton1Click:Connect(function()
-eL:_sfx"Click"fU:SetMini(not fU._mini)
+fM.MouseButton1Click:Connect(function()requestClose()end)
+fL.MouseButton1Click:Connect(function()
+eL:_sfx"Click"fX:SetMini(not fX._mini)
 end)
-fU._zoomed=false
-fH.MouseButton1Click:Connect(function()
+fX._zoomed=false
+fK.MouseButton1Click:Connect(function()
 eL:_sfx"Click"
-fU._zoomed=not fU._zoomed
-eN(fg,eM.Med,{Size=fU._zoomed and UDim2.fromOffset(760,520)
+fX._zoomed=not fX._zoomed
+eN(fg,eM.Med,{Size=fX._zoomed and UDim2.fromOffset(760,520)
 or UDim2.fromOffset(620,440)})
 end)
-fK.MouseButton1Click:Connect(function()
-eL:_sfx"Click"fU:ToggleInbox()
+fN.MouseButton1Click:Connect(function()
+eL:_sfx"Click"fX:ToggleInbox()
 end)
 pcall(function()
 if workspace.CurrentCamera then
-fU:Track(workspace.CurrentCamera:GetPropertyChangedSignal"ViewportSize":Connect(fitCard))
+fX:Track(workspace.CurrentCamera:GetPropertyChangedSignal"ViewportSize":Connect(fitCard))
 end
 end)
 task.defer(fitCard)
 
-fV=Instance.new"TextButton"fV.Name=ad.GetStealthName()
-fV.Text=""
-fV.AnchorPoint=Vector2.new(0,0.5)fV.Position=UDim2.new(0,12,0.5,0)
-fV.Size=UDim2.fromOffset(42,42)
-fV.BackgroundColor3=fa.Surface2 fV.BorderSizePixel=0
-e4:_tag(fV,"BackgroundColor3","Surface2")
-eU(fV,13)fV.Parent=fc fV.Visible=false
-eW(fV,true)
-e_(fV,0.6,20)
 
-local f0=Instance.new"TextLabel"f0.Size=UDim2.fromScale(1,1)
-f0.BackgroundTransparency=1 f0.Font=Enum.Font.GothamBlack
-f0.TextSize=20 f0.Text="K"f0.Parent=fV
-e4:_tag(f0,"TextColor3","Text")
-local f1=Instance.new"Frame"f1.Size=UDim2.fromOffset(9,9)
-f1.Position=UDim2.new(1,-6,0,-3)f1.BorderSizePixel=0
-e4:_tag(f1,"BackgroundColor3","Accent")
-eU(f1,99)f1.Parent=fV
-brandInto(fV,f0)
-if not e5.Logo or e5.Logo==""then kronosFace(fV,f0,32,17)end
-fW=Instance.new"UIScale"fW.Parent=fV
-e0(fV,fV)
-fV.MouseButton1Click:Connect(function()fU:SetVisible(true)end)
+if f2~=nil and f3~=0 then fX:_applyLayout()end
 
+fY=Instance.new"TextButton"fY.Name=ad.GetStealthName()
+fY.Text=""
+fY.AnchorPoint=Vector2.new(0,0.5)fY.Position=UDim2.new(0,12,0.5,0)
+fY.Size=UDim2.fromOffset(42,42)
+fY.BackgroundColor3=fa.Surface2 fY.BorderSizePixel=0
+e4:_tag(fY,"BackgroundColor3","Surface2")
+eU(fY,13)fY.Parent=fc fY.Visible=false
+eW(fY,true)
+e_(fY,0.6,20)
 
-fX=Instance.new"TextButton"fX.Name=ad.GetStealthName()
-fX.Text=""
-fX.AnchorPoint=Vector2.new(0,0)fX.Position=UDim2.new(0,12,0,12)
-fX.Size=UDim2.fromOffset(44,44)
-fX.BackgroundColor3=fa.Surface2 fX.BorderSizePixel=0
-e4:_tag(fX,"BackgroundColor3","Surface2")
-eU(fX,13)fX.Parent=fb fX.Visible=false
-eW(fX,true)
-e_(fX,0.6,20)
-local f2=Instance.new"TextLabel"f2.Size=UDim2.fromScale(1,1)
-f2.BackgroundTransparency=1 f2.Font=Enum.Font.GothamBlack
-f2.TextSize=20 f2.Text="K"f2.Parent=fX
-e4:_tag(f2,"TextColor3","Text")
-local f3=Instance.new"Frame"f3.Size=UDim2.fromOffset(9,9)
-f3.Position=UDim2.new(1,-6,0,-3)f3.BorderSizePixel=0
-e4:_tag(f3,"BackgroundColor3","Accent")
-eU(f3,99)f3.Parent=fX
-brandInto(fX,f2)
-if not e5.Logo or e5.Logo==""then kronosFace(fX,f2,34,17)end
-fY=Instance.new"UIScale"fY.Parent=fX
-e0(fX,fX)
-fX.MouseButton1Click:Connect(function()fU:SetMini(false)end)
+local f5=Instance.new"TextLabel"f5.Size=UDim2.fromScale(1,1)
+f5.BackgroundTransparency=1 f5.Font=Enum.Font.GothamBlack
+f5.TextSize=20 f5.Text="K"f5.Parent=fY
+e4:_tag(f5,"TextColor3","Text")
+local f6=Instance.new"Frame"f6.Size=UDim2.fromOffset(9,9)
+f6.Position=UDim2.new(1,-6,0,-3)f6.BorderSizePixel=0
+e4:_tag(f6,"BackgroundColor3","Accent")
+eU(f6,99)f6.Parent=fY
+brandInto(fY,f5)
+if not e5.Logo or e5.Logo==""then kronosFace(fY,f5,32,17)end
+fZ=Instance.new"UIScale"fZ.Parent=fY
+e0(fY,fY)
+fY.MouseButton1Click:Connect(function()fX:SetVisible(true)end)
 
 
-local f4=Instance.new"TextButton"f4.Text=""
-f4.AnchorPoint=Vector2.new(1,1)f4.Position=UDim2.new(1,0,1,0)
-f4.Size=UDim2.fromOffset(28,28)f4.BackgroundTransparency=1
-f4.Parent=fg f4.ZIndex=50
-f4.ClipsDescendants=true
+f_=Instance.new"TextButton"f_.Name=ad.GetStealthName()
+f_.Text=""
+f_.AnchorPoint=Vector2.new(0,0)f_.Position=UDim2.new(0,12,0,12)
+f_.Size=UDim2.fromOffset(44,44)
+f_.BackgroundColor3=fa.Surface2 f_.BorderSizePixel=0
+e4:_tag(f_,"BackgroundColor3","Surface2")
+eU(f_,13)f_.Parent=fb f_.Visible=false
+eW(f_,true)
+e_(f_,0.6,20)
+local f7=Instance.new"TextLabel"f7.Size=UDim2.fromScale(1,1)
+f7.BackgroundTransparency=1 f7.Font=Enum.Font.GothamBlack
+f7.TextSize=20 f7.Text="K"f7.Parent=f_
+e4:_tag(f7,"TextColor3","Text")
+local f8=Instance.new"Frame"f8.Size=UDim2.fromOffset(9,9)
+f8.Position=UDim2.new(1,-6,0,-3)f8.BorderSizePixel=0
+e4:_tag(f8,"BackgroundColor3","Accent")
+eU(f8,99)f8.Parent=f_
+brandInto(f_,f7)
+if not e5.Logo or e5.Logo==""then kronosFace(f_,f7,34,17)end
+f0=Instance.new"UIScale"f0.Parent=f_
+e0(f_,f_)
+f_.MouseButton1Click:Connect(function()fX:SetMini(false)end)
 
 
-local f5=0
-f4.MouseButton1Click:Connect(function()
-local f6=os.clock()
-if f6-f5<0.35 then
+local f9=Instance.new"TextButton"f9.Text=""
+f9.AnchorPoint=Vector2.new(1,1)f9.Position=UDim2.new(1,0,1,0)
+f9.Size=UDim2.fromOffset(28,28)f9.BackgroundTransparency=1
+f9.Parent=fg f9.ZIndex=50
+f9.ClipsDescendants=true
+
+
+local ga=0
+f9.MouseButton1Click:Connect(function()
+local gb=os.clock()
+if gb-ga<0.35 then
 eL:_sfx"Click"
-fU._zoomed=not fU._zoomed
-eN(fg,eM.Med,{Size=fU._zoomed and UDim2.fromOffset(760,520)
+fX._zoomed=not fX._zoomed
+eN(fg,eM.Med,{Size=fX._zoomed and UDim2.fromOffset(760,520)
 or UDim2.fromOffset(620,440)})
 end
-f5=f6
+ga=gb
 end)
-local f6,f7,f8=false
-f4.InputBegan:Connect(function(f9)
-if f9.UserInputType==Enum.UserInputType.MouseButton1 or f9.UserInputType==Enum.UserInputType.Touch then
-f6,f7,f8=true,f9.Position,fg.Size
-f9.Changed:Connect(function()
-if f9.UserInputState==Enum.UserInputState.End then
-f6=false
+local gb,gc,gd=false
+f9.InputBegan:Connect(function(ge)
+if ge.UserInputType==Enum.UserInputType.MouseButton1 or ge.UserInputType==Enum.UserInputType.Touch then
+gb,gc,gd=true,ge.Position,fg.Size
+ge.Changed:Connect(function()
+if ge.UserInputState==Enum.UserInputState.End then
+gb=false
 
 task.delay(0.15,function()
-if not f6 then fU:_applyTextScale()end
+if not gb then fX:_applyTextScale()end
 end)
 end
 end)
 end
 end)
-fU:Track(e2.InputChanged:Connect(function(f9)
-if not f6 then return end
-if f9.UserInputType~=Enum.UserInputType.MouseMovement
-and f9.UserInputType~=Enum.UserInputType.Touch then return end
-local ga=f9.Position-f7
+fX:Track(e2.InputChanged:Connect(function(ge)
+if not gb then return end
+if ge.UserInputType~=Enum.UserInputType.MouseMovement
+and ge.UserInputType~=Enum.UserInputType.Touch then return end
+local gf=ge.Position-gc
 fg.Size=UDim2.fromOffset(
-math.clamp(f8.X.Offset+ga.X,520,920),
-math.clamp(f8.Y.Offset+ga.Y,380,660))
+math.clamp(gd.X.Offset+gf.X,520,920),
+math.clamp(gd.Y.Offset+gf.Y,380,660))
 end))
 
-function fU.Notify(f9,ga)
-ga=ga or{}
+function fX.Notify(ge,gf)
+gf=gf or{}
 if not fk then
 
 
-table.insert(eL._inbox,1,{Title=ga.Title or"Kronos",
-Content=ga.Content or ga.Text or"",At=os.date"%H:%M"})
+table.insert(eL._inbox,1,{Title=gf.Title or"Kronos",
+Content=gf.Content or gf.Text or"",At=os.date"%H:%M"})
 while#eL._inbox>30 do table.remove(eL._inbox)end
-pcall(function()fM.Visible=true end)
+pcall(function()fP.Visible=true end)
 return
 end
 eL:_sfx"Notify"
@@ -13142,122 +13219,122 @@ eL:_sfx"Notify"
 
 
 
-table.insert(eL._inbox,1,{Title=ga.Title or"Kronos",
-Content=ga.Content or ga.Text or"",At=os.date"%H:%M"})
+table.insert(eL._inbox,1,{Title=gf.Title or"Kronos",
+Content=gf.Content or gf.Text or"",At=os.date"%H:%M"})
 while#eL._inbox>30 do table.remove(eL._inbox)end
-pcall(function()fM.Visible=true end)
-local gb=ensureNotifyHost(fd)
-local gc=Instance.new"CanvasGroup"gc.Size=UDim2.new(1,0,0,62)
-gc.BackgroundColor3=fa.Surface2 gc.BorderSizePixel=0 gc.GroupTransparency=1
-eU(gc,10)gc.Parent=gb
-eW(gc,true)
-e_(gc,0.65,24)
-eL:_tag(gc,"BackgroundColor3","Surface2")
-gc.Position=UDim2.new(0,40,0,0)
-eN(gc,eM.Med,{GroupTransparency=0,Position=UDim2.new(0,0,0,0)})
-local gd=Instance.new"TextLabel"gd.BackgroundTransparency=1
-gd.Position=UDim2.new(0,12,0,8)gd.Size=UDim2.new(1,-24,0,17)
-gd.Font=Enum.Font.GothamBold gd.TextSize=13 gd.TextXAlignment=0
-eL:_tag(gd,"TextColor3","Text")gd.Text=ga.Title or"Kronos"gd.Parent=gc
-local ge=Instance.new"TextLabel"ge.BackgroundTransparency=1
-ge.Position=UDim2.new(0,12,0,27)ge.Size=UDim2.new(1,-24,0,16)
-ge.Font=Enum.Font.Gotham ge.TextSize=12 ge.TextXAlignment=0
-eL:_tag(ge,"TextColor3","Dim")
-ge.TextTruncate=Enum.TextTruncate.AtEnd ge.Text=ga.Content or ga.Text or""ge.Parent=gc
-local gf=Instance.new"Frame"gf.AnchorPoint=Vector2.new(0,1)
-gf.Position=UDim2.new(0,10,1,-6)gf.Size=UDim2.new(1,-20,0,2)
-gf.BorderSizePixel=0 eL:agrad(gf,0)
-eU(gf,99)gf.Parent=gc
-local gg=ga.Duration or 4
-eN(gf,TweenInfo.new(gg,Enum.EasingStyle.Linear),{Size=UDim2.new(0,0,0,2)})
-task.delay(gg+0.1,function()
-eN(gc,eM.Fast,{GroupTransparency=1})
-task.delay(0.2,function()pcall(function()gc:Destroy()end)end)
+pcall(function()fP.Visible=true end)
+local gg=ensureNotifyHost(fd)
+local gh=Instance.new"CanvasGroup"gh.Size=UDim2.new(1,0,0,62)
+gh.BackgroundColor3=fa.Surface2 gh.BorderSizePixel=0 gh.GroupTransparency=1
+eU(gh,10)gh.Parent=gg
+eW(gh,true)
+e_(gh,0.65,24)
+eL:_tag(gh,"BackgroundColor3","Surface2")
+gh.Position=UDim2.new(0,40,0,0)
+eN(gh,eM.Med,{GroupTransparency=0,Position=UDim2.new(0,0,0,0)})
+local gi=Instance.new"TextLabel"gi.BackgroundTransparency=1
+gi.Position=UDim2.new(0,12,0,8)gi.Size=UDim2.new(1,-24,0,17)
+gi.Font=Enum.Font.GothamBold gi.TextSize=13 gi.TextXAlignment=0
+eL:_tag(gi,"TextColor3","Text")gi.Text=gf.Title or"Kronos"gi.Parent=gh
+local gj=Instance.new"TextLabel"gj.BackgroundTransparency=1
+gj.Position=UDim2.new(0,12,0,27)gj.Size=UDim2.new(1,-24,0,16)
+gj.Font=Enum.Font.Gotham gj.TextSize=12 gj.TextXAlignment=0
+eL:_tag(gj,"TextColor3","Dim")
+gj.TextTruncate=Enum.TextTruncate.AtEnd gj.Text=gf.Content or gf.Text or""gj.Parent=gh
+local gk=Instance.new"Frame"gk.AnchorPoint=Vector2.new(0,1)
+gk.Position=UDim2.new(0,10,1,-6)gk.Size=UDim2.new(1,-20,0,2)
+gk.BorderSizePixel=0 eL:agrad(gk,0)
+eU(gk,99)gk.Parent=gh
+local gl=gf.Duration or 4
+eN(gk,TweenInfo.new(gl,Enum.EasingStyle.Linear),{Size=UDim2.new(0,0,0,2)})
+task.delay(gl+0.1,function()
+eN(gh,eM.Fast,{GroupTransparency=1})
+task.delay(0.2,function()pcall(function()gh:Destroy()end)end)
 end)
 end
 
 
 
 
-local function fadeModal(f9,ga,gb)
-eN(f9,eM.Fast,{GroupTransparency=1})
+local function fadeModal(ge,gf,gg)
+eN(ge,eM.Fast,{GroupTransparency=1})
 pcall(function()
-for gc,gd in ipairs(f9:GetDescendants())do
-if gd:IsA"UIStroke"then eN(gd,eM.Fast,{Transparency=1})end
+for gh,gi in ipairs(ge:GetDescendants())do
+if gi:IsA"UIStroke"then eN(gi,eM.Fast,{Transparency=1})end
 end
 end)
-eN(ga,eM.Fast,{BackgroundTransparency=1})
-task.delay(gb or 0.18,function()pcall(function()ga:Destroy()end)end)
+eN(gf,eM.Fast,{BackgroundTransparency=1})
+task.delay(gg or 0.18,function()pcall(function()gf:Destroy()end)end)
 end
 
 
-function fU.Dialog(f9,ga)
-ga=ga or{}
+function fX.Dialog(ge,gf)
+gf=gf or{}
 if not fk then
 
-local gb=false
+local gg=false
 table.insert(fm,function()
-if not gb then f9:Dialog(ga)end
+if not gg then ge:Dialog(gf)end
 end)
-return{Close=function()gb=true end}
+return{Close=function()gg=true end}
 end
 eL:_sfx"Open"
-local gb=Instance.new"TextButton"gb.Text=""gb.AutoButtonColor=false
-gb.Size=UDim2.fromScale(1,1)gb.BackgroundColor3=Color3.fromRGB(0,0,0)
-gb.BackgroundTransparency=1 gb.Parent=fc
-eN(gb,eM.Med,{BackgroundTransparency=0.55})
-local gc=Instance.new"CanvasGroup"gc.AnchorPoint=Vector2.new(0.5,0.5)
+local gg=Instance.new"TextButton"gg.Text=""gg.AutoButtonColor=false
+gg.Size=UDim2.fromScale(1,1)gg.BackgroundColor3=Color3.fromRGB(0,0,0)
+gg.BackgroundTransparency=1 gg.Parent=fc
+eN(gg,eM.Med,{BackgroundTransparency=0.55})
+local gh=Instance.new"CanvasGroup"gh.AnchorPoint=Vector2.new(0.5,0.5)
 
 
 
-gc.Position=UDim2.new(0.5,fg.Position.X.Offset,0.5,fg.Position.Y.Offset)
-gc.Size=UDim2.fromOffset(320*ac.popupZoom(),170*ac.popupZoom())
-gc.BackgroundColor3=fa.Surface gc.BorderSizePixel=0 gc.GroupTransparency=1
-eU(gc,12)gc.Parent=gb
-eW(gc,true)
-eY(gc,12)
-e_(gc,0.5,40)
-eL:_tag(gc,"BackgroundColor3","Surface")
-local gd=Instance.new"UIScale"gd.Scale=0.94*ac.popupZoom()gd.Parent=gc
-eN(gc,eM.Med,{GroupTransparency=0})
-eN(gd,eM.Spring,{Scale=ac.popupZoom()})
-local ge=false
+gh.Position=UDim2.new(0.5,fg.Position.X.Offset,0.5,fg.Position.Y.Offset)
+gh.Size=UDim2.fromOffset(320*ac.popupZoom(),170*ac.popupZoom())
+gh.BackgroundColor3=fa.Surface gh.BorderSizePixel=0 gh.GroupTransparency=1
+eU(gh,12)gh.Parent=gg
+eW(gh,true)
+eY(gh,12)
+e_(gh,0.5,40)
+eL:_tag(gh,"BackgroundColor3","Surface")
+local gi=Instance.new"UIScale"gi.Scale=0.94*ac.popupZoom()gi.Parent=gh
+eN(gh,eM.Med,{GroupTransparency=0})
+eN(gi,eM.Spring,{Scale=ac.popupZoom()})
+local gj=false
 local function close()
-if ge then return end ge=true
+if gj then return end gj=true
 eJ.close(close)
-fadeModal(gc,gb)
+fadeModal(gh,gg)
 end
 eJ.open(close)
-gb.MouseButton1Click:Connect(function()close()end)
-local gf=Instance.new"TextLabel"gf.BackgroundTransparency=1
-gf.Position=UDim2.new(0,16,0,14)gf.Size=UDim2.new(1,-32,0,20)
-gf.Font=Enum.Font.GothamBold gf.TextSize=15 gf.TextXAlignment=0
-eL:_tag(gf,"TextColor3","Text")gf.Text=ga.Title or"Confirm"gf.Parent=gc
-local gg=Instance.new"TextLabel"gg.BackgroundTransparency=1
-gg.Position=UDim2.new(0,16,0,38)gg.Size=UDim2.new(1,-32,0,60)
-gg.Font=Enum.Font.Gotham gg.TextSize=12 gf.TextXAlignment=0
-gg.TextXAlignment=0 gg.TextYAlignment=0 gg.TextWrapped=true
-eL:_tag(gg,"TextColor3","Dim")gg.Text=ga.Content or""gg.Parent=gc
-local gh=Instance.new"Frame"gh.BackgroundTransparency=1
-gh.AnchorPoint=Vector2.new(0,1)gh.Position=UDim2.new(0,0,1,-12)
-gh.Size=UDim2.new(1,0,0,34)gh.Parent=gc
-local gi=Instance.new"UIListLayout"gi.FillDirection=Enum.FillDirection.Horizontal
-gi.HorizontalAlignment=Enum.HorizontalAlignment.Right gi.Padding=UDim.new(0,8)gi.Parent=gh
-eX(gh,0,0,12,12)
-for gj,gk in ipairs(ga.Buttons or{{Title="OK"}})do
-local gl=Instance.new"TextButton"gl.Text=""
-gl.Size=UDim2.new(0,96,0,30)gl.BackgroundColor3=fa.Surface2
-gl.BorderSizePixel=0 eU(gl,7)gl.AutoButtonColor=false gl.Parent=gh
-eW(gl,true)
-eL:_tag(gl,"BackgroundColor3","Surface2")
-local gm=Instance.new"TextLabel"gm.BackgroundTransparency=1 gm.Size=UDim2.fromScale(1,1)
-gm.Font=Enum.Font.GothamBold gm.TextSize=12
-eL:_tag(gm,"TextColor3","Text")gm.Text=gk.Title gm.Parent=gl
-local gn=Instance.new"UIScale"gn.Parent=gl
-gl.MouseButton1Down:Connect(function()eN(gn,eM.Hover,{Scale=0.95})end)
-gl.MouseButton1Up:Connect(function()eN(gn,eM.Spring,{Scale=1})end)
-gl.MouseButton1Click:Connect(function()
-close()eO(gk.Callback)
+gg.MouseButton1Click:Connect(function()close()end)
+local gk=Instance.new"TextLabel"gk.BackgroundTransparency=1
+gk.Position=UDim2.new(0,16,0,14)gk.Size=UDim2.new(1,-32,0,20)
+gk.Font=Enum.Font.GothamBold gk.TextSize=15 gk.TextXAlignment=0
+eL:_tag(gk,"TextColor3","Text")gk.Text=gf.Title or"Confirm"gk.Parent=gh
+local gl=Instance.new"TextLabel"gl.BackgroundTransparency=1
+gl.Position=UDim2.new(0,16,0,38)gl.Size=UDim2.new(1,-32,0,60)
+gl.Font=Enum.Font.Gotham gl.TextSize=12 gk.TextXAlignment=0
+gl.TextXAlignment=0 gl.TextYAlignment=0 gl.TextWrapped=true
+eL:_tag(gl,"TextColor3","Dim")gl.Text=gf.Content or""gl.Parent=gh
+local gm=Instance.new"Frame"gm.BackgroundTransparency=1
+gm.AnchorPoint=Vector2.new(0,1)gm.Position=UDim2.new(0,0,1,-12)
+gm.Size=UDim2.new(1,0,0,34)gm.Parent=gh
+local gn=Instance.new"UIListLayout"gn.FillDirection=Enum.FillDirection.Horizontal
+gn.HorizontalAlignment=Enum.HorizontalAlignment.Right gn.Padding=UDim.new(0,8)gn.Parent=gm
+eX(gm,0,0,12,12)
+for go,gp in ipairs(gf.Buttons or{{Title="OK"}})do
+local gq=Instance.new"TextButton"gq.Text=""
+gq.Size=UDim2.new(0,96,0,30)gq.BackgroundColor3=fa.Surface2
+gq.BorderSizePixel=0 eU(gq,7)gq.AutoButtonColor=false gq.Parent=gm
+eW(gq,true)
+eL:_tag(gq,"BackgroundColor3","Surface2")
+local gr=Instance.new"TextLabel"gr.BackgroundTransparency=1 gr.Size=UDim2.fromScale(1,1)
+gr.Font=Enum.Font.GothamBold gr.TextSize=12
+eL:_tag(gr,"TextColor3","Text")gr.Text=gp.Title gr.Parent=gq
+local gs=Instance.new"UIScale"gs.Parent=gq
+gq.MouseButton1Down:Connect(function()eN(gs,eM.Hover,{Scale=0.95})end)
+gq.MouseButton1Up:Connect(function()eN(gs,eM.Spring,{Scale=1})end)
+gq.MouseButton1Click:Connect(function()
+close()eO(gp.Callback)
 end)
 end
 return{Close=close}
@@ -13265,488 +13342,488 @@ end
 
 
 
-function fU.Confirm(f9,ga)
-ga=ga or{}
+function fX.Confirm(ge,gf)
+gf=gf or{}
 if not fk then
-local gb=false
+local gg=false
 table.insert(fm,function()
-if not gb then f9:Confirm(ga)end
+if not gg then ge:Confirm(gf)end
 end)
-return{Close=function()gb=true end}
+return{Close=function()gg=true end}
 end
-local gb=ga.Danger==true
-local gc=Instance.new"TextButton"gc.Text=""gc.AutoButtonColor=false
-gc.Size=UDim2.fromScale(1,1)gc.BackgroundColor3=Color3.fromRGB(0,0,0)
-gc.BackgroundTransparency=1 gc.Parent=fc
-eN(gc,eM.Med,{BackgroundTransparency=0.55})
-local gd=Instance.new"CanvasGroup"gd.AnchorPoint=Vector2.new(0.5,0.5)
-gd.Position=UDim2.new(0.5,fg.Position.X.Offset,0.5,fg.Position.Y.Offset)
-gd.Size=UDim2.fromOffset(320*ac.popupZoom(),150*ac.popupZoom())
-gd.BackgroundColor3=fa.Surface gd.BorderSizePixel=0 gd.GroupTransparency=1
-eU(gd,12)gd.Parent=gc
-eW(gd,true)
-eY(gd,12)
-e_(gd,0.5,40)
-eL:_tag(gd,"BackgroundColor3","Surface")
-local ge=Instance.new"UIScale"ge.Scale=0.94*ac.popupZoom()ge.Parent=gd
-eN(gd,eM.Med,{GroupTransparency=0})
-eN(ge,eM.Spring,{Scale=ac.popupZoom()})
-local gf=false
-local function close(gg)
-if gf then return end gf=true
+local gg=gf.Danger==true
+local gh=Instance.new"TextButton"gh.Text=""gh.AutoButtonColor=false
+gh.Size=UDim2.fromScale(1,1)gh.BackgroundColor3=Color3.fromRGB(0,0,0)
+gh.BackgroundTransparency=1 gh.Parent=fc
+eN(gh,eM.Med,{BackgroundTransparency=0.55})
+local gi=Instance.new"CanvasGroup"gi.AnchorPoint=Vector2.new(0.5,0.5)
+gi.Position=UDim2.new(0.5,fg.Position.X.Offset,0.5,fg.Position.Y.Offset)
+gi.Size=UDim2.fromOffset(320*ac.popupZoom(),150*ac.popupZoom())
+gi.BackgroundColor3=fa.Surface gi.BorderSizePixel=0 gi.GroupTransparency=1
+eU(gi,12)gi.Parent=gh
+eW(gi,true)
+eY(gi,12)
+e_(gi,0.5,40)
+eL:_tag(gi,"BackgroundColor3","Surface")
+local gj=Instance.new"UIScale"gj.Scale=0.94*ac.popupZoom()gj.Parent=gi
+eN(gi,eM.Med,{GroupTransparency=0})
+eN(gj,eM.Spring,{Scale=ac.popupZoom()})
+local gk=false
+local function close(gl)
+if gk then return end gk=true
 eJ.close(close)
-fadeModal(gd,gc)
-eO(ga.Callback,gg and true or false)
+fadeModal(gi,gh)
+eO(gf.Callback,gl and true or false)
 end
 eJ.open(close)
-gc.MouseButton1Click:Connect(function()close(false)end)
-fU:Track(e2.InputBegan:Connect(function(gg,gh)
-if gf or gh then return end
-if gg.KeyCode==Enum.KeyCode.Return or gg.KeyCode==Enum.KeyCode.KeypadEnter then
+gh.MouseButton1Click:Connect(function()close(false)end)
+fX:Track(e2.InputBegan:Connect(function(gl,gm)
+if gk or gm then return end
+if gl.KeyCode==Enum.KeyCode.Return or gl.KeyCode==Enum.KeyCode.KeypadEnter then
 close(true)
-elseif gg.KeyCode==Enum.KeyCode.Escape then
+elseif gl.KeyCode==Enum.KeyCode.Escape then
 close(false)
 end
 end))
-local gg=Instance.new"TextLabel"gg.BackgroundTransparency=1
-gg.Position=UDim2.new(0,16,0,14)gg.Size=UDim2.new(1,-32,0,22)
-gg.Font=Enum.Font.GothamBold gg.TextSize=15 gg.TextXAlignment=0
-eL:_tag(gg,"TextColor3",gb and"Danger"or"Text")
-gg.Text=ga.Title or"Confirm"gg.Parent=gd
-local gh=Instance.new"TextLabel"gh.BackgroundTransparency=1
-gh.Position=UDim2.new(0,16,0,40)gh.Size=UDim2.new(1,-32,0,52)
-gh.Font=Enum.Font.Gotham gh.TextSize=12
-gh.TextXAlignment=0 gh.TextYAlignment=0 gh.TextWrapped=true
-eL:_tag(gh,"TextColor3","Dim")gh.Text=ga.Text or""gh.Parent=gd
-local gi=Instance.new"Frame"gi.BackgroundTransparency=1
-gi.AnchorPoint=Vector2.new(0,1)gi.Position=UDim2.new(0,0,1,-12)
-gi.Size=UDim2.new(1,0,0,34)gi.Parent=gd
-local gj=Instance.new"UIListLayout"gj.FillDirection=Enum.FillDirection.Horizontal
-gj.HorizontalAlignment=Enum.HorizontalAlignment.Right gj.Padding=UDim.new(0,8)gj.Parent=gi
-eX(gi,0,0,12,12)
-local function mkBtn(gk,gl,gm)
-local gn=Instance.new"TextButton"gn.Text=""
-gn.Size=UDim2.new(0,110,0,30)gn.BackgroundColor3=fa.Surface2
-gn.BorderSizePixel=0 eU(gn,7)gn.AutoButtonColor=false gn.Parent=gi
-eW(gn,true)
-eL:_tag(gn,"BackgroundColor3","Surface2")
-local go=Instance.new"TextLabel"go.BackgroundTransparency=1 go.Size=UDim2.fromScale(1,1)
-go.Font=Enum.Font.GothamBold go.TextSize=12
-eL:_tag(go,"TextColor3",gl and"Accent"or"Text")
-go.Text=gk go.Parent=gn
-gn.MouseButton1Click:Connect(function()gm()end)
-return gn
+local gl=Instance.new"TextLabel"gl.BackgroundTransparency=1
+gl.Position=UDim2.new(0,16,0,14)gl.Size=UDim2.new(1,-32,0,22)
+gl.Font=Enum.Font.GothamBold gl.TextSize=15 gl.TextXAlignment=0
+eL:_tag(gl,"TextColor3",gg and"Danger"or"Text")
+gl.Text=gf.Title or"Confirm"gl.Parent=gi
+local gm=Instance.new"TextLabel"gm.BackgroundTransparency=1
+gm.Position=UDim2.new(0,16,0,40)gm.Size=UDim2.new(1,-32,0,52)
+gm.Font=Enum.Font.Gotham gm.TextSize=12
+gm.TextXAlignment=0 gm.TextYAlignment=0 gm.TextWrapped=true
+eL:_tag(gm,"TextColor3","Dim")gm.Text=gf.Text or""gm.Parent=gi
+local gn=Instance.new"Frame"gn.BackgroundTransparency=1
+gn.AnchorPoint=Vector2.new(0,1)gn.Position=UDim2.new(0,0,1,-12)
+gn.Size=UDim2.new(1,0,0,34)gn.Parent=gi
+local go=Instance.new"UIListLayout"go.FillDirection=Enum.FillDirection.Horizontal
+go.HorizontalAlignment=Enum.HorizontalAlignment.Right go.Padding=UDim.new(0,8)go.Parent=gn
+eX(gn,0,0,12,12)
+local function mkBtn(gp,gq,gr)
+local gs=Instance.new"TextButton"gs.Text=""
+gs.Size=UDim2.new(0,110,0,30)gs.BackgroundColor3=fa.Surface2
+gs.BorderSizePixel=0 eU(gs,7)gs.AutoButtonColor=false gs.Parent=gn
+eW(gs,true)
+eL:_tag(gs,"BackgroundColor3","Surface2")
+local gt=Instance.new"TextLabel"gt.BackgroundTransparency=1 gt.Size=UDim2.fromScale(1,1)
+gt.Font=Enum.Font.GothamBold gt.TextSize=12
+eL:_tag(gt,"TextColor3",gq and"Accent"or"Text")
+gt.Text=gp gt.Parent=gs
+gs.MouseButton1Click:Connect(function()gr()end)
+return gs
 end
-mkBtn(ga.CancelText or"Cancel",false,function()close(false)end)
-mkBtn(ga.ConfirmText or"Confirm",true,function()close(true)end)
+mkBtn(gf.CancelText or"Cancel",false,function()close(false)end)
+mkBtn(gf.ConfirmText or"Confirm",true,function()close(true)end)
 return{Close=function()close(false)end}
 end
 
 
 
-function fU.Modal(f9,ga)
-ga=ga or{}
+function fX.Modal(ge,gf)
+gf=gf or{}
 if not fk then
-local gb=false
-table.insert(fm,function()
-if not gb then f9:Modal(ga)end
-end)
-return{Close=function()gb=true end}
-end
-local gb=ga.Fields or{}
-local gc=ga.Danger==true
-local gd=Instance.new"TextButton"gd.Text=""gd.AutoButtonColor=false
-gd.Size=UDim2.fromScale(1,1)gd.BackgroundColor3=Color3.fromRGB(0,0,0)
-gd.BackgroundTransparency=1 gd.Parent=fc
-eN(gd,eM.Med,{BackgroundTransparency=0.55})
-local ge=Instance.new"CanvasGroup"ge.AnchorPoint=Vector2.new(0.5,0.5)
-ge.Position=UDim2.new(0.5,fg.Position.X.Offset,0.5,fg.Position.Y.Offset)
-ge.Size=UDim2.fromOffset(340,0)ge.AutomaticSize=Enum.AutomaticSize.Y
-ge.BackgroundColor3=fa.Surface ge.BorderSizePixel=0 ge.GroupTransparency=1
-eU(ge,12)ge.Parent=gd
-eW(ge,true)
-eY(ge,12)
-e_(ge,0.5,40)
-eL:_tag(ge,"BackgroundColor3","Surface")
-local gf=Instance.new"UIScale"gf.Scale=0.94 gf.Parent=ge
-eN(ge,eM.Med,{GroupTransparency=0})
-eN(gf,eM.Spring,{Scale=1})
 local gg=false
-local gh={}
+table.insert(fm,function()
+if not gg then ge:Modal(gf)end
+end)
+return{Close=function()gg=true end}
+end
+local gg=gf.Fields or{}
+local gh=gf.Danger==true
+local gi=Instance.new"TextButton"gi.Text=""gi.AutoButtonColor=false
+gi.Size=UDim2.fromScale(1,1)gi.BackgroundColor3=Color3.fromRGB(0,0,0)
+gi.BackgroundTransparency=1 gi.Parent=fc
+eN(gi,eM.Med,{BackgroundTransparency=0.55})
+local gj=Instance.new"CanvasGroup"gj.AnchorPoint=Vector2.new(0.5,0.5)
+gj.Position=UDim2.new(0.5,fg.Position.X.Offset,0.5,fg.Position.Y.Offset)
+gj.Size=UDim2.fromOffset(340,0)gj.AutomaticSize=Enum.AutomaticSize.Y
+gj.BackgroundColor3=fa.Surface gj.BorderSizePixel=0 gj.GroupTransparency=1
+eU(gj,12)gj.Parent=gi
+eW(gj,true)
+eY(gj,12)
+e_(gj,0.5,40)
+eL:_tag(gj,"BackgroundColor3","Surface")
+local gk=Instance.new"UIScale"gk.Scale=0.94 gk.Parent=gj
+eN(gj,eM.Med,{GroupTransparency=0})
+eN(gk,eM.Spring,{Scale=1})
+local gl=false
+local gm={}
 local function values()
-local gi={}
-for gj,gk in pairs(gh)do
-gi[gj]=gk.Text
+local gn={}
+for go,gp in pairs(gm)do
+gn[go]=gp.Text
 end
-return gi
+return gn
 end
-local function close(gi)
-if gg then return end gg=true
+local function close(gn)
+if gl then return end gl=true
 eJ.close(close)
-fadeModal(ge,gd)
-if gi then eO(ga.Callback,true,values())else eO(ga.Callback,false,values())end
+fadeModal(gj,gi)
+if gn then eO(gf.Callback,true,values())else eO(gf.Callback,false,values())end
 end
 eJ.open(close)
-gd.MouseButton1Click:Connect(function()close(false)end)
-local gi=Instance.new"TextLabel"gi.BackgroundTransparency=1
-gi.Position=UDim2.new(0,16,0,14)gi.Size=UDim2.new(1,-32,0,22)
-gi.Font=Enum.Font.GothamBold gi.TextSize=15 gi.TextXAlignment=0
-eL:_tag(gi,"TextColor3",gc and"Danger"or"Text")
-gi.Text=ga.Title or"Modal"gi.Parent=ge
-local gj=42
-if ga.Text and ga.Text~=""then
-local gk=Instance.new"TextLabel"gk.BackgroundTransparency=1
-gk.Position=UDim2.new(0,16,0,gj)gk.Size=UDim2.new(1,-32,0,30)
-gk.Font=Enum.Font.Gotham gk.TextSize=12
-gk.TextXAlignment=0 gk.TextYAlignment=0 gk.TextWrapped=true
-eL:_tag(gk,"TextColor3","Dim")gk.Text=ga.Text gk.Parent=ge
-gj+=36
+gi.MouseButton1Click:Connect(function()close(false)end)
+local gn=Instance.new"TextLabel"gn.BackgroundTransparency=1
+gn.Position=UDim2.new(0,16,0,14)gn.Size=UDim2.new(1,-32,0,22)
+gn.Font=Enum.Font.GothamBold gn.TextSize=15 gn.TextXAlignment=0
+eL:_tag(gn,"TextColor3",gh and"Danger"or"Text")
+gn.Text=gf.Title or"Modal"gn.Parent=gj
+local go=42
+if gf.Text and gf.Text~=""then
+local gp=Instance.new"TextLabel"gp.BackgroundTransparency=1
+gp.Position=UDim2.new(0,16,0,go)gp.Size=UDim2.new(1,-32,0,30)
+gp.Font=Enum.Font.Gotham gp.TextSize=12
+gp.TextXAlignment=0 gp.TextYAlignment=0 gp.TextWrapped=true
+eL:_tag(gp,"TextColor3","Dim")gp.Text=gf.Text gp.Parent=gj
+go+=36
 end
-for gk,gl in ipairs(gb)do
-local gm=gl.Type=="textarea"
-local gn=gm and 56 or 30
-if gl.Label and gl.Label~=""then
-local go=Instance.new"TextLabel"go.BackgroundTransparency=1
-go.Position=UDim2.new(0,16,0,gj)go.Size=UDim2.new(1,-32,0,14)
-go.Font=Enum.Font.GothamBold go.TextSize=11 go.TextXAlignment=0
-eL:_tag(go,"TextColor3","Dim")go.Text=string.upper(tostring(gl.Label))go.Parent=ge
-gj+=16
+for gp,gq in ipairs(gg)do
+local gr=gq.Type=="textarea"
+local gs=gr and 56 or 30
+if gq.Label and gq.Label~=""then
+local gt=Instance.new"TextLabel"gt.BackgroundTransparency=1
+gt.Position=UDim2.new(0,16,0,go)gt.Size=UDim2.new(1,-32,0,14)
+gt.Font=Enum.Font.GothamBold gt.TextSize=11 gt.TextXAlignment=0
+eL:_tag(gt,"TextColor3","Dim")gt.Text=string.upper(tostring(gq.Label))gt.Parent=gj
+go+=16
 end
-local go=Instance.new"TextBox"
-go.PlaceholderText=gl.Placeholder or""go.PlaceholderColor3=fa.Placeholder
-go.Text=gl.Default or""
-go.Font=Enum.Font.Gotham go.TextSize=13
-go.TextXAlignment=0 go.TextYAlignment=gm and 0 or 1
-go.TextWrapped=gm go.MultiLine=gm
-go.ClearTextOnFocus=false
-go.Position=UDim2.new(0,16,0,gj)go.Size=UDim2.new(1,-32,0,gn)
+local gt=Instance.new"TextBox"
+gt.PlaceholderText=gq.Placeholder or""gt.PlaceholderColor3=fa.Placeholder
+gt.Text=gq.Default or""
+gt.Font=Enum.Font.Gotham gt.TextSize=13
+gt.TextXAlignment=0 gt.TextYAlignment=gr and 0 or 1
+gt.TextWrapped=gr gt.MultiLine=gr
+gt.ClearTextOnFocus=false
+gt.Position=UDim2.new(0,16,0,go)gt.Size=UDim2.new(1,-32,0,gs)
+gt.BackgroundColor3=fa.Surface2 gt.BorderSizePixel=0
+eU(gt,7)gt.Parent=gj
+eX(gt,4,4,10,10)
+eW(gt,true)
+eL:_tag(gt,"BackgroundColor3","Surface2")
+eL:_tag(gt,"TextColor3","Text")
+if tonumber(gq.MaxLength)then
+local gu=tonumber(gq.MaxLength)
+gt:GetPropertyChangedSignal"Text":Connect(function()
+if string.len(gt.Text)>gu then gt.Text=string.sub(gt.Text,1,gu)end
+end)
+end
+gm[gq.Key]=gt
+go+=gs+10
+end
+local gp=Instance.new"Frame"gp.BackgroundTransparency=1
+gp.Position=UDim2.new(0,0,0,go)gp.Size=UDim2.new(1,0,0,46)
+gp.Parent=gj
+local gq=Instance.new"UIListLayout"gq.FillDirection=Enum.FillDirection.Horizontal
+gq.HorizontalAlignment=Enum.HorizontalAlignment.Right gq.Padding=UDim.new(0,8)gq.Parent=gp
+eX(gp,0,12,12,12)
+local function mkBtn2(gr,gs,gt)
+local gu=Instance.new"TextButton"gu.Text=""
+gu.Size=UDim2.new(0,110,0,30)gu.BackgroundColor3=fa.Surface2
+gu.BorderSizePixel=0 eU(gu,7)gu.AutoButtonColor=false gu.Parent=gp
+eW(gu,true)
+eL:_tag(gu,"BackgroundColor3","Surface2")
+local gv=Instance.new"TextLabel"gv.BackgroundTransparency=1 gv.Size=UDim2.fromScale(1,1)
+gv.Font=Enum.Font.GothamBold gv.TextSize=12
+eL:_tag(gv,"TextColor3",gs and"Accent"or"Text")
+gv.Text=gr gv.Parent=gu
+gu.MouseButton1Click:Connect(function()gt()end)
+return gu
+end
+mkBtn2(gf.CancelText or"Cancel",false,function()close(false)end)
+mkBtn2(gf.ConfirmText or"Confirm",true,function()close(true)end)
+return{Close=function()close(false)end}
+end
+
+
+
+
+function fX.KeySystem(ge,gf)
+gf=gf or{}
+local gg,gh=false,gf.FileName or("kronos_key_"..tostring(e6))
+
+local gi=(ge._folder or"Kronos").."/"..gh..".txt"
+
+if gf.SaveKey~=false then
+pcall(function()
+if readfile and isfile and isfile(gi)then
+local gj=readfile(gi)
+if gj and ge:_checkKey(gf,gj)then gg=true end
+end
+end)
+end
+local gj=Instance.new"TextButton"gj.Text=""gj.AutoButtonColor=false
+gj.Size=UDim2.fromScale(1,1)gj.BackgroundColor3=Color3.fromRGB(0,0,0)
+gj.BackgroundTransparency=1 gj.ZIndex=200 gj.Parent=fc
+eN(gj,eM.Med,{BackgroundTransparency=0.6})
+local gk=Instance.new"CanvasGroup"gk.AnchorPoint=Vector2.new(0.5,0.5)
+gk.Position=UDim2.new(0.5,0,0.5,0)gk.Size=UDim2.fromOffset(300*ac.popupZoom(),210*ac.popupZoom())
+gk.BackgroundColor3=fa.Surface gk.BorderSizePixel=0 gk.GroupTransparency=1
+eU(gk,12)gk.Parent=gj
+eW(gk,true)
+eY(gk,12)
+e_(gk,0.5,40)
+eL:_tag(gk,"BackgroundColor3","Surface")
+local gl=Instance.new"UIScale"gl.Scale=0.94*ac.popupZoom()gl.Parent=gk
+eN(gk,eM.Med,{GroupTransparency=0})
+eN(gl,eM.Spring,{Scale=ac.popupZoom()})
+local gm=Instance.new"TextLabel"gm.BackgroundTransparency=1
+gm.Position=UDim2.new(0,16,0,14)gm.Size=UDim2.new(1,-32,0,20)
+gm.Font=Enum.Font.GothamBold gm.TextSize=15 gm.TextXAlignment=0
+eL:_tag(gm,"TextColor3","Text")gm.Text=gf.Title or"Enter Key"gm.Parent=gk
+local gn=Instance.new"TextLabel"gn.BackgroundTransparency=1
+gn.Position=UDim2.new(0,16,0,36)gn.Size=UDim2.new(1,-32,0,15)
+gn.Font=Enum.Font.Gotham gn.TextSize=11 gm.TextXAlignment=0 gn.TextXAlignment=0
+eL:_tag(gn,"TextColor3","Dim")gn.Text=string.upper(gf.Subtitle or"key required")gn.Parent=gk
+local go=Instance.new"TextBox"go.PlaceholderText="Paste key..."
+go.PlaceholderColor3=fa.Placeholder go.Text=""
+go.Font=Enum.Font.Code go.TextSize=12
+go.Position=UDim2.new(0,16,0,60)go.Size=UDim2.new(1,-32,0,32)
 go.BackgroundColor3=fa.Surface2 go.BorderSizePixel=0
-eU(go,7)go.Parent=ge
+eU(go,8)go.Parent=gk
 eX(go,4,4,10,10)
 eW(go,true)
 eL:_tag(go,"BackgroundColor3","Surface2")
 eL:_tag(go,"TextColor3","Text")
-if tonumber(gl.MaxLength)then
-local gp=tonumber(gl.MaxLength)
-go:GetPropertyChangedSignal"Text":Connect(function()
-if string.len(go.Text)>gp then go.Text=string.sub(go.Text,1,gp)end
+local gp=Instance.new"TextLabel"gp.BackgroundTransparency=1
+gp.Position=UDim2.new(0,16,0,96)gp.Size=UDim2.new(1,-32,0,15)
+gp.Font=Enum.Font.Gotham gp.TextSize=11 gp.TextXAlignment=0 gp.Text=""
+eL:_tag(gp,"TextColor3","Danger")gp.Parent=gk
+local gq=Instance.new"TextButton"gq.Text=""
+gq.Position=UDim2.new(0,16,0,118)gq.Size=UDim2.new(1,-32,0,32)
+gq.BorderSizePixel=0 eU(gq,8)gq.AutoButtonColor=false gq.Parent=gk
+eL:agrad(gq,15)
+local gr=Instance.new"TextLabel"gr.BackgroundTransparency=1 gr.Size=UDim2.fromScale(1,1)
+gr.Font=Enum.Font.GothamBold gr.TextSize=13 gr.Text="UNLOCK"
+eL:oa(gr)gr.Parent=gq
+local gs=Instance.new"UIScale"gs.Parent=gq
+local gt
+if gf.GetKeyLink then
+gt=Instance.new"TextButton"gt.Text=""
+gt.Position=UDim2.new(0,16,0,156)gt.Size=UDim2.new(1,-32,0,26)
+gt.BackgroundTransparency=1 gt.Parent=gk
+local gu=Instance.new"TextLabel"gu.BackgroundTransparency=1 gu.Size=UDim2.fromScale(1,1)
+gu.Font=Enum.Font.Gotham gu.TextSize=11 gu.Text="Copy key link"
+eL:_tag(gu,"TextColor3","Dim")gu.Parent=gt
+gt.MouseButton1Click:Connect(function()
+pcall(function()if setclipboard then setclipboard(gf.GetKeyLink)end end)
+gu.Text="Link copied"
+task.delay(2,function()pcall(function()gu.Text="Copy key link"end)end)
 end)
 end
-gh[gl.Key]=go
-gj+=gn+10
-end
-local gk=Instance.new"Frame"gk.BackgroundTransparency=1
-gk.Position=UDim2.new(0,0,0,gj)gk.Size=UDim2.new(1,0,0,46)
-gk.Parent=ge
-local gl=Instance.new"UIListLayout"gl.FillDirection=Enum.FillDirection.Horizontal
-gl.HorizontalAlignment=Enum.HorizontalAlignment.Right gl.Padding=UDim.new(0,8)gl.Parent=gk
-eX(gk,0,12,12,12)
-local function mkBtn2(gm,gn,go)
-local gp=Instance.new"TextButton"gp.Text=""
-gp.Size=UDim2.new(0,110,0,30)gp.BackgroundColor3=fa.Surface2
-gp.BorderSizePixel=0 eU(gp,7)gp.AutoButtonColor=false gp.Parent=gk
-eW(gp,true)
-eL:_tag(gp,"BackgroundColor3","Surface2")
-local gq=Instance.new"TextLabel"gq.BackgroundTransparency=1 gq.Size=UDim2.fromScale(1,1)
-gq.Font=Enum.Font.GothamBold gq.TextSize=12
-eL:_tag(gq,"TextColor3",gn and"Accent"or"Text")
-gq.Text=gm gq.Parent=gp
-gp.MouseButton1Click:Connect(function()go()end)
-return gp
-end
-mkBtn2(ga.CancelText or"Cancel",false,function()close(false)end)
-mkBtn2(ga.ConfirmText or"Confirm",true,function()close(true)end)
-return{Close=function()close(false)end}
-end
-
-
-
-
-function fU.KeySystem(f9,ga)
-ga=ga or{}
-local gb,gc=false,ga.FileName or("kronos_key_"..tostring(e6))
-
-local gd=(f9._folder or"Kronos").."/"..gc..".txt"
-
-if ga.SaveKey~=false then
-pcall(function()
-if readfile and isfile and isfile(gd)then
-local ge=readfile(gd)
-if ge and f9:_checkKey(ga,ge)then gb=true end
-end
-end)
-end
-local ge=Instance.new"TextButton"ge.Text=""ge.AutoButtonColor=false
-ge.Size=UDim2.fromScale(1,1)ge.BackgroundColor3=Color3.fromRGB(0,0,0)
-ge.BackgroundTransparency=1 ge.ZIndex=200 ge.Parent=fc
-eN(ge,eM.Med,{BackgroundTransparency=0.6})
-local gf=Instance.new"CanvasGroup"gf.AnchorPoint=Vector2.new(0.5,0.5)
-gf.Position=UDim2.new(0.5,0,0.5,0)gf.Size=UDim2.fromOffset(300*ac.popupZoom(),210*ac.popupZoom())
-gf.BackgroundColor3=fa.Surface gf.BorderSizePixel=0 gf.GroupTransparency=1
-eU(gf,12)gf.Parent=ge
-eW(gf,true)
-eY(gf,12)
-e_(gf,0.5,40)
-eL:_tag(gf,"BackgroundColor3","Surface")
-local gg=Instance.new"UIScale"gg.Scale=0.94*ac.popupZoom()gg.Parent=gf
-eN(gf,eM.Med,{GroupTransparency=0})
-eN(gg,eM.Spring,{Scale=ac.popupZoom()})
-local gh=Instance.new"TextLabel"gh.BackgroundTransparency=1
-gh.Position=UDim2.new(0,16,0,14)gh.Size=UDim2.new(1,-32,0,20)
-gh.Font=Enum.Font.GothamBold gh.TextSize=15 gh.TextXAlignment=0
-eL:_tag(gh,"TextColor3","Text")gh.Text=ga.Title or"Enter Key"gh.Parent=gf
-local gi=Instance.new"TextLabel"gi.BackgroundTransparency=1
-gi.Position=UDim2.new(0,16,0,36)gi.Size=UDim2.new(1,-32,0,15)
-gi.Font=Enum.Font.Gotham gi.TextSize=11 gh.TextXAlignment=0 gi.TextXAlignment=0
-eL:_tag(gi,"TextColor3","Dim")gi.Text=string.upper(ga.Subtitle or"key required")gi.Parent=gf
-local gj=Instance.new"TextBox"gj.PlaceholderText="Paste key..."
-gj.PlaceholderColor3=fa.Placeholder gj.Text=""
-gj.Font=Enum.Font.Code gj.TextSize=12
-gj.Position=UDim2.new(0,16,0,60)gj.Size=UDim2.new(1,-32,0,32)
-gj.BackgroundColor3=fa.Surface2 gj.BorderSizePixel=0
-eU(gj,8)gj.Parent=gf
-eX(gj,4,4,10,10)
-eW(gj,true)
-eL:_tag(gj,"BackgroundColor3","Surface2")
-eL:_tag(gj,"TextColor3","Text")
-local gk=Instance.new"TextLabel"gk.BackgroundTransparency=1
-gk.Position=UDim2.new(0,16,0,96)gk.Size=UDim2.new(1,-32,0,15)
-gk.Font=Enum.Font.Gotham gk.TextSize=11 gk.TextXAlignment=0 gk.Text=""
-eL:_tag(gk,"TextColor3","Danger")gk.Parent=gf
-local gl=Instance.new"TextButton"gl.Text=""
-gl.Position=UDim2.new(0,16,0,118)gl.Size=UDim2.new(1,-32,0,32)
-gl.BorderSizePixel=0 eU(gl,8)gl.AutoButtonColor=false gl.Parent=gf
-eL:agrad(gl,15)
-local gm=Instance.new"TextLabel"gm.BackgroundTransparency=1 gm.Size=UDim2.fromScale(1,1)
-gm.Font=Enum.Font.GothamBold gm.TextSize=13 gm.Text="UNLOCK"
-eL:oa(gm)gm.Parent=gl
-local gn=Instance.new"UIScale"gn.Parent=gl
-local go
-if ga.GetKeyLink then
-go=Instance.new"TextButton"go.Text=""
-go.Position=UDim2.new(0,16,0,156)go.Size=UDim2.new(1,-32,0,26)
-go.BackgroundTransparency=1 go.Parent=gf
-local gp=Instance.new"TextLabel"gp.BackgroundTransparency=1 gp.Size=UDim2.fromScale(1,1)
-gp.Font=Enum.Font.Gotham gp.TextSize=11 gp.Text="Copy key link"
-eL:_tag(gp,"TextColor3","Dim")gp.Parent=go
-go.MouseButton1Click:Connect(function()
-pcall(function()if setclipboard then setclipboard(ga.GetKeyLink)end end)
-gp.Text="Link copied"
-task.delay(2,function()pcall(function()gp.Text="Copy key link"end)end)
-end)
-end
-local gp
-local function shake()local gq=
-gf.Position.X.Offset
-for gr=1,3 do
-if gp then pcall(function()gp:Cancel()end)end
-gp=eN(gf,TweenInfo.new(0.05,Enum.EasingStyle.Quart,Enum.EasingDirection.Out),{Position=UDim2.new(0.5,8,0.5,0)})
+local gu
+local function shake()local gv=
+gk.Position.X.Offset
+for gw=1,3 do
+if gu then pcall(function()gu:Cancel()end)end
+gu=eN(gk,TweenInfo.new(0.05,Enum.EasingStyle.Quart,Enum.EasingDirection.Out),{Position=UDim2.new(0.5,8,0.5,0)})
 task.wait(0.05)
-if gp then pcall(function()gp:Cancel()end)end
-gp=eN(gf,TweenInfo.new(0.05,Enum.EasingStyle.Quart,Enum.EasingDirection.Out),{Position=UDim2.new(0.5,-8,0.5,0)})
+if gu then pcall(function()gu:Cancel()end)end
+gu=eN(gk,TweenInfo.new(0.05,Enum.EasingStyle.Quart,Enum.EasingDirection.Out),{Position=UDim2.new(0.5,-8,0.5,0)})
 task.wait(0.05)
 end
-if gp then pcall(function()gp:Cancel()end)end
-gp=eN(gf,eM.Fast,{Position=UDim2.new(0.5,0,0.5,0)})
+if gu then pcall(function()gu:Cancel()end)end
+gu=eN(gk,eM.Fast,{Position=UDim2.new(0.5,0,0.5,0)})
 end
 local function unlock()
-gb=true
-if ga.SaveKey~=false then
+gg=true
+if gf.SaveKey~=false then
 pcall(function()
-if makefolder and isfolder and not isfolder(f9._folder or"Kronos")then
-makefolder(f9._folder or"Kronos")
+if makefolder and isfolder and not isfolder(ge._folder or"Kronos")then
+makefolder(ge._folder or"Kronos")
 end
-if writefile then writefile(gd,gj.Text)end
+if writefile then writefile(gi,go.Text)end
 end)
 end
-fadeModal(gf,ge,0.2)
-f9:Notify{Title="Welcome",Content="Key accepted.",Duration=2}
-eO(ga.OnSuccess)
+fadeModal(gk,gj,0.2)
+ge:Notify{Title="Welcome",Content="Key accepted.",Duration=2}
+eO(gf.OnSuccess)
 end
 local function check()
-local gq=gj.Text
-if f9:_checkKey(ga,gq)then unlock()
-else gk.Text="Invalid key."task.spawn(shake)end
+local gv=go.Text
+if ge:_checkKey(gf,gv)then unlock()
+else gp.Text="Invalid key."task.spawn(shake)end
 end
-gl.MouseButton1Down:Connect(function()eN(gn,eM.Hover,{Scale=0.96})end)
-gl.MouseButton1Up:Connect(function()eN(gn,eM.Spring,{Scale=1})end)
-gl.MouseButton1Click:Connect(check)
-gj.FocusLost:Connect(function(gq)if gq then check()end end)
-if gb then pcall(function()ge:Destroy()end)eO(ga.OnSuccess)end
-return{Passed=function()return gb end}
+gq.MouseButton1Down:Connect(function()eN(gs,eM.Hover,{Scale=0.96})end)
+gq.MouseButton1Up:Connect(function()eN(gs,eM.Spring,{Scale=1})end)
+gq.MouseButton1Click:Connect(check)
+go.FocusLost:Connect(function(gv)if gv then check()end end)
+if gg then pcall(function()gj:Destroy()end)eO(gf.OnSuccess)end
+return{Passed=function()return gg end}
 end
 
-function eL._checkKey(f9,ga,gb)
-if ga.Validate and type(ga.Validate)=="function"then
-local gc,gd=pcall(ga.Validate,gb)
-if gc and gd then return true end
+function eL._checkKey(ge,gf,gg)
+if gf.Validate and type(gf.Validate)=="function"then
+local gh,gi=pcall(gf.Validate,gg)
+if gh and gi then return true end
 end
-if ga.Key and gb==ga.Key then return true end
-if ga.Keys and table.find(ga.Keys,gb)then return true end
-if not ga.Key and not ga.Keys and not ga.Validate then return true end
+if gf.Key and gg==gf.Key then return true end
+if gf.Keys and table.find(gf.Keys,gg)then return true end
+if not gf.Key and not gf.Keys and not gf.Validate then return true end
 return false
 end
 
 
-function fU.TogglePalette(f9,ga)
+function fX.TogglePalette(ge,gf)
 if not fk then return end
-local gb=f9._palette
-if not gb then
-local gc=Instance.new"TextButton"gc.Text=""gc.AutoButtonColor=false
-gc.Size=UDim2.fromScale(1,1)gc.BackgroundColor3=Color3.fromRGB(0,0,0)
-gc.BackgroundTransparency=1 gc.Visible=false gc.ZIndex=eJ.Z.Popup gc.Parent=fd
-local gd=Instance.new"Frame"gd.AnchorPoint=Vector2.new(0.5,0)
-gd.Position=UDim2.new(0.5,0,0,90)gd.Size=UDim2.fromOffset(380*ac.popupZoom(),300*ac.popupZoom())
-gd.BackgroundColor3=fa.Bg gd.BorderSizePixel=0
-eU(gd,12)gd.Parent=gc
-eW(gd,true)
-e_(gd,0.5,40)
-eL:_tag(gd,"BackgroundColor3","Bg")
+local gg=ge._palette
+if not gg then
+local gh=Instance.new"TextButton"gh.Text=""gh.AutoButtonColor=false
+gh.Size=UDim2.fromScale(1,1)gh.BackgroundColor3=Color3.fromRGB(0,0,0)
+gh.BackgroundTransparency=1 gh.Visible=false gh.ZIndex=eJ.Z.Popup gh.Parent=fd
+local gi=Instance.new"Frame"gi.AnchorPoint=Vector2.new(0.5,0)
+gi.Position=UDim2.new(0.5,0,0,90)gi.Size=UDim2.fromOffset(380*ac.popupZoom(),300*ac.popupZoom())
+gi.BackgroundColor3=fa.Bg gi.BorderSizePixel=0
+eU(gi,12)gi.Parent=gh
+eW(gi,true)
+e_(gi,0.5,40)
+eL:_tag(gi,"BackgroundColor3","Bg")
 do
-local ge=Instance.new"UIScale"ge.Scale=ac.popupZoom()ge.Parent=gd
+local gj=Instance.new"UIScale"gj.Scale=ac.popupZoom()gj.Parent=gi
 end
-local ge=Instance.new"TextBox"ge.PlaceholderText="Type a command..."
-ge.PlaceholderColor3=fa.Placeholder ge.Text=""
-ge.Font=Enum.Font.Gotham ge.TextSize=14
-ge.Position=UDim2.new(0,14,0,12)ge.Size=UDim2.new(1,-28,0,32)
-ge.BackgroundTransparency=1 ge.ClearTextOnFocus=false ge.Parent=gd
-eL:_tag(ge,"TextColor3","Text")
-local gf=Instance.new"Frame"gf.BorderSizePixel=0
-gf.Position=UDim2.new(0,12,0,50)gf.Size=UDim2.new(1,-24,0,1)
-gf.BackgroundColor3=Color3.fromRGB(255,255,255)
-gf.BackgroundTransparency=0.93 gf.Parent=gd
-local gg=Instance.new"ScrollingFrame"
-gg.Position=UDim2.new(0,8,0,56)gg.Size=UDim2.new(1,-16,1,-64)
-gg.BackgroundTransparency=1 gg.BorderSizePixel=0
-gg.ScrollBarThickness=2 gg.CanvasSize=UDim2.new(0,0,0,0)
-gg.AutomaticCanvasSize=Enum.AutomaticSize.Y gg.Parent=gd
-eL:_tag(gg,"ScrollBarImageColor3","Surface2")
-local gh=Instance.new"UIListLayout"gh.Padding=UDim.new(0,2)
-gh.SortOrder=Enum.SortOrder.LayoutOrder gh.Parent=gg
-gb={ov=gc,card=gd,box=ge,list=gg,open=false,sel=1,rows={}}
-f9._palette=gb
-local function fuzzy(gi,gj)
-gi,gj=string.lower(gi),string.lower(gj)
-if gi==""then return 0 end
-local gk,gl,gm=1,0,0
-for gn=1,#gj do
-if string.sub(gj,gn,gn)==string.sub(gi,gk,gk)then
-gl+=(gm==gn-1)and 2 or 1
-gm,gk=gn,gk+1
-if gk>#gi then return gl-gn*0.01 end
+local gj=Instance.new"TextBox"gj.PlaceholderText="Type a command..."
+gj.PlaceholderColor3=fa.Placeholder gj.Text=""
+gj.Font=Enum.Font.Gotham gj.TextSize=14
+gj.Position=UDim2.new(0,14,0,12)gj.Size=UDim2.new(1,-28,0,32)
+gj.BackgroundTransparency=1 gj.ClearTextOnFocus=false gj.Parent=gi
+eL:_tag(gj,"TextColor3","Text")
+local gk=Instance.new"Frame"gk.BorderSizePixel=0
+gk.Position=UDim2.new(0,12,0,50)gk.Size=UDim2.new(1,-24,0,1)
+gk.BackgroundColor3=Color3.fromRGB(255,255,255)
+gk.BackgroundTransparency=0.93 gk.Parent=gi
+local gl=Instance.new"ScrollingFrame"
+gl.Position=UDim2.new(0,8,0,56)gl.Size=UDim2.new(1,-16,1,-64)
+gl.BackgroundTransparency=1 gl.BorderSizePixel=0
+gl.ScrollBarThickness=2 gl.CanvasSize=UDim2.new(0,0,0,0)
+gl.AutomaticCanvasSize=Enum.AutomaticSize.Y gl.Parent=gi
+eL:_tag(gl,"ScrollBarImageColor3","Surface2")
+local gm=Instance.new"UIListLayout"gm.Padding=UDim.new(0,2)
+gm.SortOrder=Enum.SortOrder.LayoutOrder gm.Parent=gl
+gg={ov=gh,card=gi,box=gj,list=gl,open=false,sel=1,rows={}}
+ge._palette=gg
+local function fuzzy(gn,go)
+gn,go=string.lower(gn),string.lower(go)
+if gn==""then return 0 end
+local gp,gq,gr=1,0,0
+for gs=1,#go do
+if string.sub(go,gs,gs)==string.sub(gn,gp,gp)then
+gq+=(gr==gs-1)and 2 or 1
+gr,gp=gs,gp+1
+if gp>#gn then return gq-gs*0.01 end
 end
 end
 return nil
 end
-local function run(gi)
-if not gi then return end
-gb.ov.Visible,gb.open=false,false
-eJ.close(gb._closeLayer)
-eN(gb.ov,eM.Fast,{BackgroundTransparency=1})
-if gi.go then pcall(gi.go)end
+local function run(gn)
+if not gn then return end
+gg.ov.Visible,gg.open=false,false
+eJ.close(gg._closeLayer)
+eN(gg.ov,eM.Fast,{BackgroundTransparency=1})
+if gn.go then pcall(gn.go)end
 end
-gb._run=run
+gg._run=run
 local function render()
-for gi,gj in ipairs(gb.rows)do pcall(function()gj.frame:Destroy()end)end
-gb.rows={}
-local gi=ge.Text
-local gj={}
-for gk,gl in ipairs(f9._tabs)do
-local gm=fuzzy(gi,gl.Title)
-if gm then table.insert(gj,{label=gl.Title,hint="tab",score=gm+100,
-go=function()f9._activateTab(gl,true)end})end
-for gn,go in ipairs(gl.Elements)do
-if go.Title and go.Frame then
-local gp=fuzzy(gi,gl.Title.." "..go.Title)
-if gp then table.insert(gj,{label=go.Title,hint=gl.Title,score=gp,
-go=go._go})end
+for gn,go in ipairs(gg.rows)do pcall(function()go.frame:Destroy()end)end
+gg.rows={}
+local gn=gj.Text
+local go={}
+for gp,gq in ipairs(ge._tabs)do
+local gr=fuzzy(gn,gq.Title)
+if gr then table.insert(go,{label=gq.Title,hint="tab",score=gr+100,
+go=function()ge._activateTab(gq,true)end})end
+for gs,gt in ipairs(gq.Elements)do
+if gt.Title and gt.Frame then
+local gu=fuzzy(gn,gq.Title.." "..gt.Title)
+if gu then table.insert(go,{label=gt.Title,hint=gq.Title,score=gu,
+go=gt._go})end
 end
 end
 end
-table.sort(gj,function(gk,gl)return gk.score>gl.score end)
-gb.sel=math.clamp(gb.sel,1,math.max(1,math.min(12,#gj)))
-if#gj==0 then
-local gk=Instance.new"TextLabel"gk.BackgroundTransparency=1
-gk.Size=UDim2.new(1,0,0,30)gk.Font=Enum.Font.Gotham
-gk.TextSize=12 gk.Text="No results"gk.Parent=gg
-eL:_tag(gk,"TextColor3","Dim")
-gb.rows={{frame=gk}}
+table.sort(go,function(gp,gq)return gp.score>gq.score end)
+gg.sel=math.clamp(gg.sel,1,math.max(1,math.min(12,#go)))
+if#go==0 then
+local gp=Instance.new"TextLabel"gp.BackgroundTransparency=1
+gp.Size=UDim2.new(1,0,0,30)gp.Font=Enum.Font.Gotham
+gp.TextSize=12 gp.Text="No results"gp.Parent=gl
+eL:_tag(gp,"TextColor3","Dim")
+gg.rows={{frame=gp}}
 return
 end
-for gk=1,math.min(12,#gj)do
-local gl=gj[gk]
-local gm=Instance.new"TextButton"gm.Text=""
-gm.Size=UDim2.new(1,-4,0,32)gm.BorderSizePixel=0
-gm.BackgroundColor3=fa.Surface2
-gm.BackgroundTransparency=(gk==gb.sel)and 0.35 or 1
-eU(gm,7)gm.Parent=gg
-eL:_tag(gm,"BackgroundColor3","Surface2")
-local gn=Instance.new"TextLabel"gn.BackgroundTransparency=1
-gn.Position=UDim2.new(0,10,0,0)gn.Size=UDim2.new(1,-90,1,0)
-gn.Font=Enum.Font.Gotham gn.TextSize=13 gn.TextXAlignment=0
-gn.TextTruncate=Enum.TextTruncate.AtEnd gn.Text=gl.label gn.Parent=gm
-eL:_tag(gn,"TextColor3","Text")
-local go=Instance.new"TextLabel"go.BackgroundTransparency=1
-go.AnchorPoint=Vector2.new(1,0)go.Position=UDim2.new(1,-10,0,0)
-go.Size=UDim2.new(0,70,1,0)go.Font=Enum.Font.Gotham
-go.TextSize=10 go.TextXAlignment=1 gn.TextTruncate=Enum.TextTruncate.AtEnd
-go.Text=gl.hint go.Parent=gm
-eL:_tag(go,"TextColor3","Dim")
-local gp=gk
-gm.MouseButton1Click:Connect(function()run(gl)end)
-gm.MouseEnter:Connect(function()
-gb.sel=gp render()
+for gp=1,math.min(12,#go)do
+local gq=go[gp]
+local gr=Instance.new"TextButton"gr.Text=""
+gr.Size=UDim2.new(1,-4,0,32)gr.BorderSizePixel=0
+gr.BackgroundColor3=fa.Surface2
+gr.BackgroundTransparency=(gp==gg.sel)and 0.35 or 1
+eU(gr,7)gr.Parent=gl
+eL:_tag(gr,"BackgroundColor3","Surface2")
+local gs=Instance.new"TextLabel"gs.BackgroundTransparency=1
+gs.Position=UDim2.new(0,10,0,0)gs.Size=UDim2.new(1,-90,1,0)
+gs.Font=Enum.Font.Gotham gs.TextSize=13 gs.TextXAlignment=0
+gs.TextTruncate=Enum.TextTruncate.AtEnd gs.Text=gq.label gs.Parent=gr
+eL:_tag(gs,"TextColor3","Text")
+local gt=Instance.new"TextLabel"gt.BackgroundTransparency=1
+gt.AnchorPoint=Vector2.new(1,0)gt.Position=UDim2.new(1,-10,0,0)
+gt.Size=UDim2.new(0,70,1,0)gt.Font=Enum.Font.Gotham
+gt.TextSize=10 gt.TextXAlignment=1 gs.TextTruncate=Enum.TextTruncate.AtEnd
+gt.Text=gq.hint gt.Parent=gr
+eL:_tag(gt,"TextColor3","Dim")
+local gu=gp
+gr.MouseButton1Click:Connect(function()run(gq)end)
+gr.MouseEnter:Connect(function()
+gg.sel=gu render()
 end)
-table.insert(gb.rows,{frame=gm,item=gl})
+table.insert(gg.rows,{frame=gr,item=gq})
 end
 end
-gb._render=render
-ge:GetPropertyChangedSignal"Text":Connect(function()gb.sel=1 render()end)
-gc.MouseButton1Click:Connect(function()
-if gb.open then f9:TogglePalette(false)end
+gg._render=render
+gj:GetPropertyChangedSignal"Text":Connect(function()gg.sel=1 render()end)
+gh.MouseButton1Click:Connect(function()
+if gg.open then ge:TogglePalette(false)end
 end)
-f9:Track(e2.InputBegan:Connect(function(gi,gj)
-if not gb.open then return end
-if gi.KeyCode==Enum.KeyCode.Escape then f9:TogglePalette(false)
-elseif gi.KeyCode==Enum.KeyCode.Return or gi.KeyCode==Enum.KeyCode.KeypadEnter then
-local gk=gb.rows[gb.sel]
-run(gk and gk.item)
-elseif gi.KeyCode==Enum.KeyCode.Up then
-gb.sel=math.max(1,gb.sel-1)render()
-elseif gi.KeyCode==Enum.KeyCode.Down then
-gb.sel=math.min(#gb.rows,gb.sel+1)render()
+ge:Track(e2.InputBegan:Connect(function(gn,go)
+if not gg.open then return end
+if gn.KeyCode==Enum.KeyCode.Escape then ge:TogglePalette(false)
+elseif gn.KeyCode==Enum.KeyCode.Return or gn.KeyCode==Enum.KeyCode.KeypadEnter then
+local gp=gg.rows[gg.sel]
+run(gp and gp.item)
+elseif gn.KeyCode==Enum.KeyCode.Up then
+gg.sel=math.max(1,gg.sel-1)render()
+elseif gn.KeyCode==Enum.KeyCode.Down then
+gg.sel=math.min(#gg.rows,gg.sel+1)render()
 end
 end))
-gb._closeLayer=function()
-if gb.open then f9:TogglePalette(false)end
+gg._closeLayer=function()
+if gg.open then ge:TogglePalette(false)end
 end
 end
-local gc=(ga~=nil)and ga or(not gb.open)
-gb.open=gc
-gb.ov.Visible=gc
-if gc then
-eJ.open(gb._closeLayer)
+local gh=(gf~=nil)and gf or(not gg.open)
+gg.open=gh
+gg.ov.Visible=gh
+if gh then
+eJ.open(gg._closeLayer)
 eL:_sfx"Open"
-flyTo(gb.ov,{BackgroundTransparency=0.45})
-gb.card.Position=UDim2.new(0.5,0,0,78)
-flyTo(gb.card,{Position=UDim2.new(0.5,0,0,90)})
-gb.box.Text,gb.sel="",1
-gb._render()
-task.defer(function()pcall(function()gb.box:CaptureFocus()end)end)
+flyTo(gg.ov,{BackgroundTransparency=0.45})
+gg.card.Position=UDim2.new(0.5,0,0,78)
+flyTo(gg.card,{Position=UDim2.new(0.5,0,0,90)})
+gg.box.Text,gg.sel="",1
+gg._render()
+task.defer(function()pcall(function()gg.box:CaptureFocus()end)end)
 else
-eJ.close(gb._closeLayer)
-flyTo(gb.ov,{BackgroundTransparency=1},eM.Fast,function()
-if not gb.open then gb.ov.Visible=false end
+eJ.close(gg._closeLayer)
+flyTo(gg.ov,{BackgroundTransparency=1},eM.Fast,function()
+if not gg.open then gg.ov.Visible=false end
 end)
 end
 end
 
-function fU.SetTheme(f9,ga)eL:SetTheme(ga)end
+function fX.SetTheme(ge,gf)eL:SetTheme(gf)end
 
-function eL.SetAccent(f9,ga)
-if typeof(ga)~="Color3"then return end
-f9.Themes[f9.ThemeName].Accent=ga
-f9:SetTheme(f9.ThemeName)
+function eL.SetAccent(ge,gf)
+if typeof(gf)~="Color3"then return end
+ge.Themes[ge.ThemeName].Accent=gf
+ge:SetTheme(ge.ThemeName)
 end
 
 
@@ -13782,90 +13859,90 @@ eL._roleFromDefault={
 [Enum.Font.Code]="Mono",
 }
 
-function eL._resolveFont(f9,ga)
-local gb,gc=pcall(function()return Enum.Font[ga]end)
-if gb and gc then return gc end
+function eL._resolveFont(ge,gf)
+local gg,gh=pcall(function()return Enum.Font[gf]end)
+if gg and gh then return gh end
 return nil
 end
-function eL._paintFonts(f9,ga)
-local gb=f9.FontPacks[f9.FontPack]
-if not gb then return end
-for gc,gd in ipairs(ga:GetDescendants())do
-if gd:IsA"TextLabel"or gd:IsA"TextButton"or gd:IsA"TextBox"then
-local ge=gd:GetAttribute"KronosFontRole"
-if not ge then
-ge=f9._roleFromDefault[gd.Font]or"Body"
-gd:SetAttribute("KronosFontRole",ge)
-gd:SetAttribute("KronosBaseSize",gd.TextSize)
+function eL._paintFonts(ge,gf)
+local gg=ge.FontPacks[ge.FontPack]
+if not gg then return end
+for gh,gi in ipairs(gf:GetDescendants())do
+if gi:IsA"TextLabel"or gi:IsA"TextButton"or gi:IsA"TextBox"then
+local gj=gi:GetAttribute"KronosFontRole"
+if not gj then
+gj=ge._roleFromDefault[gi.Font]or"Body"
+gi:SetAttribute("KronosFontRole",gj)
+gi:SetAttribute("KronosBaseSize",gi.TextSize)
 end
-local gf=gd:GetAttribute"KronosBaseSize"or gd.TextSize
-local gg=(gb.Bump and gb.Bump[ge])or 0
-local gh=gb[ge]and f9:_resolveFont(gb[ge])or nil
+local gk=gi:GetAttribute"KronosBaseSize"or gi.TextSize
+local gl=(gg.Bump and gg.Bump[gj])or 0
+local gm=gg[gj]and ge:_resolveFont(gg[gj])or nil
 pcall(function()
-if gh then gd.Font=gh end
-gd.TextSize=math.clamp(gf+gg,8,30)
+if gm then gi.Font=gm end
+gi.TextSize=math.clamp(gk+gl,8,30)
 end)
 end
 end
 end
-function eL.SetFontPack(f9,ga)
-if not f9.FontPacks[ga]then return end
-f9.FontPack=ga
-if f9._gui then f9:_paintFonts(f9._gui)end
+function eL.SetFontPack(ge,gf)
+if not ge.FontPacks[gf]then return end
+ge.FontPack=gf
+if ge._gui then ge:_paintFonts(ge._gui)end
 end
-function eL.RefreshFonts(f9)
-if f9._gui then f9:_paintFonts(f9._gui)end
+function eL.RefreshFonts(ge)
+if ge._gui then ge:_paintFonts(ge._gui)end
 end
-function fU.SetAccent(f9,ga)eL:SetAccent(ga)end
-function fU.SetScale(f9,ga)
-fi=math.clamp(tonumber(ga)or 1,0.7,1.25)
+function fX.SetAccent(ge,gf)eL:SetAccent(gf)end
+function fX.SetScale(ge,gf)
+fi=math.clamp(tonumber(gf)or 1,0.7,1.25)
 fj.Scale=baseScale()
 aa._zoomK=fi
-fU:_applyTextScale()
+fX:_applyTextScale()
 end
 
 
-function fU._applyTextScale(f9)
+function fX._applyTextScale(ge)
 aa._textScale=fi
 if fc and fc.Parent then af.paintFonts(fc)end
 end
-function fU.SetCompact(f9,ga)
-ga=ga and true or false
-if ga then
+function fX.SetCompact(ge,gf)
+gf=gf and true or false
+if gf then
 
-if not f9._preCompactSize then
-pcall(function()f9._preCompactSize=fg.Size end)
+if not ge._preCompactSize then
+pcall(function()ge._preCompactSize=fg.Size end)
 end
 eN(fg,eM.Med,{Size=UDim2.fromOffset(560,400)})
 else
-local gb=f9._preCompactSize
-or(f9._zoomed and UDim2.fromOffset(760,520)or UDim2.fromOffset(620,440))
-f9._preCompactSize=nil
-eN(fg,eM.Med,{Size=gb})
+local gg=ge._preCompactSize
+or(ge._zoomed and UDim2.fromOffset(760,520)or UDim2.fromOffset(620,440))
+ge._preCompactSize=nil
+eN(fg,eM.Med,{Size=gg})
 end
-for gb,gc in ipairs(f9._tabs)do
-if gc._pl then gc._pl.Padding=ga and UDim.new(0,4)or UDim.new(0,8)end
+for gg,gh in ipairs(ge._tabs)do
+if gh._pl then gh._pl.Padding=gf and UDim.new(0,4)or UDim.new(0,8)end
 end
 end
-function fU.ToggleAcrylic(f9,ga)
-eL:ToggleAcrylic(ga)
-fg.BackgroundTransparency=(ga and not eL._transparent)and 0.08 or 0
-fP.BackgroundTransparency=(ga and not eL._transparent)and 0.15 or 0
+function fX.ToggleAcrylic(ge,gf)
+eL:ToggleAcrylic(gf)
+fg.BackgroundTransparency=(gf and not eL._transparent)and 0.08 or 0
+fS.BackgroundTransparency=(gf and not eL._transparent)and 0.15 or 0
 end
-function fU.ToggleTransparency(f9,ga)
-eL._transparent=ga and true or false
-local gb=(eL._acrylicOn and not ga)and 0.08 or(ga and 0.25 or 0)
-fg.BackgroundTransparency=gb
-fP.BackgroundTransparency=ga and 0.4 or((eL._acrylicOn and not ga)and 0.15 or 0)
+function fX.ToggleTransparency(ge,gf)
+eL._transparent=gf and true or false
+local gg=(eL._acrylicOn and not gf)and 0.08 or(gf and 0.25 or 0)
+fg.BackgroundTransparency=gg
+fS.BackgroundTransparency=gf and 0.4 or((eL._acrylicOn and not gf)and 0.15 or 0)
 end
 
 
-function fU.SetBackdrop(f9,ga)
-ga=ga and true or false
-ff=ga
-f9._backdrop=ga
-if ga then
-if f9._visible and not f9._mini then
+function fX.SetBackdrop(ge,gf)
+gf=gf and true or false
+ff=gf
+ge._backdrop=gf
+if gf then
+if ge._visible and not ge._mini then
 fe.Visible=true
 eN(fe,eM.Med,{BackgroundTransparency=0.5})
 end
@@ -13880,418 +13957,418 @@ end
 
 
 
-local f9=Instance.new"TextButton"
-f9.Name=ad.GetStealthName()
-f9.Text=""f9.AutoButtonColor=false
-f9.Size=UDim2.fromScale(1,1)
-f9.BackgroundColor3=Color3.fromRGB(0,0,0)
-f9.BackgroundTransparency=1 f9.BorderSizePixel=0
-f9.Visible=false f9.Parent=fN
-eU(f9,10)
+local ge=Instance.new"TextButton"
+ge.Name=ad.GetStealthName()
+ge.Text=""ge.AutoButtonColor=false
+ge.Size=UDim2.fromScale(1,1)
+ge.BackgroundColor3=Color3.fromRGB(0,0,0)
+ge.BackgroundTransparency=1 ge.BorderSizePixel=0
+ge.Visible=false ge.Parent=fQ
+eU(ge,10)
 local function slideCloseAll()
-if fU._inboxPanel and fU._inboxPanel.open then fU:ToggleInbox(false)end
-if fU._kbPanel and fU._kbPanel.open then fU:ToggleKeybindList(false)end
+if fX._inboxPanel and fX._inboxPanel.open then fX:ToggleInbox(false)end
+if fX._kbPanel and fX._kbPanel.open then fX:ToggleKeybindList(false)end
 end
-f9.MouseButton1Click:Connect(function()slideCloseAll()end)
-local function slideShadeSet(ga)
-if ga then
+ge.MouseButton1Click:Connect(function()slideCloseAll()end)
+local function slideShadeSet(gf)
+if gf then
 eJ.open(slideCloseAll)
-f9.Visible=true
-eN(f9,eM.Med,{BackgroundTransparency=0.5})
+ge.Visible=true
+eN(ge,eM.Med,{BackgroundTransparency=0.5})
 else
 eJ.close(slideCloseAll)
-eN(f9,eM.Fast,{BackgroundTransparency=1})
+eN(ge,eM.Fast,{BackgroundTransparency=1})
 task.delay(0.18,function()
-local gb=fU._inboxPanel and fU._inboxPanel.open
-local gc=fU._kbPanel and fU._kbPanel.open
-if not gb and not gc then f9.Visible=false end
+local gg=fX._inboxPanel and fX._inboxPanel.open
+local gh=fX._kbPanel and fX._kbPanel.open
+if not gg and not gh then ge.Visible=false end
 end)
 end
 end
 
 
-function fU.ToggleInbox(ga,gb)
+function fX.ToggleInbox(gf,gg)
 if not fk then return end
-local gc=ga._inboxPanel
-if not gc then
-local gd=Instance.new"Frame"gd.AnchorPoint=Vector2.new(1,0)
-gd.Position=UDim2.new(1,12,0,0)gd.Size=UDim2.new(0,230,1,0)
-gd.BackgroundColor3=fa.Bg gd.BorderSizePixel=0
-eU(gd,10)gd.Parent=fN gd.Visible=false
-eW(gd,true)
-eL:_tag(gd,"BackgroundColor3","Bg")
-local ge=Instance.new"TextLabel"ge.BackgroundTransparency=1
-ge.Position=UDim2.new(0,12,0,10)ge.Size=UDim2.new(1,-70,0,18)
-ge.Font=Enum.Font.GothamBold ge.TextSize=11 ge.TextXAlignment=0
-ge.Text="INBOX"ge.Parent=gd
-eL:_tag(ge,"TextColor3","Dim")
-local gf=Instance.new"TextButton"gf.Text=""
-gf.AnchorPoint=Vector2.new(1,0)gf.Position=UDim2.new(1,-10,0,10)
-gf.Size=UDim2.new(0,52,0,18)gf.BackgroundColor3=fa.Surface2
-gf.BorderSizePixel=0 eU(gf,6)gf.AutoButtonColor=false gf.Parent=gd
-eW(gf,true)
-eL:_tag(gf,"BackgroundColor3","Surface2")
-local gg=Instance.new"TextLabel"gg.BackgroundTransparency=1
-gg.Size=UDim2.fromScale(1,1)gg.Font=Enum.Font.GothamBold
-gg.TextSize=10 gg.Text="CLEAR"gg.Parent=gf
-eL:_tag(gg,"TextColor3","Dim")
-local gh=Instance.new"ScrollingFrame"
-gh.Position=UDim2.new(0,8,0,34)gh.Size=UDim2.new(1,-16,1,-42)
-gh.BackgroundTransparency=1 gh.BorderSizePixel=0
-gh.ScrollBarThickness=2 gh.CanvasSize=UDim2.new(0,0,0,0)
-gh.AutomaticCanvasSize=Enum.AutomaticSize.Y gh.Parent=gd
-eL:_tag(gh,"ScrollBarImageColor3","Surface2")
-local gi=Instance.new"UIListLayout"gi.Padding=UDim.new(0,4)
-gi.SortOrder=Enum.SortOrder.LayoutOrder gi.Parent=gh
-gc={panel=gd,list=gh,open=false}
-ga._inboxPanel=gc
+local gh=gf._inboxPanel
+if not gh then
+local gi=Instance.new"Frame"gi.AnchorPoint=Vector2.new(1,0)
+gi.Position=UDim2.new(1,12,0,0)gi.Size=UDim2.new(0,230,1,0)
+gi.BackgroundColor3=fa.Bg gi.BorderSizePixel=0
+eU(gi,10)gi.Parent=fQ gi.Visible=false
+eW(gi,true)
+eL:_tag(gi,"BackgroundColor3","Bg")
+local gj=Instance.new"TextLabel"gj.BackgroundTransparency=1
+gj.Position=UDim2.new(0,12,0,10)gj.Size=UDim2.new(1,-70,0,18)
+gj.Font=Enum.Font.GothamBold gj.TextSize=11 gj.TextXAlignment=0
+gj.Text="INBOX"gj.Parent=gi
+eL:_tag(gj,"TextColor3","Dim")
+local gk=Instance.new"TextButton"gk.Text=""
+gk.AnchorPoint=Vector2.new(1,0)gk.Position=UDim2.new(1,-10,0,10)
+gk.Size=UDim2.new(0,52,0,18)gk.BackgroundColor3=fa.Surface2
+gk.BorderSizePixel=0 eU(gk,6)gk.AutoButtonColor=false gk.Parent=gi
+eW(gk,true)
+eL:_tag(gk,"BackgroundColor3","Surface2")
+local gl=Instance.new"TextLabel"gl.BackgroundTransparency=1
+gl.Size=UDim2.fromScale(1,1)gl.Font=Enum.Font.GothamBold
+gl.TextSize=10 gl.Text="CLEAR"gl.Parent=gk
+eL:_tag(gl,"TextColor3","Dim")
+local gm=Instance.new"ScrollingFrame"
+gm.Position=UDim2.new(0,8,0,34)gm.Size=UDim2.new(1,-16,1,-42)
+gm.BackgroundTransparency=1 gm.BorderSizePixel=0
+gm.ScrollBarThickness=2 gm.CanvasSize=UDim2.new(0,0,0,0)
+gm.AutomaticCanvasSize=Enum.AutomaticSize.Y gm.Parent=gi
+eL:_tag(gm,"ScrollBarImageColor3","Surface2")
+local gn=Instance.new"UIListLayout"gn.Padding=UDim.new(0,4)
+gn.SortOrder=Enum.SortOrder.LayoutOrder gn.Parent=gm
+gh={panel=gi,list=gm,open=false}
+gf._inboxPanel=gh
 local function refresh()
-for gj,gk in ipairs(gh:GetChildren())do
+for go,gp in ipairs(gm:GetChildren())do
 
 
-if gk:IsA"Frame"or gk:IsA"TextLabel"then pcall(function()gk:Destroy()end)end
+if gp:IsA"Frame"or gp:IsA"TextLabel"then pcall(function()gp:Destroy()end)end
 end
 if#eL._inbox==0 then
-local gj=Instance.new"TextLabel"gj.BackgroundTransparency=1
-gj.Size=UDim2.new(1,0,0,24)gj.Font=Enum.Font.Gotham
-gj.TextSize=11 gj.Text="All caught up."gj.Parent=gh
-eL:_tag(gj,"TextColor3","Dim")
+local go=Instance.new"TextLabel"go.BackgroundTransparency=1
+go.Size=UDim2.new(1,0,0,24)go.Font=Enum.Font.Gotham
+go.TextSize=11 go.Text="All caught up."go.Parent=gm
+eL:_tag(go,"TextColor3","Dim")
 return
 end
-for gj,gk in ipairs(eL._inbox)do
-local gl=Instance.new"Frame"
-gl.Size=UDim2.new(1,-2,0,44)gl.BackgroundColor3=fa.Surface2
-gl.BackgroundTransparency=0.35 gl.BorderSizePixel=0
-eU(gl,7)gl.Parent=gh
-eL:_tag(gl,"BackgroundColor3","Surface2")
-local gm=Instance.new"TextLabel"gm.BackgroundTransparency=1
-gm.Position=UDim2.new(0,8,0,4)gm.Size=UDim2.new(1,-52,0,15)
-gm.Font=Enum.Font.GothamBold gm.TextSize=11 gm.TextXAlignment=0
-gm.TextTruncate=Enum.TextTruncate.AtEnd gm.Text=gk.Title gm.Parent=gl
-eL:_tag(gm,"TextColor3","Text")
-local gn=Instance.new"TextLabel"gn.BackgroundTransparency=1
-gn.Position=UDim2.new(0,8,0,20)gn.Size=UDim2.new(1,-52,0,18)
-gn.Font=Enum.Font.Gotham gn.TextSize=11 gn.TextXAlignment=0
-gn.TextTruncate=Enum.TextTruncate.AtEnd gn.Text=gk.Content gn.Parent=gl
-eL:_tag(gn,"TextColor3","Dim")
-local go=Instance.new"TextLabel"go.BackgroundTransparency=1
-go.AnchorPoint=Vector2.new(1,0)go.Position=UDim2.new(1,-8,0,4)
-go.Size=UDim2.new(0,40,0,14)go.Font=Enum.Font.Code
-go.TextSize=10 go.TextXAlignment=1 go.Text=gk.At go.Parent=gl
-eL:_tag(go,"TextColor3","Dim")
+for go,gp in ipairs(eL._inbox)do
+local gq=Instance.new"Frame"
+gq.Size=UDim2.new(1,-2,0,44)gq.BackgroundColor3=fa.Surface2
+gq.BackgroundTransparency=0.35 gq.BorderSizePixel=0
+eU(gq,7)gq.Parent=gm
+eL:_tag(gq,"BackgroundColor3","Surface2")
+local gr=Instance.new"TextLabel"gr.BackgroundTransparency=1
+gr.Position=UDim2.new(0,8,0,4)gr.Size=UDim2.new(1,-52,0,15)
+gr.Font=Enum.Font.GothamBold gr.TextSize=11 gr.TextXAlignment=0
+gr.TextTruncate=Enum.TextTruncate.AtEnd gr.Text=gp.Title gr.Parent=gq
+eL:_tag(gr,"TextColor3","Text")
+local gs=Instance.new"TextLabel"gs.BackgroundTransparency=1
+gs.Position=UDim2.new(0,8,0,20)gs.Size=UDim2.new(1,-52,0,18)
+gs.Font=Enum.Font.Gotham gs.TextSize=11 gs.TextXAlignment=0
+gs.TextTruncate=Enum.TextTruncate.AtEnd gs.Text=gp.Content gs.Parent=gq
+eL:_tag(gs,"TextColor3","Dim")
+local gt=Instance.new"TextLabel"gt.BackgroundTransparency=1
+gt.AnchorPoint=Vector2.new(1,0)gt.Position=UDim2.new(1,-8,0,4)
+gt.Size=UDim2.new(0,40,0,14)gt.Font=Enum.Font.Code
+gt.TextSize=10 gt.TextXAlignment=1 gt.Text=gp.At gt.Parent=gq
+eL:_tag(gt,"TextColor3","Dim")
 end
 end
-gc.refresh=refresh
-gf.MouseButton1Click:Connect(function()
+gh.refresh=refresh
+gk.MouseButton1Click:Connect(function()
 eL._inbox={}
 refresh()
-pcall(function()fM.Visible=false end)
+pcall(function()fP.Visible=false end)
 end)
 end
-local gd=(gb~=nil)and gb or(not gc.open)
-gc.open=gd
-if gd then
-if ga._kbPanel and ga._kbPanel.open then ga:ToggleKeybindList(false)end
+local gi=(gg~=nil)and gg or(not gh.open)
+gh.open=gi
+if gi then
+if gf._kbPanel and gf._kbPanel.open then gf:ToggleKeybindList(false)end
 slideShadeSet(true)
-gc.refresh()
-gc.panel.Visible=true
-pcall(function()fM.Visible=false end)
-flyTo(gc.panel,{Position=UDim2.new(1,0,0,0)})
+gh.refresh()
+gh.panel.Visible=true
+pcall(function()fP.Visible=false end)
+flyTo(gh.panel,{Position=UDim2.new(1,0,0,0)})
 else
-flyTo(gc.panel,{Position=UDim2.new(1,12,0,0)},nil,function()
-if not gc.open then gc.panel.Visible=false end
+flyTo(gh.panel,{Position=UDim2.new(1,12,0,0)},nil,function()
+if not gh.open then gh.panel.Visible=false end
 end)
-slideShadeSet(ga._kbPanel~=nil and ga._kbPanel.open==true)
+slideShadeSet(gf._kbPanel~=nil and gf._kbPanel.open==true)
 end
 end
 
 
-function fU.ToggleKeybindList(ga,gb)
+function fX.ToggleKeybindList(gf,gg)
 if not fk then return end
-local gc=ga._kbPanel
-if not gc then
-local gd=Instance.new"Frame"gd.AnchorPoint=Vector2.new(1,0)
-gd.Position=UDim2.new(1,12,0,0)gd.Size=UDim2.new(0,210,1,0)
-gd.BackgroundColor3=fa.Bg gd.BorderSizePixel=0
-eU(gd,10)gd.Parent=fN gd.Visible=false
-eW(gd,true)
-eL:_tag(gd,"BackgroundColor3","Bg")
-local ge=Instance.new"TextLabel"ge.BackgroundTransparency=1
-ge.Position=UDim2.new(0,12,0,10)ge.Size=UDim2.new(1,-24,0,18)
-ge.Font=Enum.Font.GothamBold ge.TextSize=11 ge.TextXAlignment=0
-ge.Text="KEYBINDS"ge.Parent=gd
-eL:_tag(ge,"TextColor3","Dim")
-local gf=Instance.new"ScrollingFrame"
-gf.Position=UDim2.new(0,8,0,34)gf.Size=UDim2.new(1,-16,1,-42)
-gf.BackgroundTransparency=1 gf.BorderSizePixel=0
-gf.ScrollBarThickness=2 gf.CanvasSize=UDim2.new(0,0,0,0)
-gf.AutomaticCanvasSize=Enum.AutomaticSize.Y gf.Parent=gd
-eL:_tag(gf,"ScrollBarImageColor3","Surface2")
-local gg=Instance.new"UIListLayout"gg.Padding=UDim.new(0,4)
-gg.SortOrder=Enum.SortOrder.LayoutOrder gg.Parent=gf
-gc={panel=gd,list=gf,open=false}
-ga._kbPanel=gc
+local gh=gf._kbPanel
+if not gh then
+local gi=Instance.new"Frame"gi.AnchorPoint=Vector2.new(1,0)
+gi.Position=UDim2.new(1,12,0,0)gi.Size=UDim2.new(0,210,1,0)
+gi.BackgroundColor3=fa.Bg gi.BorderSizePixel=0
+eU(gi,10)gi.Parent=fQ gi.Visible=false
+eW(gi,true)
+eL:_tag(gi,"BackgroundColor3","Bg")
+local gj=Instance.new"TextLabel"gj.BackgroundTransparency=1
+gj.Position=UDim2.new(0,12,0,10)gj.Size=UDim2.new(1,-24,0,18)
+gj.Font=Enum.Font.GothamBold gj.TextSize=11 gj.TextXAlignment=0
+gj.Text="KEYBINDS"gj.Parent=gi
+eL:_tag(gj,"TextColor3","Dim")
+local gk=Instance.new"ScrollingFrame"
+gk.Position=UDim2.new(0,8,0,34)gk.Size=UDim2.new(1,-16,1,-42)
+gk.BackgroundTransparency=1 gk.BorderSizePixel=0
+gk.ScrollBarThickness=2 gk.CanvasSize=UDim2.new(0,0,0,0)
+gk.AutomaticCanvasSize=Enum.AutomaticSize.Y gk.Parent=gi
+eL:_tag(gk,"ScrollBarImageColor3","Surface2")
+local gl=Instance.new"UIListLayout"gl.Padding=UDim.new(0,4)
+gl.SortOrder=Enum.SortOrder.LayoutOrder gl.Parent=gk
+gh={panel=gi,list=gk,open=false}
+gf._kbPanel=gh
 local function refresh()
-for gh,gi in ipairs(gf:GetChildren())do
-if gi:IsA"TextButton"then pcall(function()gi:Destroy()end)end
+for gm,gn in ipairs(gk:GetChildren())do
+if gn:IsA"TextButton"then pcall(function()gn:Destroy()end)end
 end
-if#ga._keybinds==0 then
-local gh=Instance.new"TextLabel"gh.BackgroundTransparency=1
-gh.Size=UDim2.new(1,0,0,24)gh.Font=Enum.Font.Gotham
-gh.TextSize=11 gh.Text="No keybinds yet"gh.Parent=gf
-eL:_tag(gh,"TextColor3","Dim")
+if#gf._keybinds==0 then
+local gm=Instance.new"TextLabel"gm.BackgroundTransparency=1
+gm.Size=UDim2.new(1,0,0,24)gm.Font=Enum.Font.Gotham
+gm.TextSize=11 gm.Text="No keybinds yet"gm.Parent=gk
+eL:_tag(gm,"TextColor3","Dim")
 return
 end
-for gh,gi in ipairs(ga._keybinds)do
-local gj=Instance.new"TextButton"gj.Text=""
-gj.Size=UDim2.new(1,-2,0,30)gj.BackgroundColor3=fa.Surface2
-gj.BackgroundTransparency=0.35 gj.BorderSizePixel=0
-eU(gj,7)gj.Parent=gf
-eL:_tag(gj,"BackgroundColor3","Surface2")
-local gk=Instance.new"TextLabel"gk.BackgroundTransparency=1
-gk.Position=UDim2.new(0,8,0,0)gk.Size=UDim2.new(1,-70,1,0)
-gk.Font=Enum.Font.Gotham gk.TextSize=11 gk.TextXAlignment=0
-gk.TextTruncate=Enum.TextTruncate.AtEnd gk.Text=gi.Title gk.Parent=gj
-eL:_tag(gk,"TextColor3","Text")
-local gl=Instance.new"TextLabel"gl.BackgroundTransparency=1
-gl.AnchorPoint=Vector2.new(1,0)gl.Position=UDim2.new(1,-8,0,0)
-gl.Size=UDim2.new(0,56,1,0)gl.Font=Enum.Font.Code
-gl.TextSize=10 gl.TextXAlignment=1 gl.Text=gi.GetName()gl.Parent=gj
-eL:_tag(gl,"TextColor3","Dim")
-gj.MouseButton1Click:Connect(function()
-eL:_sfx"Click"gi.Rebind()
-task.delay(0.2,function()pcall(function()gl.Text=gi.GetName()end)end)
+for gm,gn in ipairs(gf._keybinds)do
+local go=Instance.new"TextButton"go.Text=""
+go.Size=UDim2.new(1,-2,0,30)go.BackgroundColor3=fa.Surface2
+go.BackgroundTransparency=0.35 go.BorderSizePixel=0
+eU(go,7)go.Parent=gk
+eL:_tag(go,"BackgroundColor3","Surface2")
+local gp=Instance.new"TextLabel"gp.BackgroundTransparency=1
+gp.Position=UDim2.new(0,8,0,0)gp.Size=UDim2.new(1,-70,1,0)
+gp.Font=Enum.Font.Gotham gp.TextSize=11 gp.TextXAlignment=0
+gp.TextTruncate=Enum.TextTruncate.AtEnd gp.Text=gn.Title gp.Parent=go
+eL:_tag(gp,"TextColor3","Text")
+local gq=Instance.new"TextLabel"gq.BackgroundTransparency=1
+gq.AnchorPoint=Vector2.new(1,0)gq.Position=UDim2.new(1,-8,0,0)
+gq.Size=UDim2.new(0,56,1,0)gq.Font=Enum.Font.Code
+gq.TextSize=10 gq.TextXAlignment=1 gq.Text=gn.GetName()gq.Parent=go
+eL:_tag(gq,"TextColor3","Dim")
+go.MouseButton1Click:Connect(function()
+eL:_sfx"Click"gn.Rebind()
+task.delay(0.2,function()pcall(function()gq.Text=gn.GetName()end)end)
 end)
 end
 end
-gc.refresh=refresh
-ga._kbPanelRefresh=refresh
+gh.refresh=refresh
+gf._kbPanelRefresh=refresh
 end
-local gd=(gb~=nil)and gb or(not gc.open)
-gc.open=gd
-if gd then
-if ga._inboxPanel and ga._inboxPanel.open then ga:ToggleInbox(false)end
+local gi=(gg~=nil)and gg or(not gh.open)
+gh.open=gi
+if gi then
+if gf._inboxPanel and gf._inboxPanel.open then gf:ToggleInbox(false)end
 slideShadeSet(true)
-gc.refresh()
-gc.panel.Visible=true
-flyTo(gc.panel,{Position=UDim2.new(1,0,0,0)})
+gh.refresh()
+gh.panel.Visible=true
+flyTo(gh.panel,{Position=UDim2.new(1,0,0,0)})
 else
-flyTo(gc.panel,{Position=UDim2.new(1,12,0,0)},nil,function()
-if not gc.open then gc.panel.Visible=false end
+flyTo(gh.panel,{Position=UDim2.new(1,12,0,0)},nil,function()
+if not gh.open then gh.panel.Visible=false end
 end)
-slideShadeSet(ga._inboxPanel~=nil and ga._inboxPanel.open==true)
+slideShadeSet(gf._inboxPanel~=nil and gf._inboxPanel.open==true)
 end
 end
 
 
-function fU.Onboarding(ga,gb)
-gb=gb or{}
+function fX.Onboarding(gf,gg)
+gg=gg or{}
 if not fk then
-table.insert(fm,function()ga:Onboarding(gb)end)
+table.insert(fm,function()gf:Onboarding(gg)end)
 return
 end
-local gc=gb.Steps or gb.Pages or{{Title="Welcome",Content="This is Kronos."}}
-local gd=1
-local ge=Instance.new"TextButton"ge.Text=""ge.AutoButtonColor=false
-ge.Size=UDim2.fromScale(1,1)ge.BackgroundColor3=Color3.fromRGB(0,0,0)
-ge.BackgroundTransparency=1 ge.ZIndex=180 ge.Parent=fc
-eN(ge,eM.Med,{BackgroundTransparency=0.6})
-local gf=Instance.new"CanvasGroup"gf.AnchorPoint=Vector2.new(0.5,0.5)
-gf.Position=UDim2.new(0.5,0,0.5,0)gf.Size=UDim2.fromOffset(340,220)
-gf.BackgroundColor3=fa.Surface gf.BorderSizePixel=0 gf.GroupTransparency=1
-eU(gf,12)gf.Parent=ge
-eW(gf,true)
-eY(gf,12)
-e_(gf,0.5,40)
-eL:_tag(gf,"BackgroundColor3","Surface")
-local gg=Instance.new"UIScale"gg.Scale=0.94 gg.Parent=gf
-eN(gf,eM.Med,{GroupTransparency=0})
-eN(gg,eM.Spring,{Scale=1})
-local gh=Instance.new"TextLabel"gh.BackgroundTransparency=1
-gh.Position=UDim2.new(0,20,0,18)gh.Size=UDim2.new(1,-40,0,24)
-gh.Font=Enum.Font.GothamBold gh.TextSize=17 gh.TextXAlignment=0 gh.Parent=gf
-eL:_tag(gh,"TextColor3","Text")
-local gi=Instance.new"TextLabel"gi.BackgroundTransparency=1
-gi.Position=UDim2.new(0,20,0,48)gi.Size=UDim2.new(1,-40,0,90)
-gi.Font=Enum.Font.Gotham gi.TextSize=13 gh.TextXAlignment=0
-gi.TextXAlignment=0 gi.TextYAlignment=0 gi.TextWrapped=true gi.Parent=gf
-eL:_tag(gi,"TextColor3","Dim")
-local gj=Instance.new"Frame"gj.BackgroundTransparency=1
-gj.AnchorPoint=Vector2.new(0,1)gj.Position=UDim2.new(0,20,1,-52)
-gj.Size=UDim2.new(0,120,0,10)gj.Parent=gf
-local gk=Instance.new"UIListLayout"gk.FillDirection=Enum.FillDirection.Horizontal
-gk.Padding=UDim.new(0,6)gk.Parent=gj
-local gl={}
-for gm=1,#gc do
-local gn=Instance.new"Frame"gn.Size=UDim2.fromOffset(8,8)
-gn.BorderSizePixel=0 eU(gn,99)gn.Parent=gj
-eL:_tag(gn,"BackgroundColor3","Surface2")
-gl[gm]=gn
+local gh=gg.Steps or gg.Pages or{{Title="Welcome",Content="This is Kronos."}}
+local gi=1
+local gj=Instance.new"TextButton"gj.Text=""gj.AutoButtonColor=false
+gj.Size=UDim2.fromScale(1,1)gj.BackgroundColor3=Color3.fromRGB(0,0,0)
+gj.BackgroundTransparency=1 gj.ZIndex=180 gj.Parent=fc
+eN(gj,eM.Med,{BackgroundTransparency=0.6})
+local gk=Instance.new"CanvasGroup"gk.AnchorPoint=Vector2.new(0.5,0.5)
+gk.Position=UDim2.new(0.5,0,0.5,0)gk.Size=UDim2.fromOffset(340,220)
+gk.BackgroundColor3=fa.Surface gk.BorderSizePixel=0 gk.GroupTransparency=1
+eU(gk,12)gk.Parent=gj
+eW(gk,true)
+eY(gk,12)
+e_(gk,0.5,40)
+eL:_tag(gk,"BackgroundColor3","Surface")
+local gl=Instance.new"UIScale"gl.Scale=0.94 gl.Parent=gk
+eN(gk,eM.Med,{GroupTransparency=0})
+eN(gl,eM.Spring,{Scale=1})
+local gm=Instance.new"TextLabel"gm.BackgroundTransparency=1
+gm.Position=UDim2.new(0,20,0,18)gm.Size=UDim2.new(1,-40,0,24)
+gm.Font=Enum.Font.GothamBold gm.TextSize=17 gm.TextXAlignment=0 gm.Parent=gk
+eL:_tag(gm,"TextColor3","Text")
+local gn=Instance.new"TextLabel"gn.BackgroundTransparency=1
+gn.Position=UDim2.new(0,20,0,48)gn.Size=UDim2.new(1,-40,0,90)
+gn.Font=Enum.Font.Gotham gn.TextSize=13 gm.TextXAlignment=0
+gn.TextXAlignment=0 gn.TextYAlignment=0 gn.TextWrapped=true gn.Parent=gk
+eL:_tag(gn,"TextColor3","Dim")
+local go=Instance.new"Frame"go.BackgroundTransparency=1
+go.AnchorPoint=Vector2.new(0,1)go.Position=UDim2.new(0,20,1,-52)
+go.Size=UDim2.new(0,120,0,10)go.Parent=gk
+local gp=Instance.new"UIListLayout"gp.FillDirection=Enum.FillDirection.Horizontal
+gp.Padding=UDim.new(0,6)gp.Parent=go
+local gq={}
+for gr=1,#gh do
+local gs=Instance.new"Frame"gs.Size=UDim2.fromOffset(8,8)
+gs.BorderSizePixel=0 eU(gs,99)gs.Parent=go
+eL:_tag(gs,"BackgroundColor3","Surface2")
+gq[gr]=gs
 end
-local gm,gn,go
+local gr,gs,gt
 local function paint()
-gh.Text,gi.Text=gc[gd].Title or"",gc[gd].Content or""
-for gp,gq in ipairs(gl)do
-if gp==gd then eL:_tag(gq,"BackgroundColor3","Accent")
-else eL:_tag(gq,"BackgroundColor3","Surface2")end
+gm.Text,gn.Text=gh[gi].Title or"",gh[gi].Content or""
+for gu,gv in ipairs(gq)do
+if gu==gi then eL:_tag(gv,"BackgroundColor3","Accent")
+else eL:_tag(gv,"BackgroundColor3","Surface2")end
 end
-gm.Visible=gd>1
-go.Text=(gd==#gc)and"FINISH"or"NEXT"
-gh.Position=UDim2.new(0,26,0,18)
-eN(gh,eM.Fast,{Position=UDim2.new(0,20,0,18)})
+gr.Visible=gi>1
+gt.Text=(gi==#gh)and"FINISH"or"NEXT"
+gm.Position=UDim2.new(0,26,0,18)
+eN(gm,eM.Fast,{Position=UDim2.new(0,20,0,18)})
 end
-local gp=Instance.new"Frame"gp.BackgroundTransparency=1
-gp.AnchorPoint=Vector2.new(0,1)gp.Position=UDim2.new(0,0,1,-12)
-gp.Size=UDim2.new(1,0,0,34)gp.Parent=gf
-local gq=Instance.new"UIListLayout"gq.FillDirection=Enum.FillDirection.Horizontal
-gq.HorizontalAlignment=Enum.HorizontalAlignment.Right gq.Padding=UDim.new(0,8)gq.Parent=gp
-eX(gp,0,0,12,12)
-gm=Instance.new"TextButton"gm.Text=""
-gm.Size=UDim2.new(0,80,0,30)gm.BackgroundTransparency=1 gm.Parent=gp
-local gr=Instance.new"TextLabel"gr.BackgroundTransparency=1
-gr.Size=UDim2.fromScale(1,1)gr.Font=Enum.Font.GothamBold
-gr.TextSize=12 gr.Text="BACK"gr.Parent=gm
-eL:_tag(gr,"TextColor3","Dim")
-local gs=Instance.new"TextButton"gs.Text=""
-gs.Size=UDim2.new(0,80,0,30)gs.BackgroundTransparency=1 gs.Parent=gp
-local gt=Instance.new"TextLabel"gt.BackgroundTransparency=1
-gt.Size=UDim2.fromScale(1,1)gt.Font=Enum.Font.Gotham
-gt.TextSize=12 gt.Text="Skip"gt.Parent=gs
-eL:_tag(gt,"TextColor3","Dim")
-gn=Instance.new"TextButton"gn.Text=""
-gn.Size=UDim2.new(0,96,0,30)gn.BorderSizePixel=0
-eU(gn,7)gn.AutoButtonColor=false gn.Parent=gp
-eL:agrad(gn,15)
-go=Instance.new"TextLabel"go.BackgroundTransparency=1
-go.Size=UDim2.fromScale(1,1)go.Font=Enum.Font.GothamBold
-go.TextSize=12
-go.Text="NEXT"go.Parent=gn
-eL:oa(go)
+local gu=Instance.new"Frame"gu.BackgroundTransparency=1
+gu.AnchorPoint=Vector2.new(0,1)gu.Position=UDim2.new(0,0,1,-12)
+gu.Size=UDim2.new(1,0,0,34)gu.Parent=gk
+local gv=Instance.new"UIListLayout"gv.FillDirection=Enum.FillDirection.Horizontal
+gv.HorizontalAlignment=Enum.HorizontalAlignment.Right gv.Padding=UDim.new(0,8)gv.Parent=gu
+eX(gu,0,0,12,12)
+gr=Instance.new"TextButton"gr.Text=""
+gr.Size=UDim2.new(0,80,0,30)gr.BackgroundTransparency=1 gr.Parent=gu
+local gw=Instance.new"TextLabel"gw.BackgroundTransparency=1
+gw.Size=UDim2.fromScale(1,1)gw.Font=Enum.Font.GothamBold
+gw.TextSize=12 gw.Text="BACK"gw.Parent=gr
+eL:_tag(gw,"TextColor3","Dim")
+local gx=Instance.new"TextButton"gx.Text=""
+gx.Size=UDim2.new(0,80,0,30)gx.BackgroundTransparency=1 gx.Parent=gu
+local gy=Instance.new"TextLabel"gy.BackgroundTransparency=1
+gy.Size=UDim2.fromScale(1,1)gy.Font=Enum.Font.Gotham
+gy.TextSize=12 gy.Text="Skip"gy.Parent=gx
+eL:_tag(gy,"TextColor3","Dim")
+gs=Instance.new"TextButton"gs.Text=""
+gs.Size=UDim2.new(0,96,0,30)gs.BorderSizePixel=0
+eU(gs,7)gs.AutoButtonColor=false gs.Parent=gu
+eL:agrad(gs,15)
+gt=Instance.new"TextLabel"gt.BackgroundTransparency=1
+gt.Size=UDim2.fromScale(1,1)gt.Font=Enum.Font.GothamBold
+gt.TextSize=12
+gt.Text="NEXT"gt.Parent=gs
+eL:oa(gt)
 local function close()
-fadeModal(gf,ge)
-eO(gb.OnFinish)
+fadeModal(gk,gj)
+eO(gg.OnFinish)
 end
-gm.MouseButton1Click:Connect(function()
-eL:_sfx"Click"gd=math.max(1,gd-1)paint()
+gr.MouseButton1Click:Connect(function()
+eL:_sfx"Click"gi=math.max(1,gi-1)paint()
 end)
-gs.MouseButton1Click:Connect(function()close()end)
-gn.MouseButton1Click:Connect(function()
+gx.MouseButton1Click:Connect(function()close()end)
+gs.MouseButton1Click:Connect(function()
 eL:_sfx"Click"
-if gd>=#gc then close()else gd+=1 paint()end
+if gi>=#gh then close()else gi+=1 paint()end
 end)
 paint()
 end
 
 
 
-function fU.Tab(ga,gb)
+function fX.Tab(gf,gg)
 return ez({
-Window=fU,opts=e5,Th=fa,pgui=fd,
-pages=fT,nav=fQ,pill=fS,subLbl=fw,
-},gb)
+Window=fX,opts=e5,Th=fa,pgui=fd,
+pages=fW,nav=fT,pill=fV,subLbl=fw,
+},gg)
 end
 
 
-function fU.EspPreview(ga,gb)
-return eA({Window=fU,Th=fa,main=fg,gui=fc},gb)
+function fX.EspPreview(gf,gg)
+return eA({Window=fX,Th=fa,main=fg,gui=fc},gg)
 end
 
-function fU.AddCloudPanel(ga,gb)
-return eG(ga,gb)
+function fX.AddCloudPanel(gf,gg)
+return eG(gf,gg)
 end
 
-function fU.AddChatPanel(ga,gb)
-return eH(ga,gb)
+function fX.AddChatPanel(gf,gg)
+return eH(gf,gg)
 end
 
-function fU.AddGlobalChatPanel(ga,gb)
-return eI(ga,gb)
+function fX.AddGlobalChatPanel(gf,gg)
+return eI(gf,gg)
 end
 
-function fU.SelectTab(ga,gb)
-if type(gb)=="number"then
-local gc=ga._tabs[gb]
-if gc then ga._activateTab(gc,true)end
-return gc
+function fX.SelectTab(gf,gg)
+if type(gg)=="number"then
+local gh=gf._tabs[gg]
+if gh then gf._activateTab(gh,true)end
+return gh
 end
-for gc,gd in ipairs(ga._tabs)do
-if gd.Title==gb then
-ga._activateTab(gd,true)
-return gd
+for gh,gi in ipairs(gf._tabs)do
+if gi.Title==gg then
+gf._activateTab(gi,true)
+return gi
 end
 end
 return nil
 end
-function fU.FindElement(ga,gb)
-gb=tostring(gb or""):lower()
-if gb==""then return nil end
-local gc,gd=0
-for ge,gf in ipairs(ga._tabs)do
-for gg,gh in ipairs(gf.Elements or{})do
-local gi=tostring(gh.Title or"")
-if gi~=""then
-local gj=gi:lower()
-if gj==gb then return{title=gh.Title,instance=gh.Frame,tabObj=gf,kind=gh.Kind,flag=gh.Flag,_go=gh._go},math.huge end
-if gj:find(gb,1,true)then
-local gk=#gb/#gj
-if gk>gc then
-gc=gk
-gd={title=gh.Title,instance=gh.Frame,tabObj=gf,kind=gh.Kind,flag=gh.Flag,_go=gh._go}
+function fX.FindElement(gf,gg)
+gg=tostring(gg or""):lower()
+if gg==""then return nil end
+local gh,gi=0
+for gj,gk in ipairs(gf._tabs)do
+for gl,gm in ipairs(gk.Elements or{})do
+local gn=tostring(gm.Title or"")
+if gn~=""then
+local go=gn:lower()
+if go==gg then return{title=gm.Title,instance=gm.Frame,tabObj=gk,kind=gm.Kind,flag=gm.Flag,_go=gm._go},math.huge end
+if go:find(gg,1,true)then
+local gp=#gg/#go
+if gp>gh then
+gh=gp
+gi={title=gm.Title,instance=gm.Frame,tabObj=gk,kind=gm.Kind,flag=gm.Flag,_go=gm._go}
 end
 end
 end
 end
 end
-if gc<=0 then return nil end
-return gd,gc
+if gh<=0 then return nil end
+return gi,gh
 end
-function fU.DescribeElement(ga,gb)
-if not gb then return nil end
-local gc={
-name=tostring(gb.title or""),
-type=gb.kind,
-tab=gb.tabObj and gb.tabObj.Title or nil,
-description=gb.description,
+function fX.DescribeElement(gf,gg)
+if not gg then return nil end
+local gh={
+name=tostring(gg.title or""),
+type=gg.kind,
+tab=gg.tabObj and gg.tabObj.Title or nil,
+description=gg.description,
 }
-if gb.flag~=nil and gb.flag~=""then
-gc.flag=gb.flag
-local gd=eL.Flags[gb.flag]
-if gd~=nil then
-local ge=type(gd)
-gc.currentValue=(ge=="string"or ge=="number"or ge=="boolean")and gd or tostring(gd)
+if gg.flag~=nil and gg.flag~=""then
+gh.flag=gg.flag
+local gi=eL.Flags[gg.flag]
+if gi~=nil then
+local gj=type(gi)
+gh.currentValue=(gj=="string"or gj=="number"or gj=="boolean")and gi or tostring(gi)
 end
 end
-return gc
+return gh
 end
-function fU._JumpToSearchable(ga,gb)
-if not gb then return end
-if gb._go then pcall(gb._go)return end
-local gc,gd=gb.tabObj,gb.instance
-if not gc or not gd then return end
-ga._activateTab(gc,true)
+function fX._JumpToSearchable(gf,gg)
+if not gg then return end
+if gg._go then pcall(gg._go)return end
+local gh,gi=gg.tabObj,gg.instance
+if not gh or not gi then return end
+gf._activateTab(gh,true)
 task.delay(0.6,function()
-if gd.Parent then ga:_flash(gd)end
+if gi.Parent then gf:_flash(gi)end
 end)
 end
-function fU.JumpToElement(ga,gb)
-gb=tostring(gb or"")
-if gb==""then return false,"No element name given"end
-local gc=ga:FindElement(gb)
-if not gc then
-return false,"No element found matching '"..gb.."'"
+function fX.JumpToElement(gf,gg)
+gg=tostring(gg or"")
+if gg==""then return false,"No element name given"end
+local gh=gf:FindElement(gg)
+if not gh then
+return false,"No element found matching '"..gg.."'"
 end
-ga:_JumpToSearchable(gc)
-return true,gc.title
+gf:_JumpToSearchable(gh)
+return true,gh.title
 end
-function fU._BuildDefaultSystemPrompt(ga)
-local gb={}
-for gc,gd in ipairs(ga._tabs)do
-if not gd.Hidden then table.insert(gb,gd.Title)end
+function fX._BuildDefaultSystemPrompt(gf)
+local gg={}
+for gh,gi in ipairs(gf._tabs)do
+if not gi.Hidden then table.insert(gg,gi.Title)end
 end
 
 return"You are a helpful assistant embedded in a Roblox UI panel built with KronosUI. Your tools "
 .."only affect THIS PANEL -- they inspect/adjust the panel's own toggles/sliders/etc, switch "
-.."between its top-level tabs ("..table.concat(gb,", ")..[[), switch to a specific sub-tab within one of those, and jump to/highlight a specific UI element on the panel by its visible label. Only use select_tab, select_subtab, or find_and_highlight_element when the user is asking to be taken somewhere IN THIS PANEL, or to interact with a control that's actually on it. If the user asks you to write a script, explain something, or anything else that isn't about navigating this panel, just answer directly in chat -- do not call a tool just because the message happens to mention a word that sounds like a setting. When you write a Luau script for the user, put it in a normal ```lua fenced block -- the panel automatically adds a Run button to it that the user can click themselves, so you don't need to explain how to run it or tell them you can't execute code; you're just not the one who decides to run it -- they click Run after reading it. Keep answers short and to the point. None of your tools execute anything outside this panel, and you have no way to trigger the Run button yourself.]]
+.."between its top-level tabs ("..table.concat(gg,", ")..[[), switch to a specific sub-tab within one of those, and jump to/highlight a specific UI element on the panel by its visible label. Only use select_tab, select_subtab, or find_and_highlight_element when the user is asking to be taken somewhere IN THIS PANEL, or to interact with a control that's actually on it. If the user asks you to write a script, explain something, or anything else that isn't about navigating this panel, just answer directly in chat -- do not call a tool just because the message happens to mention a word that sounds like a setting. When you write a Luau script for the user, put it in a normal ```lua fenced block -- the panel automatically adds a Run button to it that the user can click themselves, so you don't need to explain how to run it or tell them you can't execute code; you're just not the one who decides to run it -- they click Run after reading it. Keep answers short and to the point. None of your tools execute anything outside this panel, and you have no way to trigger the Run button yourself.]]
 
 
 
@@ -14305,8 +14382,8 @@ return"You are a helpful assistant embedded in a Roblox UI panel built with Kron
 
 
 end
-function fU._BuildDefaultChatTools(ga)
-local gb=ga
+function fX._BuildDefaultChatTools(gf)
+local gg=gf
 
 return{
 {
@@ -14328,10 +14405,10 @@ value={description="The new value: true/false for a Toggle, a number for a Slide
 },
 required={"flag","value"},
 },
-Handler=function(gc)
-local gd,ge=eL:SetUIElementValue(gc.flag,gc.value)
-if not gd then error(ge,0)end
-return{success=true,flag=gc.flag,value=gc.value}
+Handler=function(gh)
+local gi,gj=eL:SetUIElementValue(gh.flag,gh.value)
+if not gi then error(gj,0)end
+return{success=true,flag=gh.flag,value=gh.value}
 end,
 },
 {
@@ -14344,10 +14421,10 @@ tab={type="string",description="The tab's name."},
 },
 required={"tab"},
 },
-Handler=function(gc)
-local gd=gb:SelectTab(gc.tab)
-if not gd then error("No tab named '"..tostring(gc.tab).."'",0)end
-return"Switched to "..gd.Title
+Handler=function(gh)
+local gi=gg:SelectTab(gh.tab)
+if not gi then error("No tab named '"..tostring(gh.tab).."'",0)end
+return"Switched to "..gi.Title
 end,
 },
 {
@@ -14362,14 +14439,14 @@ subtab={type="string",description="The sub-tab's name."},
 },
 required={"tab","subtab"},
 },
-Handler=function(gc)
-local gd=gb:SelectTab(gc.tab)
-if not gd then error("No tab named '"..tostring(gc.tab).."'",0)end
-local ge=gd:SelectSubTabByName(gc.subtab)
-if not ge then
-error("No sub-tab named '"..tostring(gc.subtab).."' under "..gd.Title,0)
+Handler=function(gh)
+local gi=gg:SelectTab(gh.tab)
+if not gi then error("No tab named '"..tostring(gh.tab).."'",0)end
+local gj=gi:SelectSubTabByName(gh.subtab)
+if not gj then
+error("No sub-tab named '"..tostring(gh.subtab).."' under "..gi.Title,0)
 end
-return"Switched to "..gd.Title.." > "..ge.Name
+return"Switched to "..gi.Title.." > "..gj.Name
 end,
 },
 {
@@ -14390,156 +14467,156 @@ query={type="string",description="A natural-language description of the element 
 },
 required={"query"},
 },
-Handler=function(gc)
-local gd,ge=gb:FindElement(gc.query)
-if not gd then
-return{success=false,found=false,error="No matching UI element found for '"..tostring(gc.query).."'"}
+Handler=function(gh)
+local gi,gj=gg:FindElement(gh.query)
+if not gi then
+return{success=false,found=false,error="No matching UI element found for '"..tostring(gh.query).."'"}
 end
-gb:_JumpToSearchable(gd)
-local gf=gb:DescribeElement(gd)or{name=tostring(gc.query)}
-gf.success=true
-gf.found=true
-gf.query=tostring(gc.query)
-if ge==math.huge then ge=999 end
-if type(ge)=="number"then
-gf.score=math.floor(ge*10+0.5)/10
+gg:_JumpToSearchable(gi)
+local gk=gg:DescribeElement(gi)or{name=tostring(gh.query)}
+gk.success=true
+gk.found=true
+gk.query=tostring(gh.query)
+if gj==math.huge then gj=999 end
+if type(gj)=="number"then
+gk.score=math.floor(gj*10+0.5)/10
 end
-return gf
+return gk
 end,
 },
 }
 end
 
-function fU.SaveConfig(ga,gb)
-ey.Save(ga,gb)
+function fX.SaveConfig(gf,gg)
+ey.Save(gf,gg)
 end
-function fU.LoadConfig(ga,gb)
-ey.Load(ga,gb)
+function fX.LoadConfig(gf,gg)
+ey.Load(gf,gg)
 end
 
 
-fU._focusIdx=1
-local ga
+fX._focusIdx=1
+local gf
 
 
 
 
 local function focusables()
-local gb=fU._active
-if not gb then return{}end
-local gc={}
-for gd,ge in ipairs(gb.Elements)do
-if ge.Frame and ge.Frame.Visible and ge.Frame.Parent then
-local gf,gg=pcall(function()return ge.Frame.AbsoluteSize.Y>4 end)
-if gf and gg then table.insert(gc,ge)end
+local gg=fX._active
+if not gg then return{}end
+local gh={}
+for gi,gj in ipairs(gg.Elements)do
+if gj.Frame and gj.Frame.Visible and gj.Frame.Parent then
+local gk,gl=pcall(function()return gj.Frame.AbsoluteSize.Y>4 end)
+if gk and gl then table.insert(gh,gj)end
 end
 end
-return gc
+return gh
 end
-function fU.FocusMove(gb,gc)
-if not gb._visible then return end
-if gb._palette and gb._palette.open then return end
-local gd=focusables()
-if#gd==0 then return end
-gb._focusIdx=((gb._focusIdx-1+gc)%#gd)+1
-local ge=gd[gb._focusIdx]
-if not ge or not ge.Frame then return end
-if not ga then
-ga=Instance.new"UIStroke"ga.Thickness=1.5
-ga.Transparency=0.15
-eL:_tag(ga,"Color","Accent")
+function fX.FocusMove(gg,gh)
+if not gg._visible then return end
+if gg._palette and gg._palette.open then return end
+local gi=focusables()
+if#gi==0 then return end
+gg._focusIdx=((gg._focusIdx-1+gh)%#gi)+1
+local gj=gi[gg._focusIdx]
+if not gj or not gj.Frame then return end
+if not gf then
+gf=Instance.new"UIStroke"gf.Thickness=1.5
+gf.Transparency=0.15
+eL:_tag(gf,"Color","Accent")
 end
 pcall(function()
-ga.Parent=ge.Frame
-local gf=gb._active and gb._active.Page
-if gf then
-local gg=ge.Frame.AbsolutePosition.Y
-local gh=gf.AbsolutePosition.Y
-gf.CanvasPosition=Vector2.new(0,math.max(0,gf.CanvasPosition.Y+(gg-gh)-120))
+gf.Parent=gj.Frame
+local gk=gg._active and gg._active.Page
+if gk then
+local gl=gj.Frame.AbsolutePosition.Y
+local gm=gk.AbsolutePosition.Y
+gk.CanvasPosition=Vector2.new(0,math.max(0,gk.CanvasPosition.Y+(gl-gm)-120))
 end
 end)
 eL:_sfx"Hover"
 end
-function fU.FocusActivate(gb)
-if not gb._visible then return end
-local gc=focusables()
-local gd=gc[gb._focusIdx]
-if not gd then return end
-gb:_flash(gd.Frame)
-if gd._go then pcall(gd._go)end
+function fX.FocusActivate(gg)
+if not gg._visible then return end
+local gh=focusables()
+local gi=gh[gg._focusIdx]
+if not gi then return end
+gg:_flash(gi.Frame)
+if gi._go then pcall(gi._go)end
 end
 
 
-fU._clean=fU._clean or{on=false,idle=6,last=os.clock(),faded=false,edge=nil}
-function fU.SetCleanScreen(gb,gc,gd)
-gc=gc and true or false
-gb._clean.on=gc
-if gd then gb._clean.idle=math.clamp(tonumber(gd)or 6,2,60)end
-gb._clean.last=os.clock()
-if not gc and gb._clean.faded then gb:_cleanRestore()end
-if gc then gb:_cleanTouch()end
+fX._clean=fX._clean or{on=false,idle=6,last=os.clock(),faded=false,edge=nil}
+function fX.SetCleanScreen(gg,gh,gi)
+gh=gh and true or false
+gg._clean.on=gh
+if gi then gg._clean.idle=math.clamp(tonumber(gi)or 6,2,60)end
+gg._clean.last=os.clock()
+if not gh and gg._clean.faded then gg:_cleanRestore()end
+if gh then gg:_cleanTouch()end
 end
-function fU._cleanTouch(gb)gb._clean.last=os.clock()end
-function fU._cleanFade(gb)
-if gb._clean.faded or not gb._visible or gb._mini then return end
-gb._clean.faded=true
+function fX._cleanTouch(gg)gg._clean.last=os.clock()end
+function fX._cleanFade(gg)
+if gg._clean.faded or not gg._visible or gg._mini then return end
+gg._clean.faded=true
 eN(fg,eM.Med,{GroupTransparency=0.88})
 dimTo(1,eM.Med)
-if not gb._clean.edge then
-local gc=Instance.new"TextButton"
-gc.Name=ad.GetStealthName()
-gc.Text=""gc.AnchorPoint=Vector2.new(0,0.5)gc.Position=UDim2.new(0,0,0.5,0)
-gc.Size=UDim2.fromOffset(6,120)gc.BackgroundColor3=fa.Accent
-gc.BackgroundTransparency=0.35 gc.BorderSizePixel=0 gc.ZIndex=200
-eU(gc,99)gc.Parent=fc
-eL:_tag(gc,"BackgroundColor3","Accent")
-gc.MouseEnter:Connect(function()gb:_cleanRestore()end)
-gc.InputBegan:Connect(function(gd)
-if gd.UserInputType==Enum.UserInputType.Touch then gb:_cleanRestore()end
+if not gg._clean.edge then
+local gh=Instance.new"TextButton"
+gh.Name=ad.GetStealthName()
+gh.Text=""gh.AnchorPoint=Vector2.new(0,0.5)gh.Position=UDim2.new(0,0,0.5,0)
+gh.Size=UDim2.fromOffset(6,120)gh.BackgroundColor3=fa.Accent
+gh.BackgroundTransparency=0.35 gh.BorderSizePixel=0 gh.ZIndex=200
+eU(gh,99)gh.Parent=fc
+eL:_tag(gh,"BackgroundColor3","Accent")
+gh.MouseEnter:Connect(function()gg:_cleanRestore()end)
+gh.InputBegan:Connect(function(gi)
+if gi.UserInputType==Enum.UserInputType.Touch then gg:_cleanRestore()end
 end)
-gb._clean.edge=gc
+gg._clean.edge=gh
 else
-gb._clean.edge.Visible=true
+gg._clean.edge.Visible=true
 end
 end
-function fU._cleanRestore(gb)
-if not gb._clean.faded then gb._clean.last=os.clock()return end
-gb._clean.faded=false
-gb._clean.last=os.clock()
-if not gb._visible or gb._mini then return end
+function fX._cleanRestore(gg)
+if not gg._clean.faded then gg._clean.last=os.clock()return end
+gg._clean.faded=false
+gg._clean.last=os.clock()
+if not gg._visible or gg._mini then return end
 eN(fg,eM.Med,{GroupTransparency=0})
 dimTo(0.5,eM.Med)
-if gb._clean.edge then gb._clean.edge.Visible=false end
+if gg._clean.edge then gg._clean.edge.Visible=false end
 eL:_sfx"Hover"
 end
-fU:Track(e2.InputChanged:Connect(function(gb)
-if gb.UserInputType~=Enum.UserInputType.MouseMovement
-and gb.UserInputType~=Enum.UserInputType.Touch then return end
-if fU._clean.on and fU._clean.faded then
-local gc=gb.Position
-local gd,ge=pcall(function()
-local gd,ge=fg.AbsolutePosition,fg.AbsoluteSize
-return gc.X>=gd.X-30 and gc.X<=gd.X+ge.X+30
-and gc.Y>=gd.Y-30 and gc.Y<=gd.Y+ge.Y+30
+fX:Track(e2.InputChanged:Connect(function(gg)
+if gg.UserInputType~=Enum.UserInputType.MouseMovement
+and gg.UserInputType~=Enum.UserInputType.Touch then return end
+if fX._clean.on and fX._clean.faded then
+local gh=gg.Position
+local gi,gj=pcall(function()
+local gi,gj=fg.AbsolutePosition,fg.AbsoluteSize
+return gh.X>=gi.X-30 and gh.X<=gi.X+gj.X+30
+and gh.Y>=gi.Y-30 and gh.Y<=gi.Y+gj.Y+30
 end)
-if gc.X<=24 then fU:_cleanRestore()return end
-if gd and ge then fU:_cleanRestore()return end
+if gh.X<=24 then fX:_cleanRestore()return end
+if gi and gj then fX:_cleanRestore()return end
 end
-fU:_cleanTouch()
+fX:_cleanTouch()
 end))
-fU:Track(e2.InputBegan:Connect(function(gb)
-if gb.UserInputType==Enum.UserInputType.MouseButton1
-or gb.UserInputType==Enum.UserInputType.Touch then
-if fU._clean.on and fU._clean.faded then fU:_cleanRestore()else fU:_cleanTouch()end
+fX:Track(e2.InputBegan:Connect(function(gg)
+if gg.UserInputType==Enum.UserInputType.MouseButton1
+or gg.UserInputType==Enum.UserInputType.Touch then
+if fX._clean.on and fX._clean.faded then fX:_cleanRestore()else fX:_cleanTouch()end
 end
 end))
 task.spawn(function()
 while fc.Parent do
 task.wait(0.5)
 pcall(function()
-if fU._clean.on and not fU._clean.faded and fU._visible and not fU._mini then
-if os.clock()-fU._clean.last>fU._clean.idle then
-fU:_cleanFade()
+if fX._clean.on and not fX._clean.faded and fX._visible and not fX._mini then
+if os.clock()-fX._clean.last>fX._clean.idle then
+fX:_cleanFade()
 end
 end
 end)
@@ -14547,127 +14624,127 @@ end
 end)
 
 
-function fU.SetPerformance(gb,gc)
-gc=gc and true or false
-eL._perfLow=gc
-if gc then eL:SetAcrylic(false)end
+function fX.SetPerformance(gg,gh)
+gh=gh and true or false
+eL._perfLow=gh
+if gh then eL:SetAcrylic(false)end
 pcall(function()
-for gd,ge in ipairs(fg:GetDescendants())do
-if ge.Name=="_light"or ge.Name=="_toplight"then ge.Visible=not gc end
-if ge:IsA"UIShadow"then ge.Enabled=not gc end
+for gi,gj in ipairs(fg:GetDescendants())do
+if gj.Name=="_light"or gj.Name=="_toplight"then gj.Visible=not gh end
+if gj:IsA"UIShadow"then gj.Enabled=not gh end
 end
 end)
-if not gc and gb._acrylicPref then eL:SetAcrylic(true,e5.Blur or 16)end
+if not gh and gg._acrylicPref then eL:SetAcrylic(true,e5.Blur or 16)end
 end
 
 
-function fU.ExportString(gb)
-return ey.Export(gb)
+function fX.ExportString(gg)
+return ey.Export(gg)
 end
-function fU.ImportString(gb,gc)
-return ey.Import(gb,gc)
+function fX.ImportString(gg,gh)
+return ey.Import(gg,gh)
 end
-function fU.AutoSave(gb,gc,gd,ge)
-ey.AutoSave(gb,gc,gd,ge)
+function fX.AutoSave(gg,gh,gi,gj)
+ey.AutoSave(gg,gh,gi,gj)
 end
 
-function fU.SetBadge(gb,gc,gd)
-if not gc or not(gc.Btn or gc.Button)then return end
-local ge=gc.Btn or gc.Button
-local gf=ge:FindFirstChild"_badge"
-if not gd or gd==""or gd==0 then
-if gf then pcall(function()gf:Destroy()end)end
+function fX.SetBadge(gg,gh,gi)
+if not gh or not(gh.Btn or gh.Button)then return end
+local gj=gh.Btn or gh.Button
+local gk=gj:FindFirstChild"_badge"
+if not gi or gi==""or gi==0 then
+if gk then pcall(function()gk:Destroy()end)end
 return
 end
-if not gf then
-gf=Instance.new"Frame"gf.Name="_badge"
-gf.AnchorPoint=Vector2.new(1,0.5)gf.Position=UDim2.new(1,-8,0.5,0)
-gf.Size=UDim2.new(0,20,0,16)gf.BackgroundColor3=Color3.fromRGB(248,113,113)
-gf.BorderSizePixel=0 eU(gf,99)gf.Parent=ge gf.ZIndex=4
-local gg=Instance.new"TextLabel"gg.Name="_l"gg.BackgroundTransparency=1
-gg.Size=UDim2.fromScale(1,1)gg.Font=Enum.Font.GothamBold
-gg.TextSize=10 gg.TextColor3=Color3.fromRGB(255,255,255)gg.Parent=gf
+if not gk then
+gk=Instance.new"Frame"gk.Name="_badge"
+gk.AnchorPoint=Vector2.new(1,0.5)gk.Position=UDim2.new(1,-8,0.5,0)
+gk.Size=UDim2.new(0,20,0,16)gk.BackgroundColor3=Color3.fromRGB(248,113,113)
+gk.BorderSizePixel=0 eU(gk,99)gk.Parent=gj gk.ZIndex=4
+local gl=Instance.new"TextLabel"gl.Name="_l"gl.BackgroundTransparency=1
+gl.Size=UDim2.fromScale(1,1)gl.Font=Enum.Font.GothamBold
+gl.TextSize=10 gl.TextColor3=Color3.fromRGB(255,255,255)gl.Parent=gk
 end
 pcall(function()
-local gg=gf:FindFirstChild"_l"
-gg.Text=tostring(gd)
-gf.Size=UDim2.new(0,math.clamp(10+string.len(tostring(gd))*7,20,64),0,16)
+local gl=gk:FindFirstChild"_l"
+gl.Text=tostring(gi)
+gk.Size=UDim2.new(0,math.clamp(10+string.len(tostring(gi))*7,20,64),0,16)
 end)
 end
 
-function fU.Debug(gb)
-local gc={}
-local function log(gd)table.insert(gc,tostring(gd))end
-log("version="..tostring(eL.Version).." visible="..tostring(gb._visible))
-local gd=(eL._gui and eL._gui.Parent)and 1 or 0
-log("hubs="..tostring(gd))
-local function box(ge,gf)
-local gg,gh=pcall(function()
-return gf.." class="..ge.ClassName
-.." clip="..tostring(ge.ClipsDescendants)
-.." pos="..tostring(ge.AbsolutePosition)
-.." size="..tostring(ge.AbsoluteSize)
+function fX.Debug(gg)
+local gh={}
+local function log(gi)table.insert(gh,tostring(gi))end
+log("version="..tostring(eL.Version).." visible="..tostring(gg._visible))
+local gi=(eL._gui and eL._gui.Parent)and 1 or 0
+log("hubs="..tostring(gi))
+local function box(gj,gk)
+local gl,gm=pcall(function()
+return gk.." class="..gj.ClassName
+.." clip="..tostring(gj.ClipsDescendants)
+.." pos="..tostring(gj.AbsolutePosition)
+.." size="..tostring(gj.AbsoluteSize)
 end)
-log(gg and gh or(gf.." ERR"))
+log(gl and gm or(gk.." ERR"))
 end
-box(gb._main,"main")
-box(gb._body,"body")
-box(gb._pages,"pages")
-for ge,gf in ipairs(gb._tabs)do
-local gg=gf.Page
-local gh,gi=pcall(function()
-return"page["..gf.Title.."] vis="..tostring(gg.Visible)
-.." clip="..tostring(gg.ClipsDescendants)
-.." vp="..tostring(gg.AbsoluteSize)
-.." canvas="..tostring(gg.AbsoluteCanvasSize)
-.." canvPos="..tostring(gg.CanvasPosition)
-.." scroll="..tostring(gg.ScrollingEnabled)
+box(gg._main,"main")
+box(gg._body,"body")
+box(gg._pages,"pages")
+for gj,gk in ipairs(gg._tabs)do
+local gl=gk.Page
+local gm,gn=pcall(function()
+return"page["..gk.Title.."] vis="..tostring(gl.Visible)
+.." clip="..tostring(gl.ClipsDescendants)
+.." vp="..tostring(gl.AbsoluteSize)
+.." canvas="..tostring(gl.AbsoluteCanvasSize)
+.." canvPos="..tostring(gl.CanvasPosition)
+.." scroll="..tostring(gl.ScrollingEnabled)
 end)
-log(gh and gi or("page["..tostring(gf.Title).."] ERR"))
+log(gm and gn or("page["..tostring(gk.Title).."] ERR"))
 pcall(function()
-local gj,gk=gg.AbsolutePosition.Y,gg.AbsoluteSize.Y
-local gl,gm=0,0
-for gn,go in ipairs(gf.Elements)do
-if go.Frame and go.Frame.Visible then
-gm=gm+1
-local gp,gq=go.Frame.AbsolutePosition.Y,go.Frame.AbsoluteSize.Y
-if gp+gq<gj or gp>gj+gk then gl=gl+1 end
+local go,gp=gl.AbsolutePosition.Y,gl.AbsoluteSize.Y
+local gq,gr=0,0
+for gs,gt in ipairs(gk.Elements)do
+if gt.Frame and gt.Frame.Visible then
+gr=gr+1
+local gu,gv=gt.Frame.AbsolutePosition.Y,gt.Frame.AbsoluteSize.Y
+if gu+gv<go or gu>go+gp then gq=gq+1 end
 end
 end
-log("  rows="..gm.." outsideViewport="..gl)
+log("  rows="..gr.." outsideViewport="..gq)
 end)
 end
 log"done"
-return table.concat(gc,"\n")
+return table.concat(gh,"\n")
 end
 
-function fU.Destroy(gb)
-if gb._destroyed then return end
-gb._destroyed=true
-local gc=gb._onCloseCb
-gb._onCloseCb=nil
-if type(gc)=="function"then task.spawn(function()pcall(gc)end)end
-for gd,ge in ipairs(gb._conns)do pcall(function()ge:Disconnect()end)end
-gb._conns={}
-for gd,ge in ipairs(aa._Windows)do
-if ge==gb then table.remove(aa._Windows,gd)break end
+function fX.Destroy(gg)
+if gg._destroyed then return end
+gg._destroyed=true
+local gh=gg._onCloseCb
+gg._onCloseCb=nil
+if type(gh)=="function"then task.spawn(function()pcall(gh)end)end
+for gi,gj in ipairs(gg._conns)do pcall(function()gj:Disconnect()end)end
+gg._conns={}
+for gi,gj in ipairs(aa._Windows)do
+if gj==gg then table.remove(aa._Windows,gi)break end
 end
-for gd,ge in pairs(eL.Sound._cache)do pcall(function()ge:Stop()ge:Destroy()end)end
+for gi,gj in pairs(eL.Sound._cache)do pcall(function()gj:Stop()gj:Destroy()end)end
 eL.Sound._cache={}
 eL:SetAcrylic(false)
 if eL._gui==fc then eL._gui=nil end
-pcall(function()fX:Destroy()end)
+pcall(function()f_:Destroy()end)
 pcall(function()fc:Destroy()end)
 pcall(function()fd:Destroy()end)
 end
 
 ad.registerUnload(function()
-pcall(function()fU:Destroy()end)
+pcall(function()fX:Destroy()end)
 end)
 af.paintFonts(fc)
-aa._lastWindow=fU
-table.insert(aa._Windows,fU)
-return fU
+aa._lastWindow=fX
+table.insert(aa._Windows,fX)
+return fX
 end end function a.ax():typeof(__modImpl())local aa=a.cache.ax if not aa then aa={c=__modImpl()}a.cache.ax=aa end return aa.c end end end
 
 
